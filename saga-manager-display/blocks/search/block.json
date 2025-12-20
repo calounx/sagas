@@ -1,0 +1,79 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "saga-manager/search",
+    "version": "1.0.0",
+    "title": "Saga Search",
+    "category": "saga-manager",
+    "icon": "search",
+    "description": "Search interface for saga entities.",
+    "keywords": ["saga", "search", "find", "entities"],
+    "textdomain": "saga-manager-display",
+    "attributes": {
+        "sagaSlug": {
+            "type": "string",
+            "default": ""
+        },
+        "placeholder": {
+            "type": "string",
+            "default": ""
+        },
+        "showFilters": {
+            "type": "boolean",
+            "default": true
+        },
+        "showTypeFilter": {
+            "type": "boolean",
+            "default": true
+        },
+        "showSagaFilter": {
+            "type": "boolean",
+            "default": true
+        },
+        "resultsLayout": {
+            "type": "string",
+            "default": "grid",
+            "enum": ["grid", "list"]
+        },
+        "resultsPerPage": {
+            "type": "number",
+            "default": 12
+        },
+        "showPagination": {
+            "type": "boolean",
+            "default": true
+        },
+        "semantic": {
+            "type": "boolean",
+            "default": false
+        },
+        "liveSearch": {
+            "type": "boolean",
+            "default": true
+        },
+        "minChars": {
+            "type": "number",
+            "default": 3
+        },
+        "debounce": {
+            "type": "number",
+            "default": 300
+        }
+    },
+    "supports": {
+        "align": ["wide", "full"],
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./editor.css",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "saga-manager/timeline",
+    "version": "1.0.0",
+    "title": "Saga Timeline",
+    "category": "saga-manager",
+    "icon": "calendar-alt",
+    "description": "Display a timeline of events for a saga.",
+    "keywords": ["saga", "timeline", "events", "chronology"],
+    "textdomain": "saga-manager-display",
+    "attributes": {
+        "sagaSlug": {
+            "type": "string",
+            "default": ""
+        },
+        "layout": {
+            "type": "string",
+            "default": "vertical",
+            "enum": ["vertical", "horizontal", "compact"]
+        },
+        "limit": {
+            "type": "number",
+            "default": 20
+        },
+        "order": {
+            "type": "string",
+            "default": "asc",
+            "enum": ["asc", "desc"]
+        },
+        "showParticipants": {
+            "type": "boolean",
+            "default": true
+        },
+        "showLocations": {
+            "type": "boolean",
+            "default": true
+        },
+        "showDescriptions": {
+            "type": "boolean",
+            "default": true
+        },
+        "interactive": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "supports": {
+        "align": ["wide", "full"],
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./editor.css",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

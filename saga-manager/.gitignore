@@ -1,0 +1,38 @@
+# Composer
+/vendor/
+composer.lock
+
+# PHPUnit
+/coverage/
+.phpunit.result.cache
+.phpunit.cache/
+phpunit.xml.bak
+
+# PHPStan
+phpstan.neon.bak
+.phpstan/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+
+# Logs
+*.log
+error_log
+debug.log

@@ -1,0 +1,355 @@
+/**
+ * Saga Manager Display - Block Editor Styles
+ *
+ * Styles specific to the Gutenberg editor
+ *
+ * @package SagaManagerDisplay
+ */
+
+/* Block Category Icon */
+.block-editor-block-types-list__list-item[data-category="saga-manager"] .block-editor-block-types-list__item-icon {
+    background-color: #f1f5f9;
+    border-radius: 4px;
+}
+
+/* Entity Selector */
+.saga-entity-selector {
+    margin-bottom: 16px;
+}
+
+.saga-entity-selector__selected {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+}
+
+.saga-entity-selector__name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.saga-entity-selector__type {
+    font-size: 12px;
+    color: #64748b;
+    background-color: #e2e8f0;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.saga-entity-selector__clear {
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #ef4444;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.saga-entity-selector__clear:hover {
+    text-decoration: underline;
+}
+
+.saga-entity-selector__results {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+}
+
+.saga-entity-selector__results li {
+    margin: 0;
+}
+
+.saga-entity-selector__results button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    text-align: left;
+}
+
+.saga-entity-selector__results button:hover {
+    background-color: #f8fafc;
+}
+
+.saga-entity-selector__results button:last-child {
+    border-bottom: none;
+}
+
+.saga-entity-selector__results strong {
+    font-weight: 500;
+}
+
+.saga-entity-selector__results span {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* Block Placeholder */
+.saga-block-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    padding: 24px;
+    background-color: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.saga-block-placeholder__icon {
+    font-size: 48px;
+    color: #94a3b8;
+    margin-bottom: 12px;
+}
+
+.saga-block-placeholder__message {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Block Loading */
+.saga-block-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    padding: 24px;
+    color: #64748b;
+}
+
+.saga-block-loading span {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+/* Block Message */
+.saga-block-message {
+    padding: 16px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.saga-block-message--warning {
+    background-color: #fffbeb;
+    border: 1px solid #fed7aa;
+    color: #92400e;
+}
+
+/* Entity Preview in Editor */
+.saga-entity--card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.saga-entity__image {
+    aspect-ratio: 16 / 9;
+    background-color: #f1f5f9;
+}
+
+.saga-entity__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.saga-entity__content {
+    padding: 16px;
+}
+
+.saga-entity__name {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.saga-entity__type {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-radius: 12px;
+}
+
+.saga-entity__attributes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.saga-entity__attribute {
+    background-color: #f8fafc;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.saga-entity__attribute dt {
+    font-size: 10px;
+    font-weight: 500;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.saga-entity__attribute dd {
+    margin: 4px 0 0;
+    font-size: 13px;
+}
+
+/* Timeline Preview in Editor */
+.saga-timeline {
+    position: relative;
+}
+
+.saga-timeline__track {
+    padding-left: 24px;
+}
+
+.saga-timeline__event {
+    position: relative;
+    padding-bottom: 16px;
+    padding-left: 24px;
+}
+
+.saga-timeline__event::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #e2e8f0;
+}
+
+.saga-timeline__marker {
+    position: absolute;
+    left: -5px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    background-color: #2563eb;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+}
+
+.saga-timeline__content {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.saga-timeline__date {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #2563eb;
+}
+
+.saga-timeline__title {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.saga-timeline__description {
+    margin: 0;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.saga-timeline__more {
+    padding: 8px 0;
+    padding-left: 24px;
+    font-size: 13px;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Search Preview in Editor */
+.saga-search__form {
+    margin-bottom: 16px;
+}
+
+.saga-search__input-wrapper {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.saga-search__icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.saga-search__input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    font-size: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.saga-search__input:disabled {
+    background-color: #f8fafc;
+    cursor: not-allowed;
+}
+
+.saga-search__filters {
+    display: flex;
+    gap: 8px;
+}
+
+.saga-search__filter {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+.saga-search__filter:disabled {
+    background-color: #f8fafc;
+    cursor: not-allowed;
+}
+
+.saga-search__results-preview {
+    padding: 40px;
+    text-align: center;
+    background-color: #f8fafc;
+    border: 1px dashed #e2e8f0;
+    border-radius: 8px;
+}
+
+.saga-search__preview-text {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 14px;
+}

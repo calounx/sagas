@@ -1,0 +1,567 @@
+/**
+ * Saga Manager Admin Styles
+ */
+
+/* ============================================
+   Dashboard Styles
+   ============================================ */
+
+.saga-manager-dashboard .saga-dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.saga-stat-box {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+
+.saga-stat-box:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.saga-stat-icon {
+    font-size: 40px;
+    color: #2271b1;
+    opacity: 0.8;
+}
+
+.saga-stat-content {
+    flex: 1;
+}
+
+.saga-stat-number {
+    display: block;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #1d2327;
+}
+
+.saga-stat-label {
+    display: block;
+    font-size: 13px;
+    color: #646970;
+    margin-top: 2px;
+}
+
+.saga-stat-link {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.saga-dashboard-columns {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 1200px) {
+    .saga-dashboard-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.saga-dashboard-widget {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.saga-dashboard-widget h2 {
+    margin: 0;
+    padding: 12px 15px;
+    border-bottom: 1px solid #c3c4c7;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.saga-dashboard-widget .inside,
+.saga-dashboard-widget table {
+    margin: 0;
+}
+
+.saga-empty-state {
+    padding: 20px;
+    text-align: center;
+    color: #646970;
+}
+
+.saga-entity-type-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.saga-entity-type-list li {
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.saga-entity-type-list li:last-child {
+    border-bottom: none;
+}
+
+.saga-entity-type-list a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.saga-entity-type-list a:hover {
+    background: #f6f7f7;
+}
+
+.saga-type-count {
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.saga-quick-actions {
+    margin: 0;
+    padding: 15px;
+    list-style: none;
+}
+
+.saga-quick-actions li {
+    margin-bottom: 10px;
+}
+
+.saga-quick-actions li:last-child {
+    margin-bottom: 0;
+}
+
+.saga-quick-actions .button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    justify-content: center;
+}
+
+.saga-quick-actions .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* ============================================
+   Entity Type Badges
+   ============================================ */
+
+.saga-type-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.saga-type-character {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.saga-type-location {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.saga-type-event {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.saga-type-faction {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.saga-type-artifact {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.saga-type-concept {
+    background: #e0f7fa;
+    color: #00838f;
+}
+
+/* ============================================
+   List Table Enhancements
+   ============================================ */
+
+.saga-slug {
+    color: #646970;
+    font-size: 12px;
+}
+
+/* Importance Score Bar */
+.saga-importance-bar,
+.saga-strength-bar {
+    width: 60px;
+    height: 8px;
+    background: #dcdcde;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.saga-importance-fill,
+.saga-strength-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.saga-importance-value,
+.saga-strength-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+/* Universe Badge */
+.saga-universe-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #f0f0f1;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #1d2327;
+}
+
+/* Entity count in sagas */
+.saga-count-zero {
+    color: #a7aaad;
+}
+
+.saga-entity-count {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Epoch display */
+.saga-epoch {
+    color: #646970;
+    font-size: 12px;
+}
+
+/* Relationship type */
+.saga-relationship-type {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #e7f3ff;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #0073aa;
+}
+
+/* Canon date in timeline */
+.saga-canon-date {
+    font-weight: 600;
+    font-family: monospace;
+    background: #f6f7f7;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+/* ============================================
+   Form Styles
+   ============================================ */
+
+.saga-form .saga-title-input {
+    font-size: 1.7em;
+    padding: 8px 12px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.saga-form #edit-slug-box {
+    padding: 5px 0;
+}
+
+.saga-form .saga-slug-input {
+    width: 200px;
+}
+
+.saga-form .saga-slug-hint {
+    color: #646970;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+/* Importance Slider */
+.saga-importance-slider {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.saga-importance-display {
+    display: inline-block;
+    width: 40px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+/* Attribute Fields */
+.saga-attribute-field {
+    margin-bottom: 15px;
+}
+
+.saga-attribute-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.saga-attribute-field .required {
+    color: #d63638;
+}
+
+.saga-no-attributes {
+    color: #646970;
+    font-style: italic;
+}
+
+/* Form containers */
+#poststuff #post-body.columns-2 {
+    margin-right: 320px;
+}
+
+#postbox-container-1 {
+    float: right;
+    margin-right: -320px;
+    width: 300px;
+}
+
+#post-body-content {
+    float: left;
+    width: 100%;
+}
+
+/* ============================================
+   Settings Page
+   ============================================ */
+
+.saga-settings-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.saga-settings-main {
+    flex: 1;
+    max-width: 800px;
+}
+
+.saga-settings-sidebar {
+    width: 300px;
+}
+
+.saga-settings-sidebar .postbox {
+    margin-bottom: 20px;
+}
+
+.saga-settings-sidebar .postbox .hndle {
+    padding: 12px 15px;
+    border-bottom: 1px solid #c3c4c7;
+    margin: 0;
+    font-size: 14px;
+}
+
+.saga-settings-sidebar .inside {
+    padding: 0;
+    margin: 0;
+}
+
+.saga-settings-sidebar table {
+    margin: 0;
+    border: none;
+}
+
+.saga-settings-sidebar table td {
+    padding: 10px 15px;
+}
+
+.saga-stat-value {
+    text-align: right;
+    font-weight: bold;
+}
+
+.saga-api-endpoints {
+    margin-bottom: 20px;
+}
+
+.saga-api-endpoints code {
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+
+@media screen and (max-width: 782px) {
+    .saga-manager-dashboard .saga-dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .saga-stat-box {
+        padding: 15px;
+    }
+
+    .saga-stat-number {
+        font-size: 24px;
+    }
+
+    .saga-settings-container {
+        flex-direction: column;
+    }
+
+    .saga-settings-sidebar {
+        width: 100%;
+    }
+
+    #poststuff #post-body.columns-2 {
+        margin-right: 0;
+    }
+
+    #postbox-container-1 {
+        float: none;
+        margin-right: 0;
+        width: 100%;
+    }
+}
+
+/* ============================================
+   Help List
+   ============================================ */
+
+.saga-help-list {
+    margin: 0;
+    padding: 0 15px 15px;
+}
+
+.saga-help-list li {
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.saga-help-list strong {
+    color: #1d2327;
+}
+
+/* ============================================
+   Admin Notices
+   ============================================ */
+
+.saga-manager-dashboard .notice,
+.saga-manager-entities .notice,
+.saga-manager-sagas .notice {
+    margin: 15px 0;
+}
+
+/* ============================================
+   Misc Publishing Actions
+   ============================================ */
+
+#misc-publishing-actions .misc-pub-section {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+#misc-publishing-actions .misc-pub-section:last-child {
+    border-bottom: none;
+}
+
+#misc-publishing-actions .dashicons {
+    color: #646970;
+    margin-right: 5px;
+}
+
+/* ============================================
+   Delete Action
+   ============================================ */
+
+#delete-action .submitdelete {
+    color: #b32d2e;
+}
+
+#delete-action .submitdelete:hover {
+    color: #a00;
+}
+
+/* ============================================
+   Views (filter links above list table)
+   ============================================ */
+
+.subsubsub {
+    margin-bottom: 10px;
+}
+
+.subsubsub li {
+    display: inline-block;
+    margin: 0;
+}
+
+.subsubsub .count {
+    color: #646970;
+}
+
+/* ============================================
+   Quick Edit (placeholder for future)
+   ============================================ */
+
+.saga-quick-edit-form {
+    background: #f6f7f7;
+    padding: 15px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.saga-quick-edit-form h4 {
+    margin: 0 0 10px;
+}
+
+.saga-quick-edit-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.saga-quick-edit-form label span {
+    display: inline-block;
+    width: 100px;
+}
+
+.saga-quick-edit-actions {
+    margin-top: 15px;
+}
+
+.saga-quick-edit-actions .button {
+    margin-right: 10px;
+}

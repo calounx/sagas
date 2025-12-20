@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "saga-manager/entity-display",
+    "version": "1.0.0",
+    "title": "Saga Entity Display",
+    "category": "saga-manager",
+    "icon": "id",
+    "description": "Display a saga entity with customizable layout.",
+    "keywords": ["saga", "entity", "character", "location"],
+    "textdomain": "saga-manager-display",
+    "attributes": {
+        "entityId": {
+            "type": "number",
+            "default": 0
+        },
+        "layout": {
+            "type": "string",
+            "default": "card",
+            "enum": ["card", "full", "compact", "inline"]
+        },
+        "showImage": {
+            "type": "boolean",
+            "default": true
+        },
+        "showType": {
+            "type": "boolean",
+            "default": true
+        },
+        "showAttributes": {
+            "type": "boolean",
+            "default": true
+        },
+        "align": {
+            "type": "string"
+        }
+    },
+    "supports": {
+        "align": ["wide", "full"],
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./editor.css",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

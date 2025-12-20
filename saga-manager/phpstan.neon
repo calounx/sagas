@@ -1,0 +1,43 @@
+parameters:
+    level: 8
+    paths:
+        - src
+    excludePaths:
+        - src/Infrastructure/WordPress/Plugin.php
+
+    # WordPress stubs for type checking
+    bootstrapFiles:
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+
+    # Ignore WordPress globals and functions
+    ignoreErrors:
+        - '#Function wp_cache_get not found#'
+        - '#Function wp_cache_set not found#'
+        - '#Function wp_cache_delete not found#'
+        - '#Function current_time not found#'
+        - '#Function activate_plugin not found#'
+        - '#Variable \$wpdb might not be defined#'
+        - '#Access to an undefined property object::\$\w+#'
+
+    # Type checking strictness
+    checkMissingIterableValueType: true
+    checkGenericClassInNonGenericObjectType: true
+    treatPhpDocTypesAsCertain: false
+
+    # Report potentially incorrect return types
+    reportMaybesInMethodSignatures: true
+    reportStaticMethodSignatures: true
+
+    # Unused code detection
+    checkMissingCallableSignature: true
+    checkUninitializedProperties: true
+
+    # Bleeding edge features
+    polluteScopeWithLoopInitialAssignments: false
+    polluteScopeWithAlwaysIterableForeach: false
+
+    # Custom rules for WordPress
+    dynamicConstantNames:
+        - WPINC
+        - WP_CONTENT_DIR
+        - WP_PLUGIN_DIR
