@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Project Structure
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Check required files exist
+      run: |
+        echo "Checking saga-manager-core structure..."
+        test -f saga-manager-core/saga-manager-core.php || (echo "✗ Missing saga-manager-core.php" && exit 1)
+        test -f saga-manager-core/composer.json || (echo "✗ Missing composer.json" && exit 1)
+        test -d saga-manager-core/src/Domain || (echo "✗ Missing Domain layer" && exit 1)
+        test -d saga-manager-core/src/Application || (echo "✗ Missing Application layer" && exit 1)
+        test -d saga-manager-core/src/Infrastructure || (echo "✗ Missing Infrastructure layer" && exit 1)
+        echo "✓ saga-manager-core structure valid"
+
+        echo "Checking saga-manager-display structure..."
+        test -f saga-manager-display/saga-manager-display.php || (echo "✗ Missing saga-manager-display.php" && exit 1)
+        test -f saga-manager-display/package.json || (echo "✗ Missing package.json" && exit 1)
+        test -d saga-manager-display/src || (echo "✗ Missing src directory" && exit 1)
+        test -d saga-manager-display/blocks || (echo "✗ Missing blocks directory" && exit 1)
+        echo "✓ saga-manager-display structure valid"
+
+    - name: Validate plugin headers
+      run: |
+        echo "Validating saga-manager-core plugin header..."
+        grep -q "Plugin Name:" saga-manager-core/saga-manager-core.php || (echo "✗ Missing Plugin Name" && exit 1)
+        grep -q "Version:" saga-manager-core/saga-manager-core.php || (echo "✗ Missing Version" && exit 1)
+        echo "✓ Core plugin header valid"
+
+        echo "Validating saga-manager-display plugin header..."
+        grep -q "Plugin Name:" saga-manager-display/saga-manager-display.php || (echo "✗ Missing Plugin Name" && exit 1)
+        grep -q "Version:" saga-manager-display/saga-manager-display.php || (echo "✗ Missing Version" && exit 1)
+        echo "✓ Display plugin header valid"
+
+  matrix-test:
+    runs-on: ubuntu-latest
+    needs: validate
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3']
+        wordpress: ['6.4', 'latest']
+
+    name: Test PHP ${{ matrix.php }} / WP ${{ matrix.wordpress }}
+
+    services:
+      mysql:
+        image: mariadb:11.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: mysqli, pdo, pdo_mysql
+        coverage: none
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: |
+        cd saga-manager
+        composer install --prefer-dist --no-progress
+
+    - name: Install WordPress Test Suite
+      run: |
+        cd saga-manager
+        bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wordpress }}
+
+    - name: Run tests
+      run: |
+        cd saga-manager
+        vendor/bin/phpunit --no-coverage
+
+  quality-gates:
+    runs-on: ubuntu-latest
+    needs: validate
+    name: Quality Gates
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: |
+        cd saga-manager
+        composer install --prefer-dist --no-progress
+
+    - name: Run PHPStan
+      run: |
+        cd saga-manager
+        vendor/bin/phpstan analyse --error-format=github
+
+    - name: Check code complexity
+      run: |
+        composer global require phpmetrics/phpmetrics
+        ~/.composer/vendor/bin/phpmetrics --report-html=metrics saga-manager/src || true
+
+    - name: Upload metrics
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-metrics
+        path: metrics/
+        retention-days: 7

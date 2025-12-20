@@ -1,0 +1,89 @@
+name: PHP Tests
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: ['8.2', '8.3']
+        wordpress-version: ['6.4', '6.5', 'latest']
+
+    services:
+      mysql:
+        image: mariadb:11.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mysqli, pdo, pdo_mysql, zip, gd
+        coverage: xdebug
+        tools: composer:v2
+
+    - name: Validate composer.json
+      run: |
+        cd saga-manager-core
+        composer validate --strict
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          saga-manager-core/vendor
+          saga-manager/vendor
+        key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-${{ matrix.php-version }}-composer-
+
+    - name: Install dependencies (saga-manager-core)
+      run: |
+        cd saga-manager-core
+        composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Install dependencies (saga-manager)
+      run: |
+        cd saga-manager
+        composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Install WordPress Test Suite
+      run: |
+        cd saga-manager
+        bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wordpress-version }}
+
+    - name: Run PHPUnit Tests
+      run: |
+        cd saga-manager
+        vendor/bin/phpunit --coverage-clover=coverage.xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./saga-manager/coverage.xml
+        flags: unittests
+        name: php-${{ matrix.php-version }}-wp-${{ matrix.wordpress-version }}
+        fail_ci_if_error: false
+
+    - name: Archive test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-php-${{ matrix.php-version }}-wp-${{ matrix.wordpress-version }}
+        path: saga-manager/coverage.xml
+        retention-days: 7

@@ -1,5 +1,14 @@
 # Saga Manager - Professional WordPress Plugin Suite
 
+[![CI](https://github.com/calounx/sagas/actions/workflows/ci.yml/badge.svg)](https://github.com/calounx/sagas/actions/workflows/ci.yml)
+[![PHP Tests](https://github.com/calounx/sagas/actions/workflows/php-tests.yml/badge.svg)](https://github.com/calounx/sagas/actions/workflows/php-tests.yml)
+[![Static Analysis](https://github.com/calounx/sagas/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/calounx/sagas/actions/workflows/static-analysis.yml)
+[![Code Quality](https://github.com/calounx/sagas/actions/workflows/code-quality.yml/badge.svg)](https://github.com/calounx/sagas/actions/workflows/code-quality.yml)
+[![Frontend Build](https://github.com/calounx/sagas/actions/workflows/frontend-build.yml/badge.svg)](https://github.com/calounx/sagas/actions/workflows/frontend-build.yml)
+[![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-blue)](https://www.php.net/)
+[![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue)](https://wordpress.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 A professional-grade WordPress plugin suite for managing complex fictional universe sagas with complete database abstraction, hexagonal architecture, and CQRS pattern implementation.
 
 ## 🎯 Overview
@@ -208,6 +217,48 @@ composer stan
 - **Value Objects**: Domain primitives
 - **Factory Pattern**: Database adapter creation
 - **Strategy Pattern**: Multiple database backends
+
+## 🔄 CI/CD Pipeline
+
+Automated workflows run on every push and pull request:
+
+### Test Matrix
+- **PHP Versions**: 8.2, 8.3
+- **WordPress Versions**: 6.4, 6.5, latest
+- **Database**: MariaDB 11.4
+- **Coverage**: Codecov integration
+
+### Workflows
+
+| Workflow | Purpose | Status |
+|----------|---------|--------|
+| **CI** | Main integration pipeline | ![CI](https://github.com/calounx/sagas/actions/workflows/ci.yml/badge.svg) |
+| **PHP Tests** | PHPUnit with coverage | ![Tests](https://github.com/calounx/sagas/actions/workflows/php-tests.yml/badge.svg) |
+| **Static Analysis** | PHPStan level 8 + Psalm | ![Analysis](https://github.com/calounx/sagas/actions/workflows/static-analysis.yml/badge.svg) |
+| **Code Quality** | WordPress coding standards | ![Quality](https://github.com/calounx/sagas/actions/workflows/code-quality.yml/badge.svg) |
+| **Frontend Build** | Gutenberg blocks compilation | ![Build](https://github.com/calounx/sagas/actions/workflows/frontend-build.yml/badge.svg) |
+| **Release** | Automated release packaging | Triggered on version tags |
+
+### Quality Gates
+- ✅ All tests must pass (75+ tests)
+- ✅ PHPStan level 8 analysis
+- ✅ WordPress coding standards
+- ✅ Security audit (composer/npm)
+- ✅ Frontend build successful
+
+### Automated Releases
+Create a release by pushing a version tag:
+```bash
+git tag -a v1.0.0 -m "Release version 1.0.0"
+git push origin v1.0.0
+```
+
+This triggers:
+1. Full test suite execution
+2. Production build (optimized autoloader, minified assets)
+3. Package creation (.zip files for both plugins)
+4. GitHub release with changelogs
+5. Upload to release assets
 
 ## 📚 Documentation
 

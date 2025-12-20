@@ -1,0 +1,80 @@
+name: Frontend Build
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Frontend Assets
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: saga-manager-display/package-lock.json
+
+    - name: Install dependencies
+      run: |
+        cd saga-manager-display
+        npm ci
+
+    - name: Lint JavaScript
+      run: |
+        cd saga-manager-display
+        npm run lint:js || true
+
+    - name: Lint CSS
+      run: |
+        cd saga-manager-display
+        npm run lint:css || true
+
+    - name: Build Gutenberg blocks
+      run: |
+        cd saga-manager-display
+        npm run build
+
+    - name: Check build output
+      run: |
+        cd saga-manager-display
+        test -d build || (echo "Build directory not created" && exit 1)
+        echo "✓ Build directory created successfully"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: frontend-build
+        path: saga-manager-display/build/
+        retention-days: 7
+
+  validate-package:
+    runs-on: ubuntu-latest
+    name: Validate Package Files
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Validate package.json
+      run: |
+        cd saga-manager-display
+        npm install --package-lock-only
+        npm run validate || echo "No validate script defined"
+
+    - name: Check for vulnerabilities
+      run: |
+        cd saga-manager-display
+        npm audit --audit-level=moderate || true

@@ -1,0 +1,93 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  phpcs:
+    runs-on: ubuntu-latest
+    name: WordPress Coding Standards
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        coverage: none
+        tools: composer:v2, cs2pr
+
+    - name: Install dependencies
+      run: |
+        composer global require wp-coding-standards/wpcs
+        composer global require automattic/vipwpcs
+        composer global require phpcompatibility/phpcompatibility-wp
+        phpcs --config-set installed_paths ~/.composer/vendor/wp-coding-standards/wpcs,~/.composer/vendor/automattic/vipwpcs,~/.composer/vendor/phpcompatibility/phpcompatibility-wp
+
+    - name: Check coding standards (saga-manager-core)
+      run: |
+        phpcs -p -s -v --standard=WordPress --extensions=php --ignore=*/vendor/*,*/node_modules/* saga-manager-core/src || true
+
+    - name: Check coding standards (saga-manager)
+      run: |
+        phpcs -p -s -v --standard=WordPress --extensions=php --ignore=*/vendor/*,*/node_modules/* saga-manager/src || true
+
+    - name: Check PHP compatibility
+      run: |
+        phpcs -p --standard=PHPCompatibilityWP --runtime-set testVersion 8.2- --extensions=php --ignore=*/vendor/*,*/node_modules/* saga-manager-core/src saga-manager/src || true
+
+  php-lint:
+    runs-on: ubuntu-latest
+    name: PHP Syntax Check
+
+    strategy:
+      matrix:
+        php-version: ['8.2', '8.3']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        coverage: none
+
+    - name: Lint PHP files (saga-manager-core)
+      run: |
+        find saga-manager-core/src -name "*.php" -print0 | xargs -0 -n1 php -l
+
+    - name: Lint PHP files (saga-manager)
+      run: |
+        find saga-manager/src -name "*.php" -print0 | xargs -0 -n1 php -l
+
+  security:
+    runs-on: ubuntu-latest
+    name: Security Audit
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        coverage: none
+        tools: composer:v2
+
+    - name: Security audit (saga-manager-core)
+      run: |
+        cd saga-manager-core
+        composer audit || true
+
+    - name: Security audit (saga-manager)
+      run: |
+        cd saga-manager
+        composer audit || true

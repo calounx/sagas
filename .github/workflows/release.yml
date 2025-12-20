@@ -1,0 +1,122 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    name: Build and Create Release
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        tools: composer:v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Get version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+    - name: Build saga-manager-core
+      run: |
+        cd saga-manager-core
+        composer install --no-dev --optimize-autoloader --no-progress
+        cd ..
+        zip -r saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip saga-manager-core \
+          -x "saga-manager-core/.git/*" \
+          -x "saga-manager-core/tests/*" \
+          -x "saga-manager-core/.github/*" \
+          -x "saga-manager-core/phpstan.neon" \
+          -x "saga-manager-core/phpunit.xml"
+
+    - name: Build saga-manager-display
+      run: |
+        cd saga-manager-display
+        npm ci
+        npm run build
+        composer install --no-dev --optimize-autoloader --no-progress
+        cd ..
+        zip -r saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip saga-manager-display \
+          -x "saga-manager-display/.git/*" \
+          -x "saga-manager-display/node_modules/*" \
+          -x "saga-manager-display/.github/*" \
+          -x "saga-manager-display/src/**/*.jsx" \
+          -x "saga-manager-display/package-lock.json"
+
+    - name: Create Release Notes
+      id: release_notes
+      run: |
+        cat > RELEASE_NOTES.md << 'EOF'
+        ## Saga Manager Release ${{ steps.get_version.outputs.VERSION }}
+
+        ### 📦 Installation
+
+        1. Download `saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip`
+        2. Download `saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip` (optional)
+        3. Upload to WordPress: Plugins → Add New → Upload Plugin
+        4. Activate **Saga Manager Core** first
+        5. Optionally activate **Saga Manager Display**
+
+        ### 🎯 What's Included
+
+        **Backend Plugin (saga-manager-core):**
+        - Complete database abstraction layer
+        - REST API at `/wp-json/saga/v1/*`
+        - Custom admin UI
+        - 3 database adapters (WordPress, PDO, InMemory)
+        - CQRS application layer
+
+        **Frontend Plugin (saga-manager-display):**
+        - Shortcodes: `[saga_entity]`, `[saga_timeline]`, `[saga_search]`
+        - Gutenberg blocks
+        - WordPress widgets
+        - Theme-compatible templates
+
+        ### ✅ Requirements
+
+        - PHP 8.2 or higher
+        - WordPress 6.0 or higher
+        - MariaDB 11.4+ / MySQL 8.0+
+
+        ### 📚 Documentation
+
+        - [Installation Guide](https://github.com/calounx/sagas#-installation)
+        - [Architecture Overview](https://github.com/calounx/sagas#-architecture)
+        - [Usage Examples](https://github.com/calounx/sagas#-usage)
+
+        ### 🤖 Built with Claude Code
+        EOF
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip
+          saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip
+        body_path: RELEASE_NOTES.md
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-packages
+        path: |
+          saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip
+          saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip
+        retention-days: 90

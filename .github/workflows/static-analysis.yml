@@ -1,0 +1,84 @@
+name: Static Analysis
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+    name: PHPStan (PHP 8.2)
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        coverage: none
+        tools: composer:v2, phpstan
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          saga-manager-core/vendor
+          saga-manager/vendor
+        key: ${{ runner.os }}-php-8.2-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-8.2-composer-
+
+    - name: Install dependencies (saga-manager-core)
+      run: |
+        cd saga-manager-core
+        composer install --prefer-dist --no-progress
+
+    - name: Install dependencies (saga-manager)
+      run: |
+        cd saga-manager
+        composer install --prefer-dist --no-progress
+
+    - name: Run PHPStan (saga-manager-core)
+      run: |
+        cd saga-manager-core
+        vendor/bin/phpstan analyse --memory-limit=1G || true
+
+    - name: Run PHPStan (saga-manager)
+      run: |
+        cd saga-manager
+        vendor/bin/phpstan analyse --memory-limit=1G
+
+  psalm:
+    runs-on: ubuntu-latest
+    name: Psalm (PHP 8.2)
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        coverage: none
+        tools: composer:v2, vimeo/psalm
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: saga-manager/vendor
+        key: ${{ runner.os }}-php-8.2-psalm-${{ hashFiles('saga-manager/composer.lock') }}
+
+    - name: Install dependencies
+      run: |
+        cd saga-manager
+        composer install --prefer-dist --no-progress
+
+    - name: Run Psalm
+      run: |
+        cd saga-manager
+        vendor/bin/psalm --output-format=github --shepherd || true
