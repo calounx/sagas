@@ -3,20 +3,29 @@ declare(strict_types=1);
 
 namespace SagaManager\Infrastructure\WordPress;
 
-use SagaManager\Infrastructure\Repository\MariaDBEntityRepository;
+use SagaManager\Application\Service\CommandBus;
+use SagaManager\Application\Service\QueryBus;
+use SagaManager\Domain\Repository\EntityRepositoryInterface;
+use SagaManager\Domain\Repository\RelationshipRepositoryInterface;
+use SagaManager\Infrastructure\Container\ServiceContainer;
 use SagaManager\Presentation\API\EntityController;
+use SagaManager\Presentation\API\RelationshipController;
 use SagaManager\Presentation\Admin\AdminMenuManager;
 
 /**
  * Main Plugin Class
  *
  * Orchestrates plugin initialization and dependency injection
+ * using the ServiceContainer for proper abstraction.
  */
 class Plugin
 {
-    private ?MariaDBEntityRepository $entityRepository = null;
-    private ?EntityController $entityController = null;
-    private ?AdminMenuManager $adminMenuManager = null;
+    private ServiceContainer $container;
+
+    public function __construct(?ServiceContainer $container = null)
+    {
+        $this->container = $container ?? ServiceContainer::getInstance();
+    }
 
     public function init(): void
     {
@@ -43,53 +52,35 @@ class Plugin
 
     public function registerRestRoutes(): void
     {
-        $controller = $this->getEntityController();
-        $controller->registerRoutes();
+        // Entity controller
+        $entityController = new EntityController(
+            $this->container->get(CommandBus::class),
+            $this->container->get(QueryBus::class)
+        );
+        $entityController->registerRoutes();
+
+        // Relationship controller
+        $relationshipController = new RelationshipController(
+            $this->container->get(CommandBus::class),
+            $this->container->get(RelationshipRepositoryInterface::class),
+            $this->container->get(EntityRepositoryInterface::class)
+        );
+        $relationshipController->registerRoutes();
     }
 
     private function initAdmin(): void
     {
-        $adminMenuManager = $this->getAdminMenuManager();
+        $adminMenuManager = new AdminMenuManager(
+            $this->container->get(EntityRepositoryInterface::class)
+        );
         $adminMenuManager->register();
     }
 
     /**
-     * Get entity repository instance (lazy initialization)
+     * Get the service container
      */
-    public function getEntityRepository(): MariaDBEntityRepository
+    public function getContainer(): ServiceContainer
     {
-        if ($this->entityRepository === null) {
-            $this->entityRepository = new MariaDBEntityRepository();
-        }
-
-        return $this->entityRepository;
-    }
-
-    /**
-     * Get entity controller instance (lazy initialization)
-     */
-    private function getEntityController(): EntityController
-    {
-        if ($this->entityController === null) {
-            $this->entityController = new EntityController(
-                $this->getEntityRepository()
-            );
-        }
-
-        return $this->entityController;
-    }
-
-    /**
-     * Get admin menu manager instance (lazy initialization)
-     */
-    private function getAdminMenuManager(): AdminMenuManager
-    {
-        if ($this->adminMenuManager === null) {
-            $this->adminMenuManager = new AdminMenuManager(
-                $this->getEntityRepository()
-            );
-        }
-
-        return $this->adminMenuManager;
+        return $this->container;
     }
 }

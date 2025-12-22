@@ -13,13 +13,21 @@ use SagaManager\Application\UseCase\SearchEntities\SearchEntitiesHandler;
 use SagaManager\Application\UseCase\SearchEntities\SearchEntitiesQuery;
 use SagaManager\Application\UseCase\UpdateEntity\UpdateEntityCommand;
 use SagaManager\Application\UseCase\UpdateEntity\UpdateEntityHandler;
+use SagaManager\Application\UseCase\CreateRelationship\CreateRelationshipCommand;
+use SagaManager\Application\UseCase\CreateRelationship\CreateRelationshipHandler;
+use SagaManager\Application\UseCase\UpdateRelationship\UpdateRelationshipCommand;
+use SagaManager\Application\UseCase\UpdateRelationship\UpdateRelationshipHandler;
+use SagaManager\Application\UseCase\DeleteRelationship\DeleteRelationshipCommand;
+use SagaManager\Application\UseCase\DeleteRelationship\DeleteRelationshipHandler;
 use SagaManager\Domain\Repository\EntityRepositoryInterface;
+use SagaManager\Domain\Repository\RelationshipRepositoryInterface;
 
 /**
  * Application Service Provider
  *
  * Configures and registers all application services, handlers, and buses.
  * Follows Dependency Injection and Service Locator patterns.
+ * Accepts repository interfaces, not implementations.
  */
 final class ApplicationServiceProvider
 {
@@ -27,7 +35,8 @@ final class ApplicationServiceProvider
     private QueryBus $queryBus;
 
     public function __construct(
-        private readonly EntityRepositoryInterface $entityRepository
+        private readonly EntityRepositoryInterface $entityRepository,
+        private readonly ?RelationshipRepositoryInterface $relationshipRepository = null
     ) {
         $this->commandBus = new CommandBus();
         $this->queryBus = new QueryBus();
@@ -48,6 +57,18 @@ final class ApplicationServiceProvider
      * Register all command and query handlers
      */
     private function registerHandlers(): void
+    {
+        $this->registerEntityHandlers();
+
+        if ($this->relationshipRepository !== null) {
+            $this->registerRelationshipHandlers();
+        }
+    }
+
+    /**
+     * Register entity-related handlers
+     */
+    private function registerEntityHandlers(): void
     {
         // Command handlers
         $this->commandBus->register(
@@ -74,6 +95,31 @@ final class ApplicationServiceProvider
         $this->queryBus->register(
             SearchEntitiesQuery::class,
             new SearchEntitiesHandler($this->entityRepository)
+        );
+    }
+
+    /**
+     * Register relationship-related handlers
+     */
+    private function registerRelationshipHandlers(): void
+    {
+        if ($this->relationshipRepository === null) {
+            return;
+        }
+
+        $this->commandBus->register(
+            CreateRelationshipCommand::class,
+            new CreateRelationshipHandler($this->entityRepository, $this->relationshipRepository)
+        );
+
+        $this->commandBus->register(
+            UpdateRelationshipCommand::class,
+            new UpdateRelationshipHandler($this->relationshipRepository)
+        );
+
+        $this->commandBus->register(
+            DeleteRelationshipCommand::class,
+            new DeleteRelationshipHandler($this->relationshipRepository)
         );
     }
 }

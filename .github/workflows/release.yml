@@ -29,31 +29,142 @@ jobs:
       id: get_version
       run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
+    # Build saga-manager-core (foundation plugin)
     - name: Build saga-manager-core
       run: |
         cd saga-manager-core
-        composer install --no-dev --optimize-autoloader --no-progress
+        composer install --no-dev --optimize-autoloader --no-progress --no-scripts
         cd ..
-        zip -r saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip saga-manager-core \
-          -x "saga-manager-core/.git/*" \
-          -x "saga-manager-core/tests/*" \
-          -x "saga-manager-core/.github/*" \
-          -x "saga-manager-core/phpstan.neon" \
-          -x "saga-manager-core/phpunit.xml"
 
+        # Create WordPress-compliant ZIP
+        # Root must contain single directory matching plugin slug
+        mkdir -p build/saga-manager-core
+
+        # Copy only production files
+        cp saga-manager-core/saga-manager-core.php build/saga-manager-core/
+        cp saga-manager-core/uninstall.php build/saga-manager-core/
+        cp saga-manager-core/composer.json build/saga-manager-core/
+        cp -r saga-manager-core/src build/saga-manager-core/
+        cp -r saga-manager-core/assets build/saga-manager-core/
+        cp -r saga-manager-core/languages build/saga-manager-core/
+
+        # Include vendor if exists (production deps only)
+        if [ -d "saga-manager-core/vendor" ]; then
+          cp -r saga-manager-core/vendor build/saga-manager-core/
+        fi
+
+        # Create ZIP from build directory
+        cd build
+        zip -r ../saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip saga-manager-core
+        cd ..
+        rm -rf build
+
+    # Build saga-manager (main backend plugin)
+    - name: Build saga-manager
+      run: |
+        cd saga-manager
+        composer install --no-dev --optimize-autoloader --no-progress --no-scripts
+        cd ..
+
+        # Create WordPress-compliant ZIP
+        mkdir -p build/saga-manager
+
+        # Copy only production files
+        cp saga-manager/saga-manager.php build/saga-manager/
+        cp saga-manager/uninstall.php build/saga-manager/
+        cp saga-manager/composer.json build/saga-manager/
+        cp -r saga-manager/src build/saga-manager/
+        cp -r saga-manager/assets build/saga-manager/
+
+        # Include vendor if exists
+        if [ -d "saga-manager/vendor" ]; then
+          cp -r saga-manager/vendor build/saga-manager/
+        fi
+
+        # Include languages if exists
+        if [ -d "saga-manager/languages" ]; then
+          cp -r saga-manager/languages build/saga-manager/
+        fi
+
+        # Create ZIP
+        cd build
+        zip -r ../saga-manager-${{ steps.get_version.outputs.VERSION }}.zip saga-manager
+        cd ..
+        rm -rf build
+
+    # Build saga-manager-display (frontend plugin)
     - name: Build saga-manager-display
       run: |
         cd saga-manager-display
-        npm ci
-        npm run build
-        composer install --no-dev --optimize-autoloader --no-progress
+
+        # Install and build frontend assets
+        if [ -f "package.json" ]; then
+          npm ci
+          npm run build || true
+        fi
+
+        # Install PHP deps
+        composer install --no-dev --optimize-autoloader --no-progress --no-scripts
         cd ..
-        zip -r saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip saga-manager-display \
-          -x "saga-manager-display/.git/*" \
-          -x "saga-manager-display/node_modules/*" \
-          -x "saga-manager-display/.github/*" \
-          -x "saga-manager-display/src/**/*.jsx" \
-          -x "saga-manager-display/package-lock.json"
+
+        # Create WordPress-compliant ZIP
+        mkdir -p build/saga-manager-display
+
+        # Copy only production files
+        cp saga-manager-display/saga-manager-display.php build/saga-manager-display/
+        cp saga-manager-display/composer.json build/saga-manager-display/
+        cp -r saga-manager-display/src build/saga-manager-display/
+        cp -r saga-manager-display/assets build/saga-manager-display/
+        cp -r saga-manager-display/templates build/saga-manager-display/
+
+        # Include blocks if exists
+        if [ -d "saga-manager-display/blocks" ]; then
+          cp -r saga-manager-display/blocks build/saga-manager-display/
+        fi
+
+        # Include languages if exists
+        if [ -d "saga-manager-display/languages" ]; then
+          cp -r saga-manager-display/languages build/saga-manager-display/
+        fi
+
+        # Include vendor if exists
+        if [ -d "saga-manager-display/vendor" ]; then
+          cp -r saga-manager-display/vendor build/saga-manager-display/
+        fi
+
+        # Create ZIP
+        cd build
+        zip -r ../saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip saga-manager-display
+        cd ..
+        rm -rf build
+
+    # Verify ZIP structure
+    - name: Verify ZIP structure
+      run: |
+        echo "=== saga-manager-core ZIP structure ==="
+        unzip -l saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip | head -30
+
+        echo ""
+        echo "=== saga-manager ZIP structure ==="
+        unzip -l saga-manager-${{ steps.get_version.outputs.VERSION }}.zip | head -30
+
+        echo ""
+        echo "=== saga-manager-display ZIP structure ==="
+        unzip -l saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip | head -30
+
+        # Verify WordPress compliance - each ZIP should have single root folder
+        echo ""
+        echo "=== Verifying WordPress compliance ==="
+
+        for zip in saga-manager-core saga-manager saga-manager-display; do
+          ROOT_DIRS=$(unzip -l ${zip}-${{ steps.get_version.outputs.VERSION }}.zip | grep -E "^\s+\d+" | awk '{print $4}' | cut -d'/' -f1 | sort -u | wc -l)
+          if [ "$ROOT_DIRS" -eq "1" ]; then
+            echo "✓ ${zip}: Single root directory (WordPress compliant)"
+          else
+            echo "✗ ${zip}: Multiple root directories (NOT WordPress compliant)"
+            exit 1
+          fi
+        done
 
     - name: Create Release Notes
       id: release_notes
@@ -63,26 +174,26 @@ jobs:
 
         ### 📦 Installation
 
-        1. Download `saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip`
-        2. Download `saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip` (optional)
-        3. Upload to WordPress: Plugins → Add New → Upload Plugin
-        4. Activate **Saga Manager Core** first
-        5. Optionally activate **Saga Manager Display**
+        **Required:**
+        1. Download `saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip` (database layer)
+        2. Download `saga-manager-${{ steps.get_version.outputs.VERSION }}.zip` (admin interface)
 
-        ### 🎯 What's Included
+        **Optional:**
+        3. Download `saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip` (frontend display)
 
-        **Backend Plugin (saga-manager-core):**
-        - Complete database abstraction layer
-        - REST API at `/wp-json/saga/v1/*`
-        - Custom admin UI
-        - 3 database adapters (WordPress, PDO, InMemory)
-        - CQRS application layer
+        **Install via WordPress:**
+        1. Go to Plugins → Add New → Upload Plugin
+        2. Upload and activate **Saga Manager Core** first
+        3. Upload and activate **Saga Manager** (backend admin)
+        4. Optionally upload and activate **Saga Manager Display** (frontend)
 
-        **Frontend Plugin (saga-manager-display):**
-        - Shortcodes: `[saga_entity]`, `[saga_timeline]`, `[saga_search]`
-        - Gutenberg blocks
-        - WordPress widgets
-        - Theme-compatible templates
+        ### 🎯 Plugin Architecture
+
+        | Plugin | Purpose |
+        |--------|---------|
+        | **saga-manager-core** | Database abstraction, adapters (WordPress, PDO, InMemory) |
+        | **saga-manager** | REST API, admin UI, CQRS application layer |
+        | **saga-manager-display** | Shortcodes, Gutenberg blocks, widgets |
 
         ### ✅ Requirements
 
@@ -92,18 +203,21 @@ jobs:
 
         ### 📚 Documentation
 
-        - [Installation Guide](https://github.com/calounx/sagas#-installation)
-        - [Architecture Overview](https://github.com/calounx/sagas#-architecture)
-        - [Usage Examples](https://github.com/calounx/sagas#-usage)
+        See the [GitHub repository](https://github.com/calounx/sagas) for:
+        - Installation Guide
+        - Architecture Overview
+        - API Reference
 
-        ### 🤖 Built with Claude Code
+        ---
+        🤖 Built with Claude Code
         EOF
 
     - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip
+          saga-manager-${{ steps.get_version.outputs.VERSION }}.zip
           saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip
         body_path: RELEASE_NOTES.md
         draft: false
@@ -113,10 +227,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: release-packages
         path: |
           saga-manager-core-${{ steps.get_version.outputs.VERSION }}.zip
+          saga-manager-${{ steps.get_version.outputs.VERSION }}.zip
           saga-manager-display-${{ steps.get_version.outputs.VERSION }}.zip
         retention-days: 90

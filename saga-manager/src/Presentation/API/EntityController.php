@@ -3,29 +3,35 @@ declare(strict_types=1);
 
 namespace SagaManager\Presentation\API;
 
+use SagaManager\Application\DTO\EntityDTO;
+use SagaManager\Application\DTO\SearchEntitiesResult;
+use SagaManager\Application\Service\CommandBus;
+use SagaManager\Application\Service\QueryBus;
+use SagaManager\Application\UseCase\CreateEntity\CreateEntityCommand;
+use SagaManager\Application\UseCase\DeleteEntity\DeleteEntityCommand;
+use SagaManager\Application\UseCase\GetEntity\GetEntityQuery;
+use SagaManager\Application\UseCase\SearchEntities\SearchEntitiesQuery;
+use SagaManager\Application\UseCase\UpdateEntity\UpdateEntityCommand;
 use SagaManager\Domain\Entity\EntityId;
-use SagaManager\Domain\Entity\SagaId;
 use SagaManager\Domain\Entity\EntityType;
-use SagaManager\Domain\Entity\ImportanceScore;
-use SagaManager\Domain\Entity\SagaEntity;
-use SagaManager\Infrastructure\Repository\MariaDBEntityRepository;
+use SagaManager\Domain\Exception\DuplicateEntityException;
 use SagaManager\Domain\Exception\EntityNotFoundException;
 use SagaManager\Domain\Exception\ValidationException;
 
 /**
  * REST API Controller for Saga Entities
  *
- * Handles HTTP requests and converts to domain operations
+ * Handles HTTP requests and delegates to Application layer via CommandBus/QueryBus.
+ * Follows hexagonal architecture by not depending on infrastructure.
  */
 class EntityController
 {
     private const NAMESPACE = 'saga/v1';
 
-    private MariaDBEntityRepository $repository;
-
-    public function __construct(MariaDBEntityRepository $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        private readonly CommandBus $commandBus,
+        private readonly QueryBus $queryBus
+    ) {
     }
 
     /**
@@ -91,40 +97,38 @@ class EntityController
     public function index(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $saga_id = $request->get_param('saga_id');
-            $entity_type = $request->get_param('type');
+            $sagaId = (int) $request->get_param('saga_id');
+            $entityType = $request->get_param('type');
             $page = max(1, (int) $request->get_param('page'));
-            $per_page = min(100, max(1, (int) $request->get_param('per_page')));
-            $offset = ($page - 1) * $per_page;
+            $perPage = min(100, max(1, (int) $request->get_param('per_page')));
+            $offset = ($page - 1) * $perPage;
 
-            $saga_id_obj = new SagaId($saga_id);
+            $query = new SearchEntitiesQuery(
+                sagaId: $sagaId,
+                type: $entityType,
+                limit: $perPage,
+                offset: $offset
+            );
 
-            if ($entity_type) {
-                $type_obj = EntityType::from($entity_type);
-                $entities = $this->repository->findBySagaAndType(
-                    $saga_id_obj,
-                    $type_obj,
-                    $per_page,
-                    $offset
-                );
-            } else {
-                $entities = $this->repository->findBySaga(
-                    $saga_id_obj,
-                    $per_page,
-                    $offset
-                );
-            }
+            /** @var SearchEntitiesResult $result */
+            $result = $this->queryBus->dispatch($query);
 
-            $total = $this->repository->countBySaga($saga_id_obj);
-
-            $data = array_map([$this, 'formatEntity'], $entities);
+            $data = array_map(
+                fn(EntityDTO $dto) => $dto->toArray(),
+                $result->entities
+            );
 
             $response = new \WP_REST_Response($data, 200);
-            $response->header('X-WP-Total', (string) $total);
-            $response->header('X-WP-TotalPages', (string) ceil($total / $per_page));
+            $response->header('X-WP-Total', (string) $result->total);
+            $response->header('X-WP-TotalPages', (string) ceil($result->total / $perPage));
 
             return $response;
 
+        } catch (ValidationException $e) {
+            return new \WP_REST_Response(
+                ['error' => 'Validation error', 'message' => $e->getMessage()],
+                400
+            );
         } catch (\Exception $e) {
             return $this->handleException($e);
         }
@@ -137,15 +141,24 @@ class EntityController
     public function show(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $id = new EntityId((int) $request->get_param('id'));
-            $entity = $this->repository->findById($id);
+            $query = new GetEntityQuery(
+                entityId: (int) $request->get_param('id')
+            );
 
-            return new \WP_REST_Response($this->formatEntity($entity), 200);
+            /** @var EntityDTO $result */
+            $result = $this->queryBus->dispatch($query);
+
+            return new \WP_REST_Response($result->toArray(), 200);
 
         } catch (EntityNotFoundException $e) {
             return new \WP_REST_Response(
                 ['error' => 'Entity not found', 'message' => $e->getMessage()],
                 404
+            );
+        } catch (ValidationException $e) {
+            return new \WP_REST_Response(
+                ['error' => 'Validation error', 'message' => $e->getMessage()],
+                400
             );
         } catch (\Exception $e) {
             return $this->handleException($e);
@@ -170,38 +183,32 @@ class EntityController
                 }
             }
 
-            $saga_id = new SagaId($request->get_param('saga_id'));
-            $type = EntityType::from($request->get_param('type'));
-            $canonical_name = sanitize_text_field($request->get_param('canonical_name'));
-            $slug = sanitize_title($request->get_param('slug') ?: $canonical_name);
-            $importance_score = new ImportanceScore(
-                $request->get_param('importance_score') ?? 50
-            );
+            $canonicalName = sanitize_text_field($request->get_param('canonical_name'));
+            $slug = sanitize_title($request->get_param('slug') ?: $canonicalName);
 
-            // Check for duplicate
-            $existing = $this->repository->findBySagaAndName($saga_id, $canonical_name);
-            if ($existing) {
-                return new \WP_REST_Response(
-                    ['error' => 'Duplicate entity', 'message' => 'Entity with this name already exists'],
-                    409
-                );
-            }
-
-            $entity = new SagaEntity(
-                sagaId: $saga_id,
-                type: $type,
-                canonicalName: $canonical_name,
+            $command = new CreateEntityCommand(
+                sagaId: (int) $request->get_param('saga_id'),
+                type: $request->get_param('type'),
+                canonicalName: $canonicalName,
                 slug: $slug,
-                importanceScore: $importance_score
+                importanceScore: $request->get_param('importance_score')
             );
 
-            $this->repository->save($entity);
+            /** @var EntityId $entityId */
+            $entityId = $this->commandBus->dispatch($command);
 
+            // Fetch the created entity to return
+            $query = new GetEntityQuery(entityId: $entityId->value());
+            /** @var EntityDTO $entity */
+            $entity = $this->queryBus->dispatch($query);
+
+            return new \WP_REST_Response($entity->toArray(), 201);
+
+        } catch (DuplicateEntityException $e) {
             return new \WP_REST_Response(
-                $this->formatEntity($entity),
-                201
+                ['error' => 'Duplicate entity', 'message' => $e->getMessage()],
+                409
             );
-
         } catch (ValidationException $e) {
             return new \WP_REST_Response(
                 ['error' => 'Validation error', 'message' => $e->getMessage()],
@@ -230,34 +237,29 @@ class EntityController
                 }
             }
 
-            $id = new EntityId((int) $request->get_param('id'));
-            $entity = $this->repository->findById($id);
+            $entityId = (int) $request->get_param('id');
 
-            // Update allowed fields
-            if ($request->has_param('canonical_name')) {
-                $entity->updateCanonicalName(
-                    sanitize_text_field($request->get_param('canonical_name'))
-                );
-            }
-
-            if ($request->has_param('slug')) {
-                $entity->updateSlug(
-                    sanitize_title($request->get_param('slug'))
-                );
-            }
-
-            if ($request->has_param('importance_score')) {
-                $entity->setImportanceScore(
-                    new ImportanceScore($request->get_param('importance_score'))
-                );
-            }
-
-            $this->repository->save($entity);
-
-            return new \WP_REST_Response(
-                $this->formatEntity($entity),
-                200
+            $command = new UpdateEntityCommand(
+                entityId: $entityId,
+                canonicalName: $request->has_param('canonical_name')
+                    ? sanitize_text_field($request->get_param('canonical_name'))
+                    : null,
+                slug: $request->has_param('slug')
+                    ? sanitize_title($request->get_param('slug'))
+                    : null,
+                importanceScore: $request->has_param('importance_score')
+                    ? (int) $request->get_param('importance_score')
+                    : null
             );
+
+            $this->commandBus->dispatch($command);
+
+            // Fetch the updated entity to return
+            $query = new GetEntityQuery(entityId: $entityId);
+            /** @var EntityDTO $entity */
+            $entity = $this->queryBus->dispatch($query);
+
+            return new \WP_REST_Response($entity->toArray(), 200);
 
         } catch (EntityNotFoundException $e) {
             return new \WP_REST_Response(
@@ -292,15 +294,13 @@ class EntityController
                 }
             }
 
-            $id = new EntityId((int) $request->get_param('id'));
+            $entityId = (int) $request->get_param('id');
 
-            // Verify entity exists
-            $entity = $this->repository->findById($id);
-
-            $this->repository->delete($id);
+            $command = new DeleteEntityCommand(entityId: $entityId);
+            $this->commandBus->dispatch($command);
 
             return new \WP_REST_Response(
-                ['message' => 'Entity deleted successfully', 'id' => $id->value()],
+                ['message' => 'Entity deleted successfully', 'id' => $entityId],
                 200
             );
 
@@ -442,25 +442,6 @@ class EntityController
                 'maximum' => 100,
                 'sanitize_callback' => 'absint',
             ],
-        ];
-    }
-
-    /**
-     * Format entity for API response
-     */
-    private function formatEntity(SagaEntity $entity): array
-    {
-        return [
-            'id' => $entity->getId()?->value(),
-            'saga_id' => $entity->getSagaId()->value(),
-            'type' => $entity->getType()->value,
-            'type_label' => $entity->getType()->label(),
-            'canonical_name' => $entity->getCanonicalName(),
-            'slug' => $entity->getSlug(),
-            'importance_score' => $entity->getImportanceScore()->value(),
-            'wp_post_id' => $entity->getWpPostId(),
-            'created_at' => $entity->getCreatedAt()->format('c'),
-            'updated_at' => $entity->getUpdatedAt()->format('c'),
         ];
     }
 

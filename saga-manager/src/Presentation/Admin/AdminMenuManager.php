@@ -3,23 +3,24 @@ declare(strict_types=1);
 
 namespace SagaManager\Presentation\Admin;
 
-use SagaManager\Infrastructure\Repository\MariaDBEntityRepository;
+use SagaManager\Domain\Repository\EntityRepositoryInterface;
 use SagaManager\Presentation\Admin\ListTable\EntityListTable;
 use SagaManager\Presentation\Admin\ListTable\SagaListTable;
 
 /**
  * Admin Menu Manager
  *
- * Handles WordPress admin menu registration and page routing
+ * Handles WordPress admin menu registration and page routing.
+ * Depends on repository interfaces rather than implementations.
  */
 class AdminMenuManager
 {
     private const CAPABILITY = 'manage_options';
     private const MENU_SLUG = 'saga-manager';
 
-    private MariaDBEntityRepository $entityRepository;
+    private EntityRepositoryInterface $entityRepository;
 
-    public function __construct(MariaDBEntityRepository $entityRepository)
+    public function __construct(EntityRepositoryInterface $entityRepository)
     {
         $this->entityRepository = $entityRepository;
     }

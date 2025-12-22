@@ -3,29 +3,34 @@ declare(strict_types=1);
 
 namespace SagaManager\Presentation\API;
 
+use SagaManager\Application\Service\CommandBus;
+use SagaManager\Application\UseCase\CreateRelationship\CreateRelationshipCommand;
+use SagaManager\Application\UseCase\UpdateRelationship\UpdateRelationshipCommand;
+use SagaManager\Application\UseCase\DeleteRelationship\DeleteRelationshipCommand;
 use SagaManager\Domain\Entity\EntityId;
 use SagaManager\Domain\Entity\Relationship;
 use SagaManager\Domain\Entity\RelationshipId;
-use SagaManager\Domain\Entity\RelationshipStrength;
 use SagaManager\Domain\Exception\DuplicateEntityException;
 use SagaManager\Domain\Exception\EntityNotFoundException;
 use SagaManager\Domain\Exception\RelationshipConstraintException;
 use SagaManager\Domain\Exception\ValidationException;
-use SagaManager\Infrastructure\Repository\MariaDBEntityRepository;
-use SagaManager\Infrastructure\Repository\MariaDBRelationshipRepository;
+use SagaManager\Domain\Repository\EntityRepositoryInterface;
+use SagaManager\Domain\Repository\RelationshipRepositoryInterface;
 
 /**
  * REST API Controller for Entity Relationships
  *
  * Handles CRUD operations for relationships between saga entities.
+ * Uses CommandBus for write operations and repository interfaces for reads.
  */
 class RelationshipController
 {
     private const NAMESPACE = 'saga/v1';
 
     public function __construct(
-        private MariaDBRelationshipRepository $repository,
-        private MariaDBEntityRepository $entityRepository
+        private readonly CommandBus $commandBus,
+        private readonly RelationshipRepositoryInterface $relationshipRepository,
+        private readonly EntityRepositoryInterface $entityRepository
     ) {}
 
     /**
@@ -109,10 +114,10 @@ class RelationshipController
             if ($entityId !== null) {
                 $id = new EntityId((int) $entityId);
                 $relationships = $currentOnly
-                    ? $this->repository->findCurrentByEntity($id)
-                    : $this->repository->findByEntity($id, $type);
+                    ? $this->relationshipRepository->findCurrentByEntity($id)
+                    : $this->relationshipRepository->findByEntity($id, $type);
             } elseif ($type !== null) {
-                $relationships = $this->repository->findByType($type);
+                $relationships = $this->relationshipRepository->findByType($type);
             } else {
                 return new \WP_REST_Response(
                     ['error' => 'Either entity_id or type parameter is required'],
@@ -136,7 +141,7 @@ class RelationshipController
     {
         try {
             $id = new RelationshipId((int) $request->get_param('id'));
-            $relationship = $this->repository->findById($id);
+            $relationship = $this->relationshipRepository->findById($id);
 
             return new \WP_REST_Response($this->formatRelationship($relationship), 200);
 
@@ -156,37 +161,21 @@ class RelationshipController
     public function create(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $sourceId = new EntityId((int) $request->get_param('source_entity_id'));
-            $targetId = new EntityId((int) $request->get_param('target_entity_id'));
-            $type = sanitize_key($request->get_param('relationship_type'));
-
-            // Verify entities exist
-            $this->entityRepository->findById($sourceId);
-            $this->entityRepository->findById($targetId);
-
-            // Check for duplicates
-            if ($this->repository->existsBetween($sourceId, $targetId, $type)) {
-                throw new DuplicateEntityException(
-                    sprintf('Relationship of type "%s" already exists between these entities', $type)
-                );
-            }
-
-            $strength = $request->get_param('strength');
-            $validFrom = $request->get_param('valid_from');
-            $validUntil = $request->get_param('valid_until');
-            $metadata = $request->get_param('metadata');
-
-            $relationship = new Relationship(
-                sourceEntityId: $sourceId,
-                targetEntityId: $targetId,
-                relationshipType: $type,
-                strength: $strength !== null ? new RelationshipStrength((int) $strength) : null,
-                validFrom: $validFrom ? new \DateTimeImmutable($validFrom) : null,
-                validUntil: $validUntil ? new \DateTimeImmutable($validUntil) : null,
-                metadata: $metadata
+            $command = new CreateRelationshipCommand(
+                sourceEntityId: (int) $request->get_param('source_entity_id'),
+                targetEntityId: (int) $request->get_param('target_entity_id'),
+                relationshipType: sanitize_key($request->get_param('relationship_type')),
+                strength: $request->get_param('strength'),
+                validFrom: $request->get_param('valid_from'),
+                validUntil: $request->get_param('valid_until'),
+                metadata: $request->get_param('metadata')
             );
 
-            $this->repository->save($relationship);
+            /** @var RelationshipId $relationshipId */
+            $relationshipId = $this->commandBus->dispatch($command);
+
+            // Fetch created relationship for response
+            $relationship = $this->relationshipRepository->findById($relationshipId);
 
             return new \WP_REST_Response($this->formatRelationship($relationship), 201);
 
@@ -216,32 +205,25 @@ class RelationshipController
     public function update(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $id = new RelationshipId((int) $request->get_param('id'));
-            $relationship = $this->repository->findById($id);
+            $id = (int) $request->get_param('id');
 
-            if ($request->has_param('relationship_type')) {
-                $relationship->updateRelationshipType(sanitize_key($request->get_param('relationship_type')));
-            }
+            $command = new UpdateRelationshipCommand(
+                id: $id,
+                relationshipType: $request->has_param('relationship_type')
+                    ? sanitize_key($request->get_param('relationship_type'))
+                    : null,
+                strength: $request->has_param('strength')
+                    ? (int) $request->get_param('strength')
+                    : null,
+                validFrom: $request->get_param('valid_from'),
+                validUntil: $request->get_param('valid_until'),
+                metadata: $request->get_param('metadata')
+            );
 
-            if ($request->has_param('strength')) {
-                $relationship->setStrength(new RelationshipStrength((int) $request->get_param('strength')));
-            }
+            $this->commandBus->dispatch($command);
 
-            if ($request->has_param('valid_from') || $request->has_param('valid_until')) {
-                $validFrom = $request->get_param('valid_from');
-                $validUntil = $request->get_param('valid_until');
-
-                $relationship->setValidityPeriod(
-                    $validFrom ? new \DateTimeImmutable($validFrom) : $relationship->getValidFrom(),
-                    $validUntil ? new \DateTimeImmutable($validUntil) : $relationship->getValidUntil()
-                );
-            }
-
-            if ($request->has_param('metadata')) {
-                $relationship->setMetadata($request->get_param('metadata'));
-            }
-
-            $this->repository->save($relationship);
+            // Fetch updated relationship for response
+            $relationship = $this->relationshipRepository->findById(new RelationshipId($id));
 
             return new \WP_REST_Response($this->formatRelationship($relationship), 200);
 
@@ -266,10 +248,10 @@ class RelationshipController
     public function delete(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $id = new RelationshipId((int) $request->get_param('id'));
+            $id = (int) $request->get_param('id');
 
-            $this->repository->findById($id);
-            $this->repository->delete($id);
+            $command = new DeleteRelationshipCommand(id: $id);
+            $this->commandBus->dispatch($command);
 
             return new \WP_REST_Response(null, 204);
 
@@ -298,12 +280,12 @@ class RelationshipController
             $this->entityRepository->findById($entityId);
 
             if ($currentOnly) {
-                $relationships = $this->repository->findCurrentByEntity($entityId);
+                $relationships = $this->relationshipRepository->findCurrentByEntity($entityId);
             } else {
                 $relationships = match ($direction) {
-                    'outgoing' => $this->repository->findBySource($entityId, $type),
-                    'incoming' => $this->repository->findByTarget($entityId, $type),
-                    default => $this->repository->findByEntity($entityId, $type),
+                    'outgoing' => $this->relationshipRepository->findBySource($entityId, $type),
+                    'incoming' => $this->relationshipRepository->findByTarget($entityId, $type),
+                    default => $this->relationshipRepository->findByEntity($entityId, $type),
                 };
             }
 
@@ -327,7 +309,7 @@ class RelationshipController
     public function types(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $types = $this->repository->getDistinctTypes();
+            $types = $this->relationshipRepository->getDistinctTypes();
 
             return new \WP_REST_Response($types, 200);
 
