@@ -160,11 +160,15 @@ jobs:
         echo "=== Verifying WordPress compliance ==="
 
         for zip in saga-manager-core saga-manager saga-manager-display; do
-          ROOT_DIRS=$(unzip -l ${zip}-${{ steps.get_version.outputs.VERSION }}.zip | grep -E "^\s+\d+" | awk '{print $4}' | cut -d'/' -f1 | sort -u | wc -l)
+          # Count unique top-level directories (filter out headers, get path column, extract first component)
+          ROOT_DIRS=$(unzip -l ${zip}-${{ steps.get_version.outputs.VERSION }}.zip | tail -n +4 | head -n -2 | awk '{print $NF}' | cut -d'/' -f1 | sort -u | grep -v '^-*$' | grep -v '^$' | wc -l)
+          echo "Debug: ${zip} has ${ROOT_DIRS} root directories"
           if [ "$ROOT_DIRS" -eq "1" ]; then
             echo "✓ ${zip}: Single root directory (WordPress compliant)"
           else
             echo "✗ ${zip}: Multiple root directories (NOT WordPress compliant)"
+            # Show what directories were found
+            unzip -l ${zip}-${{ steps.get_version.outputs.VERSION }}.zip | tail -n +4 | head -n -2 | awk '{print $NF}' | cut -d'/' -f1 | sort -u
             exit 1
           fi
         done
