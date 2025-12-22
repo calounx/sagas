@@ -11,7 +11,8 @@
         "packages-update": "wp-scripts packages-update"
     },
     "devDependencies": {
-        "@wordpress/scripts": "^26.0.0"
+        "@wordpress/scripts": "^26.0.0",
+        "copy-webpack-plugin": "^11.0.0"
     },
     "dependencies": {
         "@wordpress/api-fetch": "^6.0.0",

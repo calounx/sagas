@@ -31,7 +31,10 @@ class BlockRegistrar
     {
         $this->apiClient = $apiClient;
         $this->templateEngine = $templateEngine;
-        $this->blocksDir = SAGA_DISPLAY_PLUGIN_DIR . 'blocks/';
+        // Use build directory for compiled blocks (production)
+        // Falls back to source directory if build doesn't exist (development with hot reload)
+        $buildDir = SAGA_DISPLAY_PLUGIN_DIR . 'build/blocks/';
+        $this->blocksDir = is_dir($buildDir) ? $buildDir : SAGA_DISPLAY_PLUGIN_DIR . 'blocks/';
     }
 
     /**

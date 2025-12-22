@@ -103,10 +103,13 @@ jobs:
       run: |
         cd saga-manager-display
 
-        # Install and build frontend assets
+        # Install and build frontend assets (Gutenberg blocks)
         if [ -f "package.json" ]; then
           npm install --no-audit --no-fund
-          npm run build || true
+          npm run build
+          echo "=== Build output ==="
+          ls -la build/ 2>/dev/null || echo "No build directory created"
+          ls -la build/blocks/ 2>/dev/null || echo "No build/blocks directory"
         fi
 
         # Install PHP deps
@@ -123,9 +126,14 @@ jobs:
         cp -r saga-manager-display/assets build/saga-manager-display/
         cp -r saga-manager-display/templates build/saga-manager-display/
 
-        # Include blocks if exists
-        if [ -d "saga-manager-display/blocks" ]; then
-          cp -r saga-manager-display/blocks build/saga-manager-display/
+        # Include built blocks (compiled JS/CSS from npm build)
+        if [ -d "saga-manager-display/build/blocks" ]; then
+          mkdir -p build/saga-manager-display/build
+          cp -r saga-manager-display/build/blocks build/saga-manager-display/build/
+          echo "=== Included built blocks ==="
+          ls -la build/saga-manager-display/build/blocks/
+        else
+          echo "WARNING: No built blocks found - blocks may not work!"
         fi
 
         # Include languages if exists

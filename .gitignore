@@ -21,6 +21,7 @@ package-lock.json
 # Build files
 /build/
 /dist/
+saga-manager-display/build/
 
 # IDE
 .idea/
