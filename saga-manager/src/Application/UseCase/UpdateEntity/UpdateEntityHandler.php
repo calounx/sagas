@@ -7,7 +7,7 @@ use SagaManager\Application\Command\CommandHandlerInterface;
 use SagaManager\Application\Command\CommandInterface;
 use SagaManager\Domain\Entity\EntityId;
 use SagaManager\Domain\Entity\ImportanceScore;
-use SagaManager\Domain\Exception\DatabaseException;
+use SagaManager\Infrastructure\Exception\DatabaseException;
 use SagaManager\Domain\Exception\DuplicateEntityException;
 use SagaManager\Domain\Exception\EntityNotFoundException;
 use SagaManager\Domain\Exception\ValidationException;

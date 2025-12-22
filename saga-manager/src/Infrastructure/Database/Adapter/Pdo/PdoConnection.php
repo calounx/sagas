@@ -6,7 +6,7 @@ namespace SagaManager\Infrastructure\Database\Adapter\Pdo;
 
 use SagaManager\Infrastructure\Database\Contract\ConnectionInterface;
 use SagaManager\Infrastructure\Database\Config\DatabaseConfig;
-use SagaManager\Domain\Exception\DatabaseException;
+use SagaManager\Infrastructure\Exception\DatabaseException;
 
 /**
  * PDO Connection

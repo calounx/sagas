@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SagaManager\Infrastructure\Database;
 
 use SagaManager\Infrastructure\Database\Contract\DatabaseInterface;
-use SagaManager\Domain\Exception\DatabaseException;
+use SagaManager\Infrastructure\Exception\DatabaseException;
 
 /**
  * Abstract Database Repository

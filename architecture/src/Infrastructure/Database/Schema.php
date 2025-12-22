@@ -11,7 +11,7 @@ namespace SagaManagerCore\Infrastructure\Database;
  */
 final class Schema
 {
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.2.0';
 
     /**
      * Get all table creation SQL statements

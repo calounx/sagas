@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SagaManager\Infrastructure\Database\Adapter\Pdo;
 
 use SagaManager\Infrastructure\Database\Contract\SchemaManagerInterface;
-use SagaManager\Domain\Exception\DatabaseException;
+use SagaManager\Infrastructure\Exception\DatabaseException;
 
 /**
  * PDO Schema Manager

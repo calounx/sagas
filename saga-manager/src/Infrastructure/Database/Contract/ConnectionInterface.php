@@ -29,7 +29,7 @@ interface ConnectionInterface
      * Connect to the database
      *
      * @return void
-     * @throws \SagaManager\Domain\Exception\DatabaseException On connection failure
+     * @throws \SagaManager\Infrastructure\Exception\DatabaseException On connection failure
      */
     public function connect(): void;
 

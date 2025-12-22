@@ -6,7 +6,7 @@ namespace SagaManager\Infrastructure\Database\Adapter\WordPress;
 
 use SagaManager\Infrastructure\Database\Contract\TransactionInterface;
 use SagaManager\Infrastructure\Database\Contract\DatabaseInterface;
-use SagaManager\Domain\Exception\DatabaseException;
+use SagaManager\Infrastructure\Exception\DatabaseException;
 
 /**
  * WordPress Transaction Manager

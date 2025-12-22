@@ -261,6 +261,117 @@ class MariaDBEntityRepository extends WordPressTablePrefixAware implements Entit
     }
 
     /**
+     * Delete multiple entities by their IDs with proper cache invalidation
+     *
+     * @param EntityId[] $ids
+     * @return int Number of deleted entities
+     */
+    public function deleteMany(array $ids): int
+    {
+        if (empty($ids)) {
+            return 0;
+        }
+
+        $table = $this->getTableName('entities');
+        $idValues = array_map(fn(EntityId $id) => $id->value(), $ids);
+        $placeholders = implode(',', array_fill(0, count($idValues), '%d'));
+
+        $this->wpdb->query('START TRANSACTION');
+
+        try {
+            $query = $this->wpdb->prepare(
+                "DELETE FROM {$table} WHERE id IN ({$placeholders})",
+                ...$idValues
+            );
+
+            $result = $this->wpdb->query($query);
+
+            if ($result === false) {
+                throw new \RuntimeException(
+                    'Failed to delete entities: ' . $this->wpdb->last_error
+                );
+            }
+
+            $this->wpdb->query('COMMIT');
+
+            // Invalidate cache for all deleted entities
+            foreach ($idValues as $idValue) {
+                wp_cache_delete("saga_entity_{$idValue}", self::CACHE_GROUP);
+            }
+
+            error_log(sprintf(
+                '[SAGA][INFO] Bulk deleted %d entities, cache invalidated for IDs: %s',
+                $result,
+                implode(', ', $idValues)
+            ));
+
+            return (int) $result;
+
+        } catch (\Exception $e) {
+            $this->wpdb->query('ROLLBACK');
+            error_log('[SAGA][ERROR] Bulk entity deletion failed: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * Delete all entities belonging to a saga with proper cache invalidation
+     *
+     * @return int Number of deleted entities
+     */
+    public function deleteBySaga(SagaId $sagaId): int
+    {
+        $table = $this->getTableName('entities');
+
+        // First, get all entity IDs for cache invalidation
+        $entityIds = $this->wpdb->get_col($this->wpdb->prepare(
+            "SELECT id FROM {$table} WHERE saga_id = %d",
+            $sagaId->value()
+        ));
+
+        if (empty($entityIds)) {
+            return 0;
+        }
+
+        $this->wpdb->query('START TRANSACTION');
+
+        try {
+            $query = $this->wpdb->prepare(
+                "DELETE FROM {$table} WHERE saga_id = %d",
+                $sagaId->value()
+            );
+
+            $result = $this->wpdb->query($query);
+
+            if ($result === false) {
+                throw new \RuntimeException(
+                    'Failed to delete entities by saga: ' . $this->wpdb->last_error
+                );
+            }
+
+            $this->wpdb->query('COMMIT');
+
+            // Invalidate cache for ALL deleted entities
+            foreach ($entityIds as $entityId) {
+                wp_cache_delete("saga_entity_{$entityId}", self::CACHE_GROUP);
+            }
+
+            error_log(sprintf(
+                '[SAGA][INFO] Deleted %d entities for saga %d, cache invalidated',
+                $result,
+                $sagaId->value()
+            ));
+
+            return (int) $result;
+
+        } catch (\Exception $e) {
+            $this->wpdb->query('ROLLBACK');
+            error_log('[SAGA][ERROR] Saga entity deletion failed: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
      * Hydrate a database row into a SagaEntity domain model
      */
     private function hydrate(array $row): SagaEntity

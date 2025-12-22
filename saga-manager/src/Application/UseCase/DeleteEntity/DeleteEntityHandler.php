@@ -6,7 +6,7 @@ namespace SagaManager\Application\UseCase\DeleteEntity;
 use SagaManager\Application\Command\CommandHandlerInterface;
 use SagaManager\Application\Command\CommandInterface;
 use SagaManager\Domain\Entity\EntityId;
-use SagaManager\Domain\Exception\DatabaseException;
+use SagaManager\Infrastructure\Exception\DatabaseException;
 use SagaManager\Domain\Exception\EntityNotFoundException;
 use SagaManager\Domain\Exception\ValidationException;
 use SagaManager\Domain\Repository\EntityRepositoryInterface;

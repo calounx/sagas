@@ -16,7 +16,7 @@ use SagaManager\Infrastructure\Database\Adapter\InMemory\InMemorySchemaManager;
 use SagaManager\Infrastructure\Database\Adapter\InMemory\InMemoryTransactionManager;
 use SagaManager\Infrastructure\Database\Config\DatabaseConfig;
 use SagaManager\Infrastructure\Database\DatabaseFactory;
-use SagaManager\Domain\Exception\DatabaseException;
+use SagaManager\Infrastructure\Exception\DatabaseException;
 
 #[CoversClass(InMemoryDatabaseAdapter::class)]
 #[CoversClass(InMemoryDataStore::class)]

@@ -80,4 +80,19 @@ interface EntityRepositoryInterface
      * Check if an entity exists
      */
     public function exists(EntityId $id): bool;
+
+    /**
+     * Delete multiple entities by their IDs
+     *
+     * @param EntityId[] $ids
+     * @return int Number of deleted entities
+     */
+    public function deleteMany(array $ids): int;
+
+    /**
+     * Delete all entities belonging to a saga
+     *
+     * @return int Number of deleted entities
+     */
+    public function deleteBySaga(SagaId $sagaId): int;
 }

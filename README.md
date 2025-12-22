@@ -265,9 +265,7 @@ This triggers:
 - [Architecture Overview](architecture/README.md)
 - [Backend Structure](architecture/backend-structure.md)
 - [Frontend Structure](architecture/frontend-structure.md)
-- [Database Abstraction](saga-manager-core/src/Infrastructure/Database/README.md)
-- [Application Layer](saga-manager/src/Application/README.md)
-- [Testing Guide](saga-manager/tests/README.md)
+- [Development Guidelines](CLAUDE.md) - Complete development reference
 
 ## 🤝 Contributing
 

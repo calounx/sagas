@@ -33,7 +33,7 @@ interface TransactionInterface
      * Begin a new transaction
      *
      * @return void
-     * @throws \SagaManager\Domain\Exception\DatabaseException If transaction cannot be started
+     * @throws \SagaManager\Infrastructure\Exception\DatabaseException If transaction cannot be started
      */
     public function begin(): void;
 
@@ -41,7 +41,7 @@ interface TransactionInterface
      * Commit the current transaction
      *
      * @return void
-     * @throws \SagaManager\Domain\Exception\DatabaseException If no transaction is active
+     * @throws \SagaManager\Infrastructure\Exception\DatabaseException If no transaction is active
      */
     public function commit(): void;
 
@@ -49,7 +49,7 @@ interface TransactionInterface
      * Rollback the current transaction
      *
      * @return void
-     * @throws \SagaManager\Domain\Exception\DatabaseException If no transaction is active
+     * @throws \SagaManager\Infrastructure\Exception\DatabaseException If no transaction is active
      */
     public function rollback(): void;
 
@@ -91,7 +91,7 @@ interface TransactionInterface
      *
      * @param string $name Savepoint name
      * @return void
-     * @throws \SagaManager\Domain\Exception\DatabaseException If no transaction is active
+     * @throws \SagaManager\Infrastructure\Exception\DatabaseException If no transaction is active
      *
      * @example
      *   $db->transaction()->begin();
@@ -111,7 +111,7 @@ interface TransactionInterface
      *
      * @param string $name Savepoint name
      * @return void
-     * @throws \SagaManager\Domain\Exception\DatabaseException If savepoint does not exist
+     * @throws \SagaManager\Infrastructure\Exception\DatabaseException If savepoint does not exist
      */
     public function rollbackTo(string $name): void;
 

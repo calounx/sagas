@@ -24,7 +24,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('SAGA_CORE_VERSION', '1.0.0');
+define('SAGA_CORE_VERSION', '1.2.0');
 define('SAGA_CORE_MIN_WP_VERSION', '6.0');
 define('SAGA_CORE_MIN_PHP_VERSION', '8.2');
 define('SAGA_CORE_PLUGIN_FILE', __FILE__);

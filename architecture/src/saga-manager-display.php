@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('SAGA_DISPLAY_VERSION', '1.0.0');
+define('SAGA_DISPLAY_VERSION', '1.2.0');
 define('SAGA_DISPLAY_MIN_CORE_VERSION', '1.0.0');
 define('SAGA_DISPLAY_PLUGIN_FILE', __FILE__);
 define('SAGA_DISPLAY_PLUGIN_DIR', plugin_dir_path(__FILE__));

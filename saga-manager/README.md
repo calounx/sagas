@@ -114,21 +114,25 @@ This plugin follows WordPress coding standards and uses:
 - `$wpdb->prepare()` for all SQL queries
 - WordPress object cache integration
 
-## Phase 1 Status (MVP Foundation)
+## Version 1.2.0
 
-✅ **Completed:**
+### Completed Features
+
+✅ **Core Architecture:**
 - Database layer with WordPress prefix support
 - Domain models (EntityId, SagaId, ImportanceScore, SagaEntity)
-- Repository interface (port)
-- MariaDB entity repository implementation
+- Repository interfaces and MariaDB implementations
 - Plugin skeleton with activation/deactivation hooks
 - Database schema creation via dbDelta
 - Transaction support with rollback
 
-🚧 **In Progress:**
-- Custom post type sync
-- REST API endpoints
-- Admin interface
+✅ **v1.2.0 Improvements:**
+- REST API integration tests for all endpoints
+- Bulk operations with proper cache invalidation
+- EAV bulk fetch optimization with attribute caching
+- Query performance logging (target: sub-50ms)
+- Multisite test fixtures
+- Infrastructure layer exceptions (DatabaseException moved from Domain)
 
 ## Security
 

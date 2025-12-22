@@ -18,7 +18,7 @@ namespace SagaManager\Contract;
 final class ApiEndpoints
 {
     public const NAMESPACE = 'saga/v1';
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.2.0';
 
     // Saga endpoints
     public const SAGAS = '/sagas';
@@ -66,42 +66,65 @@ final class ApiEndpoints
 }
 
 /**
- * Entity type definitions shared between plugins
+ * Entity type utilities for API contracts
+ *
+ * Uses the canonical EntityType enum from the Domain layer as the single source of truth.
+ * Provides static helper methods for contract validation.
+ *
+ * @see \SagaManager\Domain\Entity\EntityType The canonical enum definition
  */
 final class EntityTypes
 {
-    public const CHARACTER = 'character';
-    public const LOCATION = 'location';
-    public const EVENT = 'event';
-    public const FACTION = 'faction';
-    public const ARTIFACT = 'artifact';
-    public const CONCEPT = 'concept';
-
-    public const ALL = [
-        self::CHARACTER,
-        self::LOCATION,
-        self::EVENT,
-        self::FACTION,
-        self::ARTIFACT,
-        self::CONCEPT,
-    ];
-
-    public static function isValid(string $type): bool
+    /**
+     * Get all valid entity type values
+     *
+     * @return string[]
+     */
+    public static function all(): array
     {
-        return in_array($type, self::ALL, true);
+        return array_map(
+            fn(\SagaManager\Domain\Entity\EntityType $type) => $type->value,
+            \SagaManager\Domain\Entity\EntityType::cases()
+        );
     }
 
+    /**
+     * Check if a type string is valid
+     */
+    public static function isValid(string $type): bool
+    {
+        return in_array($type, self::all(), true);
+    }
+
+    /**
+     * Get human-readable label for a type
+     */
     public static function getLabel(string $type): string
     {
-        return match ($type) {
-            self::CHARACTER => __('Character', 'saga-manager'),
-            self::LOCATION => __('Location', 'saga-manager'),
-            self::EVENT => __('Event', 'saga-manager'),
-            self::FACTION => __('Faction', 'saga-manager'),
-            self::ARTIFACT => __('Artifact', 'saga-manager'),
-            self::CONCEPT => __('Concept', 'saga-manager'),
-            default => ucfirst($type),
-        };
+        try {
+            $enumType = \SagaManager\Domain\Entity\EntityType::from($type);
+            return $enumType->label();
+        } catch (\ValueError) {
+            return ucfirst($type);
+        }
+    }
+
+    /**
+     * Convert string to EntityType enum
+     *
+     * @throws \ValueError If type is invalid
+     */
+    public static function toEnum(string $type): \SagaManager\Domain\Entity\EntityType
+    {
+        return \SagaManager\Domain\Entity\EntityType::from($type);
+    }
+
+    /**
+     * Try to convert string to EntityType enum, return null on failure
+     */
+    public static function tryToEnum(string $type): ?\SagaManager\Domain\Entity\EntityType
+    {
+        return \SagaManager\Domain\Entity\EntityType::tryFrom($type);
     }
 }
 

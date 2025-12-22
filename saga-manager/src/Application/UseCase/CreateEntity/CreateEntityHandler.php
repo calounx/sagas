@@ -10,7 +10,7 @@ use SagaManager\Domain\Entity\EntityType;
 use SagaManager\Domain\Entity\ImportanceScore;
 use SagaManager\Domain\Entity\SagaEntity;
 use SagaManager\Domain\Entity\SagaId;
-use SagaManager\Domain\Exception\DatabaseException;
+use SagaManager\Infrastructure\Exception\DatabaseException;
 use SagaManager\Domain\Exception\DuplicateEntityException;
 use SagaManager\Domain\Exception\ValidationException;
 use SagaManager\Domain\Repository\EntityRepositoryInterface;
