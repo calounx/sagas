@@ -102,7 +102,7 @@ jobs:
 
         # Install and build frontend assets
         if [ -f "package.json" ]; then
-          npm ci
+          npm install --no-audit --no-fund
           npm run build || true
         fi
 
