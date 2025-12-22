@@ -46,9 +46,12 @@ jobs:
         cp saga-manager-core/composer.json build/saga-manager-core/
         cp -r saga-manager-core/src build/saga-manager-core/
         cp -r saga-manager-core/assets build/saga-manager-core/
-        cp -r saga-manager-core/languages build/saga-manager-core/
 
-        # Include vendor if exists (production deps only)
+        # Include optional directories if they exist
+        if [ -d "saga-manager-core/languages" ]; then
+          cp -r saga-manager-core/languages build/saga-manager-core/
+        fi
+
         if [ -d "saga-manager-core/vendor" ]; then
           cp -r saga-manager-core/vendor build/saga-manager-core/
         fi
