@@ -20,6 +20,9 @@ use SagaManager\Infrastructure\Repository\MariaDBAttributeDefinitionRepository;
 use SagaManager\Infrastructure\Repository\MariaDBAttributeValueRepository;
 use SagaManager\Infrastructure\Repository\MariaDBTimelineEventRepository;
 use SagaManager\Infrastructure\Repository\MariaDBQualityMetricsRepository;
+use SagaManager\Infrastructure\WordPress\SagaEntityPostType;
+use SagaManager\Infrastructure\WordPress\SagaEntityMetaBox;
+use SagaManager\Infrastructure\WordPress\SagaTypeTaxonomy;
 
 /**
  * Service Container
@@ -176,6 +179,26 @@ final class ServiceContainer
         $this->register(
             QueryBus::class,
             fn(ServiceContainer $c) => $c->get(ApplicationServiceProvider::class)->getQueryBus()
+        );
+
+        // WordPress Custom Post Type
+        $this->register(
+            SagaEntityPostType::class,
+            fn(ServiceContainer $c) => new SagaEntityPostType(
+                $c->get(EntityRepositoryInterface::class)
+            )
+        );
+
+        // WordPress Meta Box
+        $this->register(
+            SagaEntityMetaBox::class,
+            fn() => new SagaEntityMetaBox()
+        );
+
+        // WordPress Taxonomy
+        $this->register(
+            SagaTypeTaxonomy::class,
+            fn() => new SagaTypeTaxonomy()
         );
     }
 }

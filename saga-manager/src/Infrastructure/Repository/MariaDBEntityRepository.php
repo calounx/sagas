@@ -198,6 +198,9 @@ class MariaDBEntityRepository extends WordPressTablePrefixAware implements Entit
             // Invalidate cache
             wp_cache_delete("saga_entity_{$entity->getId()->value()}", self::CACHE_GROUP);
 
+            // Fire action hook for WordPress sync
+            do_action('saga_entity_saved', $entity);
+
         } catch (\Exception $e) {
             $this->wpdb->query('ROLLBACK');
             error_log('[SAGA][ERROR] Entity save failed: ' . $e->getMessage());

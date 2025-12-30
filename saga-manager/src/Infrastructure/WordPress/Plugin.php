@@ -11,6 +11,10 @@ use SagaManager\Infrastructure\Container\ServiceContainer;
 use SagaManager\Presentation\API\EntityController;
 use SagaManager\Presentation\API\RelationshipController;
 use SagaManager\Presentation\Admin\AdminMenuManager;
+use SagaManager\Domain\Entity\SagaEntity;
+use SagaManager\Infrastructure\WordPress\SagaEntityPostType;
+use SagaManager\Infrastructure\WordPress\SagaEntityMetaBox;
+use SagaManager\Infrastructure\WordPress\SagaTypeTaxonomy;
 
 /**
  * Main Plugin Class
@@ -32,6 +36,12 @@ class Plugin
         // Load text domain for translations
         add_action('init', [$this, 'loadTextDomain']);
 
+        // Register custom post type and taxonomy
+        add_action('init', [$this, 'registerPostTypeAndTaxonomy']);
+
+        // Register bidirectional sync hooks
+        $this->registerSyncHooks();
+
         // Initialize admin interface
         if (is_admin()) {
             $this->initAdmin();
@@ -48,6 +58,36 @@ class Plugin
             false,
             dirname(plugin_basename(SAGA_MANAGER_PLUGIN_FILE)) . '/languages'
         );
+    }
+
+    /**
+     * Register custom post type and taxonomy
+     */
+    public function registerPostTypeAndTaxonomy(): void
+    {
+        // Register taxonomy first (before post type)
+        $taxonomy = $this->container->get(SagaTypeTaxonomy::class);
+        $taxonomy->register();
+
+        // Register custom post type
+        $postType = $this->container->get(SagaEntityPostType::class);
+        $postType->register();
+    }
+
+    /**
+     * Register bidirectional sync hooks
+     */
+    private function registerSyncHooks(): void
+    {
+        $postType = $this->container->get(SagaEntityPostType::class);
+
+        // WordPress → Saga Entities (save_post hook)
+        add_action('save_post_saga_entity', [$postType, 'syncToDatabase'], 10, 2);
+
+        // Saga Entities → WordPress (custom action hook)
+        add_action('saga_entity_saved', function (SagaEntity $entity) use ($postType) {
+            $postType->syncFromEntity($entity);
+        }, 10, 1);
     }
 
     public function registerRestRoutes(): void
@@ -74,6 +114,10 @@ class Plugin
             $this->container->get(EntityRepositoryInterface::class)
         );
         $adminMenuManager->register();
+
+        // Register meta box
+        $metaBox = $this->container->get(SagaEntityMetaBox::class);
+        $metaBox->register();
     }
 
     /**

@@ -26,6 +26,8 @@ use SagaManager\Domain\Exception\ValidationException;
  */
 class EntityController
 {
+    use RateLimitMiddleware;
+
     private const NAMESPACE = 'saga/v1';
 
     public function __construct(
@@ -96,6 +98,12 @@ class EntityController
      */
     public function index(\WP_REST_Request $request): \WP_REST_Response
     {
+        // Apply rate limiting for search operations
+        $rateLimitCheck = $this->checkRateLimit($request, 'entity_search');
+        if ($rateLimitCheck instanceof \WP_REST_Response) {
+            return $rateLimitCheck;
+        }
+
         try {
             $sagaId = (int) $request->get_param('saga_id');
             $entityType = $request->get_param('type');
@@ -171,18 +179,13 @@ class EntityController
      */
     public function create(\WP_REST_Request $request): \WP_REST_Response
     {
-        try {
-            // Verify nonce for non-internal requests
-            if (!defined('REST_REQUEST') || !REST_REQUEST) {
-                $nonce = $request->get_header('X-WP-Nonce');
-                if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                    return new \WP_REST_Response(
-                        ['error' => 'Invalid nonce'],
-                        403
-                    );
-                }
-            }
+        // Apply rate limiting for create operations
+        $rateLimitCheck = $this->checkRateLimit($request, 'entity_create');
+        if ($rateLimitCheck instanceof \WP_REST_Response) {
+            return $rateLimitCheck;
+        }
 
+        try {
             $canonicalName = sanitize_text_field($request->get_param('canonical_name'));
             $slug = sanitize_title($request->get_param('slug') ?: $canonicalName);
 
@@ -225,18 +228,13 @@ class EntityController
      */
     public function update(\WP_REST_Request $request): \WP_REST_Response
     {
-        try {
-            // Verify nonce
-            if (!defined('REST_REQUEST') || !REST_REQUEST) {
-                $nonce = $request->get_header('X-WP-Nonce');
-                if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                    return new \WP_REST_Response(
-                        ['error' => 'Invalid nonce'],
-                        403
-                    );
-                }
-            }
+        // Apply rate limiting for update operations
+        $rateLimitCheck = $this->checkRateLimit($request, 'entity_update');
+        if ($rateLimitCheck instanceof \WP_REST_Response) {
+            return $rateLimitCheck;
+        }
 
+        try {
             $entityId = (int) $request->get_param('id');
 
             $command = new UpdateEntityCommand(
@@ -282,18 +280,13 @@ class EntityController
      */
     public function delete(\WP_REST_Request $request): \WP_REST_Response
     {
-        try {
-            // Verify nonce
-            if (!defined('REST_REQUEST') || !REST_REQUEST) {
-                $nonce = $request->get_header('X-WP-Nonce');
-                if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                    return new \WP_REST_Response(
-                        ['error' => 'Invalid nonce'],
-                        403
-                    );
-                }
-            }
+        // Apply rate limiting for delete operations
+        $rateLimitCheck = $this->checkRateLimit($request, 'entity_delete');
+        if ($rateLimitCheck instanceof \WP_REST_Response) {
+            return $rateLimitCheck;
+        }
 
+        try {
             $entityId = (int) $request->get_param('id');
 
             $command = new DeleteEntityCommand(entityId: $entityId);
