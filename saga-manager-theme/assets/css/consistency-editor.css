@@ -1,0 +1,574 @@
+/**
+ * Consistency Editor Styles
+ *
+ * Styles for real-time consistency checking in WordPress editor
+ * Works with both Gutenberg and Classic Editor
+ *
+ * @package SagaManager
+ * @version 1.4.0
+ */
+
+/* ============================================================================
+   Toast Notifications
+   ========================================================================== */
+
+#saga-toast-container {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 100000;
+    max-width: 400px;
+}
+
+.saga-consistency-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: #fff;
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.saga-consistency-toast .dashicons {
+    flex-shrink: 0;
+    font-size: 24px;
+    margin-top: 2px;
+}
+
+.saga-consistency-toast.critical {
+    border-left-color: #dc2626;
+}
+
+.saga-consistency-toast.critical .dashicons {
+    color: #dc2626;
+}
+
+.saga-consistency-toast.high {
+    border-left-color: #f59e0b;
+}
+
+.saga-consistency-toast.high .dashicons {
+    color: #f59e0b;
+}
+
+.saga-consistency-toast.medium {
+    border-left-color: #3b82f6;
+}
+
+.saga-consistency-toast.medium .dashicons {
+    color: #3b82f6;
+}
+
+.saga-consistency-toast.low {
+    border-left-color: #10b981;
+}
+
+.saga-consistency-toast.low .dashicons {
+    color: #10b981;
+}
+
+.saga-consistency-toast.info {
+    border-left-color: #6b7280;
+}
+
+.saga-consistency-toast.info .dashicons {
+    color: #6b7280;
+}
+
+.saga-consistency-toast.success {
+    border-left-color: #10b981;
+}
+
+.saga-consistency-toast.success .dashicons {
+    color: #10b981;
+}
+
+.saga-consistency-toast.error {
+    border-left-color: #dc2626;
+}
+
+.saga-consistency-toast.error .dashicons {
+    color: #dc2626;
+}
+
+.saga-consistency-toast .toast-content {
+    flex: 1;
+}
+
+.saga-consistency-toast .toast-content strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.saga-consistency-toast .toast-content p {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #4b5563;
+}
+
+.saga-consistency-toast .saga-toast-view-details {
+    font-size: 12px;
+    text-decoration: none;
+    color: #3b82f6;
+    font-weight: 500;
+}
+
+.saga-consistency-toast .saga-toast-view-details:hover {
+    text-decoration: underline;
+}
+
+.saga-consistency-toast .toast-close {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    transition: color 0.2s;
+}
+
+.saga-consistency-toast .toast-close:hover {
+    color: #111827;
+}
+
+.saga-consistency-toast .toast-close:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* ============================================================================
+   Score Badge
+   ========================================================================== */
+
+.saga-consistency-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+    vertical-align: middle;
+}
+
+.saga-consistency-badge .score-value {
+    display: inline-block;
+    min-width: 45px;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.saga-consistency-badge .score-label {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.saga-consistency-badge.excellent .score-value {
+    background-color: #10b981;
+}
+
+.saga-consistency-badge.excellent .score-label {
+    color: #10b981;
+}
+
+.saga-consistency-badge.good .score-value {
+    background-color: #3b82f6;
+}
+
+.saga-consistency-badge.good .score-label {
+    color: #3b82f6;
+}
+
+.saga-consistency-badge.fair .score-value {
+    background-color: #f59e0b;
+}
+
+.saga-consistency-badge.fair .score-label {
+    color: #f59e0b;
+}
+
+.saga-consistency-badge.poor .score-value {
+    background-color: #dc2626;
+}
+
+.saga-consistency-badge.poor .score-label {
+    color: #dc2626;
+}
+
+/* ============================================================================
+   Check Now Button
+   ========================================================================== */
+
+.saga-check-now {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.saga-check-now .dashicons {
+    transition: transform 0.3s;
+}
+
+.saga-check-now:disabled .dashicons {
+    animation: spin 1s linear infinite;
+}
+
+.saga-check-now:focus {
+    box-shadow: 0 0 0 2px #3b82f6;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.saga-spinner {
+    animation: spin 1s linear infinite !important;
+}
+
+/* ============================================================================
+   Gutenberg Specific Styles
+   ========================================================================== */
+
+.edit-post-sidebar .components-panel__body .saga-consistency-badge {
+    margin: 0;
+}
+
+.components-panel__body .saga-issue-item {
+    border-radius: 4px;
+    transition: box-shadow 0.2s;
+}
+
+.components-panel__body .saga-issue-item:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Gutenberg Panel Improvements */
+.edit-post-sidebar .saga-score-badge {
+    margin-bottom: 16px;
+}
+
+/* ============================================================================
+   Classic Editor Specific Styles
+   ========================================================================== */
+
+#saga-consistency-metabox .inside {
+    padding: 12px;
+}
+
+#saga-consistency-metabox h2.hndle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#saga-consistency-metabox .dashicons-shield-alt {
+    color: #3b82f6;
+}
+
+.saga-score-badge {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.saga-issue-item {
+    transition: all 0.2s;
+}
+
+.saga-issue-item:hover {
+    background-color: #f3f4f6 !important;
+}
+
+.saga-issue-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.saga-issue-toggle:hover {
+    opacity: 0.8;
+}
+
+.saga-issue-toggle .dashicons {
+    transition: transform 0.2s;
+}
+
+.saga-issue-details {
+    padding-left: 26px;
+}
+
+/* ============================================================================
+   Block Editor (Consistency Badge Block)
+   ========================================================================== */
+
+.saga-consistency-badge-placeholder {
+    position: relative;
+}
+
+.saga-badge-loading {
+    padding: 12px;
+    background: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.saga-badge-small {
+    font-size: 12px;
+}
+
+.saga-badge-medium {
+    font-size: 14px;
+}
+
+.saga-badge-large {
+    font-size: 16px;
+}
+
+/* ============================================================================
+   Inline Warnings (Below Toolbar)
+   ========================================================================== */
+
+.saga-inline-warning {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.saga-inline-warning.critical {
+    background: #fee2e2;
+    border-left-color: #dc2626;
+}
+
+.saga-inline-warning .warning-icon {
+    flex-shrink: 0;
+    font-size: 20px;
+    color: #f59e0b;
+}
+
+.saga-inline-warning.critical .warning-icon {
+    color: #dc2626;
+}
+
+.saga-inline-warning .warning-content {
+    flex: 1;
+}
+
+.saga-inline-warning .warning-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #111827;
+}
+
+.saga-inline-warning .warning-message {
+    font-size: 13px;
+    color: #4b5563;
+    margin: 0;
+}
+
+.saga-inline-warning .warning-close {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    transition: color 0.2s;
+}
+
+.saga-inline-warning .warning-close:hover {
+    color: #111827;
+}
+
+/* ============================================================================
+   Accessibility
+   ========================================================================== */
+
+/* Screen reader only */
+.saga-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Focus visible for keyboard navigation */
+.saga-consistency-toast:focus-within,
+.saga-check-now:focus,
+.saga-issue-toggle:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .saga-consistency-toast {
+        border-width: 2px;
+    }
+
+    .saga-consistency-badge .score-value {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .saga-consistency-toast,
+    .saga-score-badge,
+    .saga-check-now .dashicons,
+    .saga-issue-toggle .dashicons {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* ============================================================================
+   Dark Mode Support (if theme has dark mode)
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .saga-consistency-toast {
+        background: #1f2937;
+        border-color: currentColor;
+    }
+
+    .saga-consistency-toast .toast-content strong {
+        color: #f9fafb;
+    }
+
+    .saga-consistency-toast .toast-content p {
+        color: #d1d5db;
+    }
+
+    .saga-inline-warning {
+        background: #422006;
+        border-left-color: #f59e0b;
+    }
+
+    .saga-inline-warning.critical {
+        background: #450a0a;
+    }
+
+    .saga-issue-item:hover {
+        background-color: #374151 !important;
+    }
+}
+
+/* ============================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    #saga-toast-container {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .saga-consistency-toast {
+        padding: 12px;
+    }
+
+    .saga-consistency-badge {
+        margin-left: 0;
+        margin-top: 8px;
+        display: block;
+    }
+}
+
+/* ============================================================================
+   Loading States
+   ========================================================================== */
+
+.saga-loading-skeleton {
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ============================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    #saga-toast-container,
+    .saga-check-now,
+    .saga-issue-toggle,
+    .toast-close,
+    .warning-close {
+        display: none !important;
+    }
+
+    .saga-consistency-toast,
+    .saga-inline-warning {
+        break-inside: avoid;
+    }
+}

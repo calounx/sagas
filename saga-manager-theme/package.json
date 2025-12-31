@@ -1,0 +1,52 @@
+{
+  "name": "saga-manager-theme",
+  "version": "1.4.0",
+  "description": "Multi-tenant saga management theme with AI consistency checking",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "build:blocks": "wp-scripts build assets/js/blocks/consistency-badge.jsx --output-path=assets/js/blocks/build/",
+    "build:gutenberg": "wp-scripts build assets/js/consistency-gutenberg-panel.jsx --output-path=assets/js/build/",
+    "start": "wp-scripts start",
+    "lint:js": "eslint assets/js/**/*.js assets/js/**/*.jsx",
+    "format": "prettier --write 'assets/**/*.{js,jsx,css}'"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "saga",
+    "consistency",
+    "gutenberg"
+  ],
+  "author": "Saga Manager Team",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "@babel/preset-react": "^7.22.0",
+    "@wordpress/scripts": "^26.0.0",
+    "babel-loader": "^9.1.3",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.3",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@wordpress/block-editor": "^12.0.0",
+    "@wordpress/blocks": "^12.0.0",
+    "@wordpress/components": "^25.0.0",
+    "@wordpress/data": "^9.0.0",
+    "@wordpress/edit-post": "^7.0.0",
+    "@wordpress/element": "^5.0.0",
+    "@wordpress/i18n": "^4.0.0",
+    "@wordpress/plugins": "^6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

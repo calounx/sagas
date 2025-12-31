@@ -1318,3 +1318,105 @@ function saga_init_quick_create(): void
     $ajax_handler->register();
 }
 add_action('init', 'saga_init_quick_create');
+
+/**
+ * =============================================================================
+ * AI Consistency Guardian (Phase 2 - v1.4.0)
+ * =============================================================================
+ */
+
+/**
+ * Initialize AI Consistency Guardian
+ *
+ * Provides AI-powered consistency checking for saga entities
+ * Detects plot holes, timeline issues, character contradictions
+ *
+ * @return void
+ */
+function saga_init_ai_consistency_guardian(): void
+{
+    // Load database migrator
+    require_once SAGA_THEME_DIR . '/inc/ai/database-migrator.php';
+
+    // Load entity classes
+    require_once SAGA_THEME_DIR . '/inc/ai/entities/ConsistencyIssue.php';
+
+    // Load core AI classes
+    require_once SAGA_THEME_DIR . '/inc/ai/ConsistencyRuleEngine.php';
+    require_once SAGA_THEME_DIR . '/inc/ai/AIClient.php';
+    require_once SAGA_THEME_DIR . '/inc/ai/ConsistencyRepository.php';
+    require_once SAGA_THEME_DIR . '/inc/ai/ConsistencyAnalyzer.php';
+
+    // Load admin settings page
+    if (is_admin()) {
+        require_once SAGA_THEME_DIR . '/inc/admin/ai-settings.php';
+    }
+}
+add_action('after_setup_theme', 'saga_init_ai_consistency_guardian');
+
+/**
+ * Get AI Consistency Analyzer instance
+ *
+ * Factory function for dependency injection
+ *
+ * @return \SagaManager\AI\ConsistencyAnalyzer
+ */
+function saga_get_consistency_analyzer(): \SagaManager\AI\ConsistencyAnalyzer
+{
+    static $analyzer = null;
+
+    if ($analyzer === null) {
+        $ruleEngine = new \SagaManager\AI\ConsistencyRuleEngine();
+        $aiClient = new \SagaManager\AI\AIClient();
+        $repository = new \SagaManager\AI\ConsistencyRepository();
+
+        $analyzer = new \SagaManager\AI\ConsistencyAnalyzer(
+            $ruleEngine,
+            $aiClient,
+            $repository
+        );
+    }
+
+    return $analyzer;
+}
+
+/**
+ * Run consistency analysis on a saga
+ *
+ * Template function for themes/plugins
+ *
+ * @param int   $sagaId     Saga ID
+ * @param bool  $useAI      Whether to use AI analysis
+ * @param array $ruleTypes  Rule types to check
+ * @return array Array of ConsistencyIssue objects
+ */
+function saga_analyze_consistency(int $sagaId, bool $useAI = true, array $ruleTypes = []): array
+{
+    $analyzer = saga_get_consistency_analyzer();
+    return $analyzer->analyze($sagaId, [], $useAI, $ruleTypes);
+}
+
+/**
+ * Get consistency issues for a saga
+ *
+ * @param int    $sagaId Saga ID
+ * @param string $status Status filter (open, resolved, dismissed, false_positive)
+ * @return array Array of ConsistencyIssue objects
+ */
+function saga_get_consistency_issues(int $sagaId, string $status = 'open'): array
+{
+    $analyzer = saga_get_consistency_analyzer();
+    return $analyzer->getIssues($sagaId, $status);
+}
+
+/**
+ * Get consistency statistics for a saga
+ *
+ * @param int $sagaId Saga ID
+ * @return array Statistics array
+ */
+function saga_get_consistency_stats(int $sagaId): array
+{
+    $analyzer = saga_get_consistency_analyzer();
+    return $analyzer->getStatistics($sagaId);
+}
