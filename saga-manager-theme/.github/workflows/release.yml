@@ -3,7 +3,7 @@ name: Release Theme
 on:
   push:
     tags:
-      - 'v*'
+      - 'theme/v*'
 
 permissions:
   contents: write
@@ -22,7 +22,7 @@ jobs:
       - name: Extract version from tag
         id: version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
+          VERSION=${GITHUB_REF#refs/tags/theme/v}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Release version: $VERSION"
 

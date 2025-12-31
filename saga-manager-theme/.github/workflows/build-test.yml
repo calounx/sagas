@@ -1,0 +1,234 @@
+name: Build & Test
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Theme
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Validate style.css
+        run: |
+          if [ ! -f style.css ]; then
+            echo "Error: style.css not found"
+            exit 1
+          fi
+
+          # Check required headers
+          REQUIRED_HEADERS=(
+            "Theme Name:"
+            "Template:"
+            "Version:"
+            "Requires at least:"
+            "Tested up to:"
+            "Requires PHP:"
+          )
+
+          for header in "${REQUIRED_HEADERS[@]}"; do
+            if ! grep -q "^$header" style.css; then
+              echo "Error: Missing header: $header"
+              exit 1
+            fi
+          done
+
+          echo "✓ style.css headers valid"
+
+      - name: PHP Syntax Check
+        run: |
+          PHP_ERRORS=0
+          while IFS= read -r -d '' file; do
+            if ! php -l "$file" > /dev/null 2>&1; then
+              echo "✗ Syntax error in: $file"
+              php -l "$file"
+              PHP_ERRORS=$((PHP_ERRORS + 1))
+            fi
+          done < <(find . -name "*.php" -not -path "./vendor/*" -print0)
+
+          if [ $PHP_ERRORS -gt 0 ]; then
+            echo "Error: Found $PHP_ERRORS PHP syntax errors"
+            exit 1
+          fi
+
+          echo "✓ All PHP files have valid syntax"
+
+      - name: Check Required Files
+        run: |
+          REQUIRED_FILES=(
+            "style.css"
+            "functions.php"
+            "README.md"
+          )
+
+          MISSING=0
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "✗ Missing required file: $file"
+              MISSING=1
+            fi
+          done
+
+          if [ $MISSING -eq 1 ]; then
+            exit 1
+          fi
+
+          echo "✓ All required files present"
+
+      - name: Validate PWA Manifest
+        run: |
+          if [ -f manifest.json ]; then
+            # Basic JSON validation
+            if ! python3 -m json.tool manifest.json > /dev/null 2>&1; then
+              echo "Error: Invalid JSON in manifest.json"
+              exit 1
+            fi
+            echo "✓ manifest.json is valid JSON"
+          fi
+
+      - name: Check JavaScript Syntax
+        run: |
+          # Install Node.js for JS validation
+          if command -v node >/dev/null 2>&1; then
+            JS_ERRORS=0
+            while IFS= read -r -d '' file; do
+              if ! node --check "$file" > /dev/null 2>&1; then
+                echo "✗ Syntax error in: $file"
+                JS_ERRORS=$((JS_ERRORS + 1))
+              fi
+            done < <(find . -name "*.js" -not -path "./node_modules/*" -not -path "./vendor/*" -print0)
+
+            if [ $JS_ERRORS -gt 0 ]; then
+              echo "Warning: Found $JS_ERRORS JavaScript syntax errors"
+              # Don't fail build for JS errors (optional)
+            else
+              echo "✓ All JavaScript files have valid syntax"
+            fi
+          fi
+
+      - name: Generate File Statistics
+        run: |
+          echo "Theme File Statistics:"
+          echo "======================"
+          PHP_COUNT=$(find . -name "*.php" -not -path "./vendor/*" | wc -l)
+          JS_COUNT=$(find . -name "*.js" -not -path "./node_modules/*" -not -path "./vendor/*" | wc -l)
+          CSS_COUNT=$(find . -name "*.css" -not -path "./node_modules/*" | wc -l)
+
+          echo "PHP files:  $PHP_COUNT"
+          echo "JS files:   $JS_COUNT"
+          echo "CSS files:  $CSS_COUNT"
+
+          # Calculate total lines of code
+          if command -v wc >/dev/null 2>&1; then
+            PHP_LINES=$(find . -name "*.php" -not -path "./vendor/*" -exec wc -l {} + | tail -n 1 | awk '{print $1}')
+            JS_LINES=$(find . -name "*.js" -not -path "./node_modules/*" -exec wc -l {} + 2>/dev/null | tail -n 1 | awk '{print $1}' || echo "0")
+            CSS_LINES=$(find . -name "*.css" -exec wc -l {} + 2>/dev/null | tail -n 1 | awk '{print $1}' || echo "0")
+
+            echo ""
+            echo "Lines of Code:"
+            echo "PHP:  $PHP_LINES"
+            echo "JS:   $JS_LINES"
+            echo "CSS:  $CSS_LINES"
+          fi
+
+      - name: Test Build
+        run: |
+          # Run the existing prepare-release.sh if it exists
+          if [ -f prepare-release.sh ]; then
+            bash prepare-release.sh
+            if [ -f saga-manager-theme.zip ]; then
+              ZIP_SIZE=$(du -h saga-manager-theme.zip | cut -f1)
+              echo "✓ Build successful: saga-manager-theme.zip ($ZIP_SIZE)"
+            fi
+          fi
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Check for Common Issues
+        run: |
+          echo "Scanning for security issues..."
+
+          # Check for eval() usage (dangerous)
+          if grep -r "eval(" --include="*.php" . 2>/dev/null; then
+            echo "Warning: Found eval() usage (potential security risk)"
+          fi
+
+          # Check for exec/system calls
+          if grep -r -E "(exec|system|passthru|shell_exec)\(" --include="*.php" . 2>/dev/null; then
+            echo "Warning: Found system execution functions"
+          fi
+
+          # Check for SQL without preparation
+          if grep -r "\$wpdb->query.*\$" --include="*.php" . 2>/dev/null; then
+            echo "Warning: Possible SQL injection vulnerability"
+          fi
+
+          # Check for direct $_GET/$_POST without sanitization
+          if grep -r -E '\$_(GET|POST|REQUEST)\[' --include="*.php" . 2>/dev/null | grep -v sanitize | grep -v wp_verify_nonce; then
+            echo "Warning: Direct use of superglobals without sanitization"
+          fi
+
+          echo "✓ Security scan complete"
+
+  compatibility:
+    name: PHP Compatibility Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.0', '8.1', '8.2', '8.3']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: Test PHP Syntax
+        run: |
+          echo "Testing PHP ${{ matrix.php-version }} compatibility..."
+          PHP_ERRORS=0
+
+          while IFS= read -r -d '' file; do
+            if ! php -l "$file" > /dev/null 2>&1; then
+              echo "✗ Syntax error in: $file"
+              PHP_ERRORS=$((PHP_ERRORS + 1))
+            fi
+          done < <(find . -name "*.php" -not -path "./vendor/*" -print0)
+
+          if [ $PHP_ERRORS -gt 0 ]; then
+            echo "Error: Found $PHP_ERRORS syntax errors on PHP ${{ matrix.php-version }}"
+            exit 1
+          fi
+
+          echo "✓ Compatible with PHP ${{ matrix.php-version }}"
