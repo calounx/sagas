@@ -1,0 +1,168 @@
+{
+  "name": "Saga Manager - Fictional Universe Explorer",
+  "short_name": "Saga Manager",
+  "description": "Explore and manage complex fictional universes, characters, locations, and timelines across multiple sagas",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#1f2937",
+  "categories": ["entertainment", "productivity", "reference"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Saga entity browser on desktop"
+    },
+    {
+      "src": "/wp-content/themes/saga-manager-theme/assets/images/screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Saga entity details on mobile"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Search Entities",
+      "short_name": "Search",
+      "description": "Search for characters, locations, and events",
+      "url": "/search",
+      "icons": [
+        {
+          "src": "/wp-content/themes/saga-manager-theme/assets/images/shortcut-search.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Browse Sagas",
+      "short_name": "Sagas",
+      "description": "Browse all available sagas",
+      "url": "/sagas",
+      "icons": [
+        {
+          "src": "/wp-content/themes/saga-manager-theme/assets/images/shortcut-sagas.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Timeline",
+      "short_name": "Timeline",
+      "description": "View saga timeline events",
+      "url": "/timeline",
+      "icons": [
+        {
+          "src": "/wp-content/themes/saga-manager-theme/assets/images/shortcut-timeline.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Bookmarks",
+      "short_name": "Bookmarks",
+      "description": "View saved bookmarks and annotations",
+      "url": "/bookmarks",
+      "icons": [
+        {
+          "src": "/wp-content/themes/saga-manager-theme/assets/images/shortcut-bookmarks.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "iarc_rating_id": "",
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ]
+}

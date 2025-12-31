@@ -1,0 +1,384 @@
+/**
+ * Breadcrumb Navigation Styles
+ *
+ * Responsive breadcrumbs with clear visual hierarchy,
+ * mobile collapse, and accessibility support.
+ *
+ * @package SagaManagerTheme
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Container
+   ========================================================================== */
+
+.saga-breadcrumbs {
+    background-color: var(--saga-bg-secondary, #f8f9fa);
+    border-bottom: 1px solid var(--saga-border-color, #e0e0e0);
+    padding: 0.875rem 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.saga-breadcrumbs__container {
+    max-width: var(--saga-content-width, 1200px);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* ==========================================================================
+   Back Button
+   ========================================================================== */
+
+.saga-breadcrumbs__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background-color: transparent;
+    border: 1px solid var(--saga-border-color, #d0d0d0);
+    border-radius: 0.375rem;
+    color: var(--saga-text-primary, #333);
+    font-size: 0.875rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saga-breadcrumbs__back:hover {
+    background-color: var(--saga-bg-hover, #e9ecef);
+    border-color: var(--saga-border-hover, #adb5bd);
+}
+
+.saga-breadcrumbs__back:focus {
+    outline: 2px solid var(--saga-focus-color, #0066cc);
+    outline-offset: 2px;
+}
+
+.saga-breadcrumbs__back:active {
+    background-color: var(--saga-bg-active, #dee2e6);
+    transform: translateY(1px);
+}
+
+.saga-breadcrumbs__back-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+}
+
+.saga-breadcrumbs__back-text {
+    font-weight: 500;
+}
+
+/* Separator after back button */
+.saga-breadcrumbs__separator--back {
+    color: var(--saga-text-muted, #6c757d);
+    font-weight: 300;
+    user-select: none;
+}
+
+/* ==========================================================================
+   Breadcrumb List
+   ========================================================================== */
+
+.saga-breadcrumbs__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.saga-breadcrumbs__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================================================
+   Links and Text
+   ========================================================================== */
+
+.saga-breadcrumbs__link {
+    color: var(--saga-link-color, #0066cc);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.saga-breadcrumbs__link:hover {
+    color: var(--saga-link-hover-color, #0052a3);
+    text-decoration: underline;
+}
+
+.saga-breadcrumbs__link:focus {
+    outline: 2px solid var(--saga-focus-color, #0066cc);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.saga-breadcrumbs__text {
+    color: var(--saga-text-primary, #333);
+}
+
+/* Current page (last item) */
+.saga-breadcrumbs__item--current .saga-breadcrumbs__text {
+    color: var(--saga-text-secondary, #6c757d);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Separator
+   ========================================================================== */
+
+.saga-breadcrumbs__separator {
+    display: inline-flex;
+    align-items: center;
+    color: var(--saga-text-muted, #adb5bd);
+    user-select: none;
+}
+
+.saga-breadcrumbs__separator svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Mobile Responsive (Collapse)
+   ========================================================================== */
+
+/* Hide intermediate items on mobile, show ellipsis */
+@media (max-width: 767px) {
+    .saga-breadcrumbs__container {
+        padding: 0 1rem;
+    }
+
+    /* Hide all items except first and last two */
+    .saga-breadcrumbs__item--mobile-hidden {
+        display: none;
+    }
+
+    /* Show ellipsis */
+    .saga-breadcrumbs__item--ellipsis {
+        display: inline-flex !important;
+    }
+
+    /* Reduce spacing on mobile */
+    .saga-breadcrumbs__list {
+        gap: 0.375rem;
+    }
+
+    .saga-breadcrumbs__item {
+        gap: 0.375rem;
+    }
+
+    /* Smaller back button on mobile */
+    .saga-breadcrumbs__back {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8125rem;
+    }
+
+    .saga-breadcrumbs__back-icon {
+        width: 0.875rem;
+        height: 0.875rem;
+    }
+
+    .saga-breadcrumbs__back-text {
+        /* Hide "Back" text on very small screens, keep icon */
+        display: none;
+    }
+}
+
+/* Hide ellipsis by default (shown only on mobile when needed) */
+.saga-breadcrumbs__item--ellipsis {
+    display: none;
+}
+
+/* ==========================================================================
+   Tablet and Up
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    .saga-breadcrumbs {
+        padding: 1rem 0;
+        font-size: 0.9375rem;
+    }
+
+    .saga-breadcrumbs__container {
+        gap: 1rem;
+    }
+
+    .saga-breadcrumbs__list {
+        gap: 0.625rem;
+    }
+
+    .saga-breadcrumbs__item {
+        gap: 0.625rem;
+    }
+
+    .saga-breadcrumbs__back {
+        padding: 0.5rem 1rem;
+    }
+
+    .saga-breadcrumbs__back-text {
+        display: inline;
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .saga-breadcrumbs {
+        background-color: transparent;
+        border-bottom: 1px solid #000;
+        padding: 0.5rem 0;
+    }
+
+    .saga-breadcrumbs__back {
+        display: none;
+    }
+
+    .saga-breadcrumbs__separator--back {
+        display: none;
+    }
+
+    .saga-breadcrumbs__link {
+        color: #000;
+        text-decoration: none;
+    }
+
+    .saga-breadcrumbs__separator {
+        color: #666;
+    }
+
+    /* Show all items when printing */
+    .saga-breadcrumbs__item--mobile-hidden {
+        display: inline-flex !important;
+    }
+
+    .saga-breadcrumbs__item--ellipsis {
+        display: none !important;
+    }
+}
+
+/* ==========================================================================
+   High Contrast Mode
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+    .saga-breadcrumbs {
+        border-bottom-width: 2px;
+    }
+
+    .saga-breadcrumbs__back {
+        border-width: 2px;
+    }
+
+    .saga-breadcrumbs__link:focus,
+    .saga-breadcrumbs__back:focus {
+        outline-width: 3px;
+    }
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .saga-breadcrumbs__back,
+    .saga-breadcrumbs__link {
+        transition: none;
+    }
+
+    .saga-breadcrumbs__back:active {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   Dark Mode Support
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .saga-breadcrumbs {
+        background-color: var(--saga-bg-secondary-dark, #1a1a1a);
+        border-bottom-color: var(--saga-border-color-dark, #333);
+    }
+
+    .saga-breadcrumbs__back {
+        border-color: var(--saga-border-color-dark, #444);
+        color: var(--saga-text-primary-dark, #e0e0e0);
+    }
+
+    .saga-breadcrumbs__back:hover {
+        background-color: var(--saga-bg-hover-dark, #2a2a2a);
+        border-color: var(--saga-border-hover-dark, #555);
+    }
+
+    .saga-breadcrumbs__back:active {
+        background-color: var(--saga-bg-active-dark, #333);
+    }
+
+    .saga-breadcrumbs__link {
+        color: var(--saga-link-color-dark, #66b3ff);
+    }
+
+    .saga-breadcrumbs__link:hover {
+        color: var(--saga-link-hover-color-dark, #99ccff);
+    }
+
+    .saga-breadcrumbs__text {
+        color: var(--saga-text-primary-dark, #e0e0e0);
+    }
+
+    .saga-breadcrumbs__item--current .saga-breadcrumbs__text {
+        color: var(--saga-text-secondary-dark, #adb5bd);
+    }
+
+    .saga-breadcrumbs__separator,
+    .saga-breadcrumbs__separator--back {
+        color: var(--saga-text-muted-dark, #6c757d);
+    }
+}
+
+/* ==========================================================================
+   Focus Visible (Modern browsers)
+   ========================================================================== */
+
+.saga-breadcrumbs__back:focus:not(:focus-visible),
+.saga-breadcrumbs__link:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.saga-breadcrumbs__back:focus-visible,
+.saga-breadcrumbs__link:focus-visible {
+    outline: 2px solid var(--saga-focus-color, #0066cc);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+/* For screen readers only */
+.saga-breadcrumbs .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

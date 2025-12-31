@@ -1,0 +1,590 @@
+/**
+ * Dark Mode Styles
+ *
+ * Pure CSS implementation with CSS custom properties
+ * Follows WCAG 2.1 AA contrast ratios (minimum 4.5:1 for text)
+ * Compatible with GeneratePress design system
+ *
+ * @package SagaTheme
+ * @version 1.0.0
+ */
+
+/* ========================================================================
+   CSS Custom Properties - Light Mode (Default)
+   ======================================================================== */
+
+:root {
+    /* Background colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --bg-elevated: #ffffff;
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+
+    /* Text colors */
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --text-inverse: #ffffff;
+
+    /* Border colors */
+    --border-primary: #e5e7eb;
+    --border-secondary: #d1d5db;
+    --border-focus: #3b82f6;
+
+    /* Accent colors */
+    --accent-primary: #3b82f6;
+    --accent-primary-hover: #2563eb;
+    --accent-secondary: #8b5cf6;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-error: #ef4444;
+
+    /* Entity type colors */
+    --entity-character: #8b5cf6;
+    --entity-location: #3b82f6;
+    --entity-event: #f59e0b;
+    --entity-faction: #ef4444;
+    --entity-artifact: #10b981;
+    --entity-concept: #6366f1;
+
+    /* Shadow values */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* Transition timing */
+    --transition-duration: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================================================
+   CSS Custom Properties - Dark Mode
+   ======================================================================== */
+
+[data-theme="dark"] {
+    /* Background colors - WCAG AA compliant */
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --bg-tertiary: #374151;
+    --bg-elevated: #1f2937;
+    --bg-overlay: rgba(0, 0, 0, 0.75);
+
+    /* Text colors - Minimum 4.5:1 contrast ratio */
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-tertiary: #9ca3af;
+    --text-inverse: #111827;
+
+    /* Border colors */
+    --border-primary: #374151;
+    --border-secondary: #4b5563;
+    --border-focus: #60a5fa;
+
+    /* Accent colors - Adjusted for dark backgrounds */
+    --accent-primary: #60a5fa;
+    --accent-primary-hover: #3b82f6;
+    --accent-secondary: #a78bfa;
+    --accent-success: #34d399;
+    --accent-warning: #fbbf24;
+    --accent-error: #f87171;
+
+    /* Entity type colors - Lighter variants for dark mode */
+    --entity-character: #a78bfa;
+    --entity-location: #60a5fa;
+    --entity-event: #fbbf24;
+    --entity-faction: #f87171;
+    --entity-artifact: #34d399;
+    --entity-concept: #818cf8;
+
+    /* Shadow values - More subtle in dark mode */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* ========================================================================
+   System Preference Detection
+   ======================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    /* Only apply if no manual theme is set */
+    :root:not([data-theme]) {
+        --bg-primary: #111827;
+        --bg-secondary: #1f2937;
+        --bg-tertiary: #374151;
+        --bg-elevated: #1f2937;
+        --bg-overlay: rgba(0, 0, 0, 0.75);
+
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --text-tertiary: #9ca3af;
+        --text-inverse: #111827;
+
+        --border-primary: #374151;
+        --border-secondary: #4b5563;
+        --border-focus: #60a5fa;
+
+        --accent-primary: #60a5fa;
+        --accent-primary-hover: #3b82f6;
+        --accent-secondary: #a78bfa;
+        --accent-success: #34d399;
+        --accent-warning: #fbbf24;
+        --accent-error: #f87171;
+
+        --entity-character: #a78bfa;
+        --entity-location: #60a5fa;
+        --entity-event: #fbbf24;
+        --entity-faction: #f87171;
+        --entity-artifact: #34d399;
+        --entity-concept: #818cf8;
+
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* ========================================================================
+   Smooth Transitions - Applied to all color-affected properties
+   ======================================================================== */
+
+*,
+*::before,
+*::after {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: var(--transition-duration);
+    transition-timing-function: var(--transition-timing);
+}
+
+/* Disable transitions on page load */
+.no-transitions * {
+    transition: none !important;
+}
+
+/* ========================================================================
+   Base Element Theming
+   ======================================================================== */
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+}
+
+/* Links */
+a {
+    color: var(--accent-primary);
+}
+
+a:hover,
+a:focus {
+    color: var(--accent-primary-hover);
+}
+
+/* Code blocks */
+code,
+pre {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-primary);
+}
+
+/* Tables */
+table {
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+}
+
+th {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-primary);
+}
+
+td {
+    border-color: var(--border-primary);
+    color: var(--text-primary);
+}
+
+/* Forms */
+input,
+textarea,
+select {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-primary);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--border-focus);
+    outline-color: var(--border-focus);
+}
+
+/* Buttons */
+button,
+.button,
+.wp-block-button__link {
+    background-color: var(--accent-primary);
+    color: var(--text-inverse);
+    border-color: var(--accent-primary);
+}
+
+button:hover,
+.button:hover,
+.wp-block-button__link:hover {
+    background-color: var(--accent-primary-hover);
+    border-color: var(--accent-primary-hover);
+}
+
+/* ========================================================================
+   Saga-Specific Component Theming
+   ======================================================================== */
+
+/* Entity Cards */
+.saga-entity-card {
+    background-color: var(--bg-elevated);
+    border-color: var(--border-primary);
+    box-shadow: var(--shadow-md);
+}
+
+.saga-entity-card:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-secondary);
+}
+
+.saga-entity-card__header {
+    background-color: var(--bg-secondary);
+    border-bottom-color: var(--border-primary);
+}
+
+.saga-entity-card__title {
+    color: var(--text-primary);
+}
+
+.saga-entity-card__meta {
+    color: var(--text-secondary);
+}
+
+/* Entity Meta */
+.saga-entity-meta {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-primary);
+}
+
+.saga-entity-meta__label {
+    color: var(--text-secondary);
+}
+
+.saga-entity-meta__value {
+    color: var(--text-primary);
+}
+
+/* Badges */
+.saga-badge {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--border-primary);
+}
+
+.saga-badge--character {
+    background-color: var(--entity-character);
+    color: var(--text-inverse);
+}
+
+.saga-badge--location {
+    background-color: var(--entity-location);
+    color: var(--text-inverse);
+}
+
+.saga-badge--event {
+    background-color: var(--entity-event);
+    color: var(--text-inverse);
+}
+
+.saga-badge--faction {
+    background-color: var(--entity-faction);
+    color: var(--text-inverse);
+}
+
+.saga-badge--artifact {
+    background-color: var(--entity-artifact);
+    color: var(--text-inverse);
+}
+
+.saga-badge--concept {
+    background-color: var(--entity-concept);
+    color: var(--text-inverse);
+}
+
+/* Relationships */
+.saga-relationships {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-primary);
+}
+
+.saga-relationships__title {
+    color: var(--text-primary);
+}
+
+.saga-relationships__group {
+    border-color: var(--border-primary);
+}
+
+.saga-relationships__group-title {
+    color: var(--text-secondary);
+}
+
+.saga-relationships__item {
+    border-color: var(--border-primary);
+}
+
+.saga-relationships__item-link {
+    color: var(--accent-primary);
+}
+
+.saga-relationships__item-link:hover {
+    color: var(--accent-primary-hover);
+}
+
+/* Filters */
+.saga-filters {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-primary);
+}
+
+.saga-filters__label {
+    color: var(--text-secondary);
+}
+
+/* Timeline */
+.saga-timeline {
+    border-left-color: var(--border-secondary);
+}
+
+.saga-timeline__event {
+    background-color: var(--bg-elevated);
+    border-color: var(--border-primary);
+}
+
+.saga-timeline__event::before {
+    background-color: var(--accent-primary);
+    border-color: var(--bg-primary);
+}
+
+.saga-timeline__title {
+    color: var(--text-primary);
+}
+
+.saga-timeline__date {
+    color: var(--text-secondary);
+}
+
+/* ========================================================================
+   Dark Mode Toggle Button
+   ======================================================================== */
+
+.saga-dark-mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: 2px solid var(--border-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all var(--transition-duration) var(--transition-timing);
+    position: relative;
+    overflow: hidden;
+}
+
+.saga-dark-mode-toggle:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-secondary);
+    transform: scale(1.05);
+}
+
+.saga-dark-mode-toggle:focus {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+    border-color: var(--border-focus);
+}
+
+.saga-dark-mode-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Icon container */
+.saga-dark-mode-toggle__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Sun icon (light mode) */
+.saga-dark-mode-toggle__sun {
+    width: 20px;
+    height: 20px;
+    color: var(--text-primary);
+    position: absolute;
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    transition: opacity var(--transition-duration) var(--transition-timing),
+                transform var(--transition-duration) var(--transition-timing);
+}
+
+[data-theme="dark"] .saga-dark-mode-toggle__sun {
+    opacity: 0;
+    transform: scale(0) rotate(-90deg);
+}
+
+/* Moon icon (dark mode) */
+.saga-dark-mode-toggle__moon {
+    width: 20px;
+    height: 20px;
+    color: var(--text-primary);
+    position: absolute;
+    opacity: 0;
+    transform: scale(0) rotate(90deg);
+    transition: opacity var(--transition-duration) var(--transition-timing),
+                transform var(--transition-duration) var(--transition-timing);
+}
+
+[data-theme="dark"] .saga-dark-mode-toggle__moon {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Screen reader text */
+.saga-dark-mode-toggle__text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ========================================================================
+   WordPress Admin Bar Compatibility
+   ======================================================================== */
+
+#wpadminbar {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+#wpadminbar .ab-item,
+#wpadminbar a.ab-item,
+#wpadminbar > #wp-toolbar span.ab-label,
+#wpadminbar > #wp-toolbar span.noticon {
+    color: var(--text-primary);
+}
+
+#wpadminbar .ab-submenu {
+    background-color: var(--bg-tertiary);
+}
+
+/* ========================================================================
+   GeneratePress Specific Overrides
+   ======================================================================== */
+
+.main-navigation {
+    background-color: var(--bg-primary);
+}
+
+.main-navigation a {
+    color: var(--text-primary);
+}
+
+.main-navigation a:hover {
+    color: var(--accent-primary);
+}
+
+.site-header {
+    background-color: var(--bg-primary);
+    border-bottom-color: var(--border-primary);
+}
+
+.site-footer {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-top-color: var(--border-primary);
+}
+
+.widget {
+    background-color: var(--bg-elevated);
+    border-color: var(--border-primary);
+}
+
+.widget-title {
+    color: var(--text-primary);
+}
+
+/* ========================================================================
+   Print Styles - Always use light mode for printing
+   ======================================================================== */
+
+@media print {
+    [data-theme="dark"] {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f9fafb;
+        --bg-tertiary: #f3f4f6;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-primary: #e5e7eb;
+    }
+
+    .saga-dark-mode-toggle {
+        display: none !important;
+    }
+}
+
+/* ========================================================================
+   Reduced Motion Support
+   ======================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================================================
+   High Contrast Mode Support
+   ======================================================================== */
+
+@media (prefers-contrast: high) {
+    :root {
+        --border-primary: #000000;
+        --border-secondary: #000000;
+        --text-secondary: #000000;
+    }
+
+    [data-theme="dark"] {
+        --border-primary: #ffffff;
+        --border-secondary: #ffffff;
+        --text-secondary: #ffffff;
+    }
+}

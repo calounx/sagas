@@ -1,0 +1,421 @@
+/**
+ * Archive Header Styles
+ *
+ * Elegant header design for entity archive pages
+ * Includes filters, search, and sorting controls
+ *
+ * @package SagaTheme
+ * @version 1.0.0
+ */
+
+/* =============================================================================
+   Archive Wrapper
+   ========================================================================== */
+
+.saga-archive-wrapper {
+    padding: 40px 0 80px;
+    min-height: 100vh;
+}
+
+/* =============================================================================
+   Archive Header
+   ========================================================================== */
+
+.saga-archive-header {
+    margin-bottom: 60px;
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+.saga-archive-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--saga-accent-color, #6366f1), var(--saga-accent-dark, #4f46e5));
+}
+
+[data-theme="dark"] .saga-archive-header {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.saga-archive-title {
+    margin: 0 0 16px;
+    font-family: var(--font-heading, 'Playfair Display', Georgia, serif);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--saga-text-primary, #111827);
+    text-align: center;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+[data-theme="dark"] .saga-archive-title {
+    color: var(--saga-text-primary-dark, #f9fafb);
+}
+
+.saga-archive-description {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    text-align: center;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--saga-text-secondary, #4b5563);
+}
+
+[data-theme="dark"] .saga-archive-description {
+    color: var(--saga-text-secondary-dark, #d1d5db);
+}
+
+/* =============================================================================
+   Filter Form
+   ========================================================================== */
+
+.saga-archive-filters {
+    margin-top: 40px;
+}
+
+.saga-filter-form {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.saga-filter-form__controls {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.saga-filter-form__field {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.saga-filter-form__search,
+.saga-filter-form__select {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1rem;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--saga-text-primary, #111827);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.saga-filter-form__search::placeholder {
+    color: var(--saga-text-muted, #6b7280);
+}
+
+.saga-filter-form__search:focus,
+.saga-filter-form__select:focus {
+    outline: none;
+    border-color: var(--saga-accent-color, #6366f1);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+[data-theme="dark"] .saga-filter-form__search,
+[data-theme="dark"] .saga-filter-form__select {
+    background: #1f2937;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #f9fafb;
+}
+
+[data-theme="dark"] .saga-filter-form__search::placeholder {
+    color: #9ca3af;
+}
+
+.saga-filter-form__submit {
+    padding: 14px 36px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--saga-accent-color, #6366f1), var(--saga-accent-dark, #4f46e5));
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(99, 102, 241, 0.2);
+    white-space: nowrap;
+}
+
+.saga-filter-form__submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(99, 102, 241, 0.3);
+}
+
+.saga-filter-form__submit:active {
+    transform: translateY(0);
+}
+
+.saga-filter-form__submit:focus-visible {
+    outline: 3px solid var(--saga-accent-color, #6366f1);
+    outline-offset: 4px;
+}
+
+/* =============================================================================
+   Archive Content
+   ========================================================================== */
+
+.saga-archive-content {
+    padding: 0 20px;
+}
+
+.saga-archive-content .container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* =============================================================================
+   Empty State
+   ========================================================================== */
+
+.saga-empty-state {
+    text-align: center;
+    padding: 100px 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.saga-empty-state__icon {
+    font-size: 5rem;
+    margin-bottom: 32px;
+    opacity: 0.7;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.saga-empty-state__title {
+    font-family: var(--font-heading, 'Playfair Display', Georgia, serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--saga-text-primary, #111827);
+    margin: 0 0 16px;
+    letter-spacing: -0.01em;
+}
+
+[data-theme="dark"] .saga-empty-state__title {
+    color: var(--saga-text-primary-dark, #f9fafb);
+}
+
+.saga-empty-state__description {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--saga-text-muted, #6b7280);
+    margin: 0 0 40px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+[data-theme="dark"] .saga-empty-state__description {
+    color: var(--saga-text-muted-dark, #9ca3af);
+}
+
+.saga-empty-state__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--saga-accent-color, #6366f1), var(--saga-accent-dark, #4f46e5));
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.saga-empty-state__button:hover {
+    background: linear-gradient(135deg, var(--saga-accent-dark, #4f46e5), var(--saga-accent-color, #6366f1));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.saga-empty-state__button:focus-visible {
+    outline: 3px solid var(--saga-accent-color, #6366f1);
+    outline-offset: 4px;
+}
+
+/* =============================================================================
+   Screen Reader Only
+   ========================================================================== */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* =============================================================================
+   Container
+   ========================================================================== */
+
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* =============================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .saga-archive-title {
+        font-size: 2.5rem;
+    }
+
+    .saga-archive-description {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .saga-archive-wrapper {
+        padding: 20px 0 60px;
+    }
+
+    .saga-archive-header {
+        padding: 40px 0;
+        margin-bottom: 40px;
+    }
+
+    .saga-archive-title {
+        font-size: 2rem;
+    }
+
+    .saga-archive-description {
+        font-size: 1rem;
+        margin-bottom: 32px;
+    }
+
+    .saga-filter-form__controls {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .saga-filter-form__field {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .saga-filter-form__submit {
+        width: 100%;
+        padding: 16px;
+    }
+
+    .saga-empty-state {
+        padding: 60px 20px;
+    }
+
+    .saga-empty-state__icon {
+        font-size: 4rem;
+        margin-bottom: 24px;
+    }
+
+    .saga-empty-state__title {
+        font-size: 1.75rem;
+    }
+
+    .saga-empty-state__description {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .saga-archive-title {
+        font-size: 1.75rem;
+    }
+
+    .saga-filter-form__search,
+    .saga-filter-form__select {
+        padding: 12px 16px;
+    }
+
+    .saga-empty-state__title {
+        font-size: 1.5rem;
+    }
+}
+
+/* =============================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .saga-empty-state {
+        animation: none;
+    }
+
+    .saga-empty-state__icon {
+        animation: none;
+    }
+
+    .saga-filter-form__search:focus,
+    .saga-filter-form__select:focus {
+        transform: none;
+    }
+
+    .saga-filter-form__submit:hover,
+    .saga-empty-state__button:hover {
+        transform: none;
+    }
+}
+
+/* =============================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .saga-archive-header {
+        background: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .saga-archive-filters,
+    .saga-filter-form {
+        display: none;
+    }
+
+    .saga-empty-state__button {
+        display: none;
+    }
+}

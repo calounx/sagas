@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Saga Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .offline-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .offline-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .offline-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #9ca3af;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .offline-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        .status-indicator.online {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .cached-content {
+            margin-top: 40px;
+        }
+
+        .cached-content h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cached-list {
+            list-style: none;
+        }
+
+        .cached-item {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .cached-item:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .cached-item a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cached-item a:hover {
+            color: #4338ca;
+        }
+
+        .cached-item-meta {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .sync-info {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .sync-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 12px;
+        }
+
+        .sync-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .sync-stat:last-child {
+            border-bottom: none;
+        }
+
+        .sync-stat-label {
+            color: #1f2937;
+            font-size: 14px;
+        }
+
+        .sync-stat-value {
+            color: #4f46e5;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            opacity: 0.3;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        @media (max-width: 640px) {
+            .offline-container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-header">
+            <div class="offline-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3"></path>
+                </svg>
+            </div>
+            <h1>You're Offline</h1>
+            <p class="offline-subtitle">Don't worry, you can still access your cached content</p>
+            <div class="status-indicator" id="connectionStatus">
+                <span class="status-dot"></span>
+                <span id="statusText">No internet connection</span>
+            </div>
+        </div>
+
+        <div class="cached-content">
+            <h2>
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path>
+                </svg>
+                Cached Content
+            </h2>
+
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search cached entities...">
+            </div>
+
+            <ul class="cached-list" id="cachedList">
+                <!-- Populated by JavaScript -->
+            </ul>
+        </div>
+
+        <div class="sync-info">
+            <h3>Sync Status</h3>
+            <div class="sync-stat">
+                <span class="sync-stat-label">Pending Annotations</span>
+                <span class="sync-stat-value" id="pendingAnnotations">0</span>
+            </div>
+            <div class="sync-stat">
+                <span class="sync-stat-label">Pending Bookmarks</span>
+                <span class="sync-stat-value" id="pendingBookmarks">0</span>
+            </div>
+            <div class="sync-stat">
+                <span class="sync-stat-label">Last Synced</span>
+                <span class="sync-stat-value" id="lastSynced">Never</span>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="retryBtn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Retry Connection
+            </button>
+            <button class="btn btn-secondary" id="refreshBtn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Refresh Page
+            </button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            let cachedPages = [];
+
+            // Initialize
+            async function init() {
+                await loadCachedPages();
+                updateConnectionStatus();
+                updateSyncStatus();
+                setupEventListeners();
+            }
+
+            // Load cached pages from cache storage
+            async function loadCachedPages() {
+                try {
+                    const cacheNames = await caches.keys();
+                    const entityCaches = cacheNames.filter(name => name.includes('entities') || name.includes('dynamic'));
+
+                    for (const cacheName of entityCaches) {
+                        const cache = await caches.open(cacheName);
+                        const requests = await cache.keys();
+
+                        for (const request of requests) {
+                            const url = new URL(request.url);
+
+                            // Only show entity pages
+                            if (url.pathname.includes('/saga_entity/') || url.pathname.includes('/entity/')) {
+                                const response = await cache.match(request);
+                                const html = await response.text();
+
+                                // Extract title from HTML
+                                const titleMatch = html.match(/<title>(.*?)<\/title>/);
+                                const title = titleMatch ? titleMatch[1].replace(' - Saga Manager', '') : url.pathname;
+
+                                cachedPages.push({
+                                    url: url.pathname,
+                                    title: title,
+                                    cached: new Date(response.headers.get('date') || Date.now())
+                                });
+                            }
+                        }
+                    }
+
+                    renderCachedList();
+                } catch (error) {
+                    console.error('Failed to load cached pages:', error);
+                }
+            }
+
+            // Render cached list
+            function renderCachedList() {
+                const list = document.getElementById('cachedList');
+
+                if (cachedPages.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <p>No cached content available</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = cachedPages.map(page => `
+                    <li class="cached-item">
+                        <a href="${page.url}">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            ${page.title}
+                        </a>
+                        <div class="cached-item-meta">
+                            Cached ${formatDate(page.cached)}
+                        </div>
+                    </li>
+                `).join('');
+            }
+
+            // Format date
+            function formatDate(date) {
+                const now = new Date();
+                const diff = now - new Date(date);
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+                if (days === 0) return 'today';
+                if (days === 1) return 'yesterday';
+                if (days < 7) return `${days} days ago`;
+
+                return new Date(date).toLocaleDateString();
+            }
+
+            // Update connection status
+            function updateConnectionStatus() {
+                const statusIndicator = document.getElementById('connectionStatus');
+                const statusText = document.getElementById('statusText');
+                const isOnline = navigator.onLine;
+
+                if (isOnline) {
+                    statusIndicator.classList.add('online');
+                    statusText.textContent = 'Connected - Syncing...';
+
+                    // Redirect to home after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1000);
+                } else {
+                    statusIndicator.classList.remove('online');
+                    statusText.textContent = 'No internet connection';
+                }
+            }
+
+            // Update sync status
+            async function updateSyncStatus() {
+                try {
+                    const db = await openIndexedDB();
+
+                    const annotations = await getQueuedItems(db, 'annotations');
+                    const bookmarks = await getQueuedItems(db, 'bookmarks');
+
+                    document.getElementById('pendingAnnotations').textContent = annotations.length;
+                    document.getElementById('pendingBookmarks').textContent = bookmarks.length;
+
+                    const lastSync = localStorage.getItem('saga_last_sync');
+                    document.getElementById('lastSynced').textContent = lastSync ? formatDate(lastSync) : 'Never';
+                } catch (error) {
+                    console.error('Failed to update sync status:', error);
+                }
+            }
+
+            // Open IndexedDB
+            function openIndexedDB() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open('SagaOfflineDB', 1);
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => resolve(request.result);
+                });
+            }
+
+            // Get queued items
+            function getQueuedItems(db, storeName) {
+                return new Promise((resolve, reject) => {
+                    const transaction = db.transaction([storeName], 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.getAll();
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                // Online/offline events
+                window.addEventListener('online', updateConnectionStatus);
+                window.addEventListener('offline', updateConnectionStatus);
+
+                // Retry button
+                document.getElementById('retryBtn').addEventListener('click', () => {
+                    updateConnectionStatus();
+                });
+
+                // Refresh button
+                document.getElementById('refreshBtn').addEventListener('click', () => {
+                    window.location.reload();
+                });
+
+                // Search
+                document.getElementById('searchInput').addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const filtered = cachedPages.filter(page =>
+                        page.title.toLowerCase().includes(query)
+                    );
+
+                    const list = document.getElementById('cachedList');
+                    if (filtered.length === 0) {
+                        list.innerHTML = '<div class="empty-state"><p>No matching cached content</p></div>';
+                    } else {
+                        list.innerHTML = filtered.map(page => `
+                            <li class="cached-item">
+                                <a href="${page.url}">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    ${page.title}
+                                </a>
+                                <div class="cached-item-meta">Cached ${formatDate(page.cached)}</div>
+                            </li>
+                        `).join('');
+                    }
+                });
+            }
+
+            // Initialize on load
+            init();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+/**
+ * Print Styles for Saga Manager Entity Templates
+ *
+ * Optimized for printing entity pages with clean, readable layout
+ *
+ * @package SagaManager
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Print Reset & Base Styles
+   ========================================================================== */
+
+@media print {
+    /* Reset for print */
+    * {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* Page setup */
+    @page {
+        margin: 2cm;
+        size: A4;
+    }
+
+    /* Typography */
+    body {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 12pt;
+        line-height: 1.6;
+    }
+
+    h1 {
+        font-size: 24pt;
+        margin-bottom: 0.5em;
+        page-break-after: avoid;
+    }
+
+    h2 {
+        font-size: 18pt;
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+        page-break-after: avoid;
+    }
+
+    h3 {
+        font-size: 14pt;
+        margin-top: 0.8em;
+        margin-bottom: 0.4em;
+        page-break-after: avoid;
+    }
+
+    p {
+        orphans: 3;
+        widows: 3;
+    }
+
+    /* Links */
+    a {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 90%;
+    }
+
+    /* Don't show URLs for internal links */
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    /* Images */
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
+
+    /* Tables */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    th,
+    td {
+        border: 1px solid #000;
+        padding: 0.5em;
+    }
+
+    /* ==========================================================================
+       Hide Non-Essential Elements
+       ========================================================================== */
+
+    /* Navigation */
+    nav,
+    .navigation,
+    .site-navigation,
+    .main-navigation,
+    .primary-menu,
+    .secondary-menu {
+        display: none !important;
+    }
+
+    /* Header/Footer */
+    header.site-header,
+    footer.site-footer,
+    .site-branding,
+    .breadcrumbs {
+        display: none !important;
+    }
+
+    /* Widgets & Sidebars */
+    .widget-area,
+    aside.sidebar {
+        display: none !important;
+    }
+
+    /* Interactive Elements */
+    button,
+    .button,
+    .btn,
+    input[type="button"],
+    input[type="submit"],
+    form,
+    .saga-bookmark-button,
+    .saga-collection-button,
+    .saga-dark-mode-toggle {
+        display: none !important;
+    }
+
+    /* Social sharing */
+    .share-buttons,
+    .social-share,
+    .addtoany_share_save_container {
+        display: none !important;
+    }
+
+    /* Comments */
+    .comments-area,
+    #comments {
+        display: none !important;
+    }
+
+    /* ==========================================================================
+       Entity Template Print Styles
+       ========================================================================== */
+
+    /* Entity Hero Section */
+    .saga-entity__hero {
+        margin-bottom: 2em;
+        border-bottom: 2px solid #000;
+        padding-bottom: 1em;
+    }
+
+    .saga-entity__meta {
+        font-size: 10pt;
+        margin-bottom: 0.5em;
+    }
+
+    .saga-entity__type,
+    .saga-entity__saga {
+        display: inline-block;
+        margin-right: 1em;
+        font-weight: bold;
+    }
+
+    .saga-entity__title {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+
+    .saga-entity__excerpt {
+        font-size: 11pt;
+        font-style: italic;
+        margin-top: 1em;
+    }
+
+    /* Entity Content Grid */
+    .saga-entity__grid {
+        display: block !important;
+    }
+
+    .saga-entity__primary {
+        width: 100% !important;
+        float: none !important;
+    }
+
+    .saga-entity__sidebar {
+        display: block !important;
+        width: 100% !important;
+        float: none !important;
+        margin-top: 2em;
+        border-top: 1px solid #000;
+        padding-top: 1em;
+    }
+
+    /* Sections */
+    .saga-section {
+        margin-bottom: 2em;
+        page-break-inside: avoid;
+    }
+
+    .saga-section__title {
+        border-bottom: 1px solid #000;
+        padding-bottom: 0.3em;
+        margin-bottom: 1em;
+    }
+
+    /* Attributes */
+    .saga-attributes {
+        display: table;
+        width: 100%;
+    }
+
+    .saga-attribute {
+        display: table-row;
+        page-break-inside: avoid;
+    }
+
+    .saga-attribute__label {
+        display: table-cell;
+        font-weight: bold;
+        width: 30%;
+        padding: 0.3em 1em 0.3em 0;
+        vertical-align: top;
+    }
+
+    .saga-attribute__value {
+        display: table-cell;
+        padding: 0.3em 0;
+        vertical-align: top;
+    }
+
+    /* Timeline */
+    .saga-timeline__list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .saga-timeline__item {
+        margin-bottom: 1em;
+        padding-left: 2em;
+        position: relative;
+        page-break-inside: avoid;
+    }
+
+    .saga-timeline__marker {
+        position: absolute;
+        left: 0;
+        top: 0.3em;
+        width: 10px;
+        height: 10px;
+        border: 2px solid #000;
+        border-radius: 50%;
+        background: #fff;
+    }
+
+    .saga-timeline__item--current .saga-timeline__marker {
+        background: #000;
+    }
+
+    .saga-timeline__date {
+        font-weight: bold;
+        font-size: 10pt;
+        display: block;
+    }
+
+    .saga-timeline__title {
+        font-size: 12pt;
+        margin-top: 0.2em;
+        margin-bottom: 0.3em;
+    }
+
+    .saga-timeline__description {
+        font-size: 10pt;
+        margin-bottom: 0.3em;
+    }
+
+    /* Character Bio */
+    .saga-character__portrait,
+    .saga-character-bio__portrait {
+        float: right;
+        width: 40%;
+        margin: 0 0 1em 1em;
+    }
+
+    .saga-character__portrait-image,
+    .saga-character-bio__portrait-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .saga-character__aliases,
+    .saga-character-bio__aliases {
+        font-style: italic;
+        margin-bottom: 1em;
+    }
+
+    /* Location Images */
+    .saga-location__featured-image,
+    .saga-location__image-container {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+
+    /* Map Placeholder - Hide interactive elements */
+    .saga-location-map__placeholder {
+        display: none !important;
+    }
+
+    .saga-location-map__coordinates {
+        display: block !important;
+    }
+
+    /* Relationships */
+    .saga-relationships,
+    .saga-relationship,
+    .saga-related-list {
+        page-break-inside: avoid;
+    }
+
+    .saga-relationship__image,
+    .saga-related-list__image {
+        display: none !important;
+    }
+
+    .saga-related-list {
+        list-style: disc;
+        padding-left: 2em;
+    }
+
+    .saga-related-list__item {
+        margin-bottom: 0.3em;
+    }
+
+    /* Faction/Event Cards */
+    .saga-members-grid,
+    .saga-territories,
+    .saga-participants {
+        display: block !important;
+    }
+
+    .saga-member-card,
+    .saga-territory-card,
+    .saga-participant {
+        display: inline-block;
+        width: 48%;
+        margin-right: 2%;
+        margin-bottom: 1em;
+        page-break-inside: avoid;
+    }
+
+    .saga-member-card__image,
+    .saga-territory-card__image,
+    .saga-participant__image {
+        display: none !important;
+    }
+
+    /* Footer */
+    .saga-entity__footer {
+        margin-top: 2em;
+        border-top: 1px solid #000;
+        padding-top: 1em;
+        font-size: 9pt;
+    }
+
+    /* ==========================================================================
+       Utility Classes
+       ========================================================================== */
+
+    .print-only {
+        display: block !important;
+    }
+
+    .no-print,
+    .screen-only {
+        display: none !important;
+    }
+
+    /* Page breaks */
+    .page-break-before {
+        page-break-before: always;
+    }
+
+    .page-break-after {
+        page-break-after: always;
+    }
+
+    .page-break-avoid {
+        page-break-inside: avoid;
+    }
+
+    /* ==========================================================================
+       Character Template Print Styles
+       ========================================================================== */
+
+    .saga-entity--character .saga-character__quotes {
+        border-left: 3px solid #000;
+        padding-left: 1em;
+        margin: 1em 0;
+        font-style: italic;
+    }
+
+    /* ==========================================================================
+       Location Template Print Styles
+       ========================================================================== */
+
+    .saga-entity--location .saga-location__sublocation-grid {
+        display: block !important;
+    }
+
+    .saga-location__sublocation-card {
+        margin-bottom: 1em;
+        page-break-inside: avoid;
+    }
+
+    /* ==========================================================================
+       Event Template Print Styles
+       ========================================================================== */
+
+    .saga-entity--event .saga-event__meta {
+        background: #f0f0f0;
+        border: 1px solid #000;
+        padding: 1em;
+        margin-bottom: 1em;
+    }
+
+    /* ==========================================================================
+       Faction Template Print Styles
+       ========================================================================== */
+
+    .saga-entity--faction .saga-faction__emblem {
+        float: right;
+        width: 30%;
+        margin: 0 0 1em 1em;
+    }
+
+    .saga-entity--faction .saga-faction__motto {
+        font-style: italic;
+        font-size: 14pt;
+        text-align: center;
+        margin: 1em 0;
+    }
+
+    /* ==========================================================================
+       Artifact Template Print Styles
+       ========================================================================== */
+
+    .saga-entity--artifact .saga-artifact__image-container {
+        float: right;
+        width: 40%;
+        margin: 0 0 1em 1em;
+    }
+
+    /* ==========================================================================
+       Concept Template Print Styles
+       ========================================================================== */
+
+    .saga-entity--concept .saga-concept__icon {
+        float: right;
+        width: 25%;
+        margin: 0 0 1em 1em;
+    }
+}

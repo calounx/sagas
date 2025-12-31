@@ -1,0 +1,479 @@
+/**
+ * Collapsible Sections Styles
+ *
+ * Accordion-style sections with smooth animations and accessibility.
+ *
+ * @package SagaManager
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Section Controls
+   ========================================================================== */
+
+.saga-section-controls {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--color-background-secondary, #f8f9fa);
+    border-radius: var(--border-radius, 8px);
+    flex-wrap: wrap;
+}
+
+.saga-section-controls[data-position="bottom"] {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+}
+
+.saga-expand-all,
+.saga-collapse-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-primary, #2563eb);
+    background: white;
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: var(--border-radius-sm, 6px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saga-expand-all:hover,
+.saga-collapse-all:hover {
+    background: var(--color-primary-light, #eff6ff);
+    border-color: var(--color-primary, #2563eb);
+}
+
+.saga-expand-all:focus,
+.saga-collapse-all:focus {
+    outline: 2px solid var(--color-primary, #2563eb);
+    outline-offset: 2px;
+}
+
+.saga-expand-all .icon,
+.saga-collapse-all .icon {
+    flex-shrink: 0;
+}
+
+/* Mobile: Stack buttons */
+@media (max-width: 640px) {
+    .saga-section-controls {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin-bottom: 1rem;
+    }
+
+    .saga-expand-all,
+    .saga-collapse-all {
+        flex: 1;
+        justify-content: center;
+        min-height: 44px; /* Touch target */
+    }
+}
+
+/* ==========================================================================
+   Collapsible Section Container
+   ========================================================================== */
+
+.saga-collapsible-section {
+    margin-bottom: 1rem;
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: var(--border-radius, 8px);
+    background: white;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+}
+
+.saga-collapsible-section:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.saga-collapsible-section:focus-within {
+    border-color: var(--color-primary, #2563eb);
+    box-shadow: 0 0 0 3px var(--color-primary-light, #eff6ff);
+}
+
+/* ==========================================================================
+   Toggle Button
+   ========================================================================== */
+
+.saga-section-toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: var(--color-background-secondary, #f8f9fa);
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.2s ease;
+    gap: 0.75rem;
+    min-height: 44px; /* Touch target */
+}
+
+.saga-section-toggle:hover {
+    background: var(--color-background-hover, #e9ecef);
+}
+
+.saga-section-toggle:focus {
+    outline: 2px solid var(--color-primary, #2563eb);
+    outline-offset: -2px;
+    z-index: 1;
+}
+
+.saga-section-toggle:active {
+    background: var(--color-background-active, #dee2e6);
+}
+
+/* Toggle Icon */
+.toggle-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--color-text-secondary, #6b7280);
+    transition: transform 0.3s ease;
+}
+
+.saga-section-toggle[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Reduced motion: instant rotation */
+@media (prefers-reduced-motion: reduce) {
+    .toggle-icon {
+        transition: none;
+    }
+}
+
+.toggle-icon .chevron {
+    display: block;
+}
+
+/* Section Title */
+.section-title {
+    flex: 1;
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #111827);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-primary, #2563eb);
+}
+
+.section-icon svg {
+    display: block;
+}
+
+/* Screen reader only - toggle state */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ==========================================================================
+   Section Content
+   ========================================================================== */
+
+.saga-section-content {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.saga-section-content[aria-hidden="false"] {
+    max-height: 10000px; /* Large enough for content */
+    opacity: 1;
+}
+
+/* Reduced motion: instant show/hide */
+@media (prefers-reduced-motion: reduce) {
+    .saga-section-content {
+        transition: none;
+    }
+
+    .saga-section-content[aria-hidden="true"] {
+        display: none;
+    }
+
+    .saga-section-content[aria-hidden="false"] {
+        display: block;
+        max-height: none;
+        opacity: 1;
+    }
+}
+
+.section-content-inner {
+    padding: 1.5rem 1.25rem;
+    color: var(--color-text-primary, #374151);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   Content Typography
+   ========================================================================== */
+
+.section-content-inner h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #111827);
+}
+
+.section-content-inner h4:first-child {
+    margin-top: 0;
+}
+
+.section-content-inner p {
+    margin-bottom: 1rem;
+}
+
+.section-content-inner p:last-child {
+    margin-bottom: 0;
+}
+
+.section-content-inner ul,
+.section-content-inner ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.section-content-inner li {
+    margin-bottom: 0.5rem;
+}
+
+.section-content-inner a {
+    color: var(--color-primary, #2563eb);
+    text-decoration: underline;
+}
+
+.section-content-inner a:hover {
+    color: var(--color-primary-dark, #1d4ed8);
+}
+
+/* ==========================================================================
+   Hash Target Highlight
+   ========================================================================== */
+
+.saga-collapsible-section:target {
+    animation: highlight-section 2s ease;
+}
+
+@keyframes highlight-section {
+    0% {
+        background-color: var(--color-primary-light, #eff6ff);
+    }
+    100% {
+        background-color: white;
+    }
+}
+
+/* ==========================================================================
+   Loading State
+   ========================================================================== */
+
+.saga-section-content.is-loading .section-content-inner {
+    position: relative;
+    min-height: 100px;
+}
+
+.saga-section-content.is-loading .section-content-inner::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--color-border, #e5e7eb);
+    border-top-color: var(--color-primary, #2563eb);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Dark Mode
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .saga-collapsible-section {
+        background: var(--color-dark-bg, #1f2937);
+        border-color: var(--color-dark-border, #374151);
+    }
+
+    .saga-section-toggle {
+        background: var(--color-dark-bg-secondary, #111827);
+    }
+
+    .saga-section-toggle:hover {
+        background: var(--color-dark-bg-hover, #1f2937);
+    }
+
+    .section-title {
+        color: var(--color-dark-text-primary, #f9fafb);
+    }
+
+    .section-content-inner {
+        color: var(--color-dark-text-secondary, #d1d5db);
+    }
+
+    .saga-section-controls {
+        background: var(--color-dark-bg-secondary, #111827);
+    }
+
+    .saga-expand-all,
+    .saga-collapse-all {
+        background: var(--color-dark-bg, #1f2937);
+        border-color: var(--color-dark-border, #374151);
+        color: var(--color-primary-light, #60a5fa);
+    }
+
+    .saga-expand-all:hover,
+    .saga-collapse-all:hover {
+        background: var(--color-dark-bg-hover, #374151);
+    }
+}
+
+/* ==========================================================================
+   High Contrast Mode
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+    .saga-collapsible-section {
+        border-width: 2px;
+    }
+
+    .saga-section-toggle:focus {
+        outline-width: 3px;
+        outline-offset: 0;
+    }
+
+    .saga-expand-all:focus,
+    .saga-collapse-all:focus {
+        outline-width: 3px;
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .saga-section-controls {
+        display: none;
+    }
+
+    .saga-section-toggle {
+        pointer-events: none;
+    }
+
+    .saga-section-content {
+        max-height: none !important;
+        opacity: 1 !important;
+        overflow: visible !important;
+    }
+
+    .saga-section-content[aria-hidden="true"] {
+        max-height: none !important;
+        opacity: 1 !important;
+    }
+}
+
+/* ==========================================================================
+   Tablet
+   ========================================================================== */
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .saga-section-toggle {
+        padding: 0.875rem 1rem;
+    }
+
+    .section-content-inner {
+        padding: 1.25rem 1rem;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
+}
+
+/* ==========================================================================
+   Mobile Optimization
+   ========================================================================== */
+
+@media (max-width: 640px) {
+    .saga-collapsible-section {
+        margin-bottom: 0.75rem;
+        border-radius: var(--border-radius-sm, 6px);
+    }
+
+    .saga-section-toggle {
+        padding: 0.75rem 1rem;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
+
+    .section-content-inner {
+        padding: 1rem;
+        font-size: 0.9375rem;
+    }
+
+    /* Larger touch targets */
+    .toggle-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .toggle-icon .chevron {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
+
+.saga-section-content[data-empty="true"] .section-content-inner {
+    padding: 2rem 1.25rem;
+    text-align: center;
+    color: var(--color-text-secondary, #6b7280);
+    font-style: italic;
+}
+
+.saga-section-content[data-empty="true"] .section-content-inner::before {
+    content: "No content available";
+    display: block;
+}

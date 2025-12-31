@@ -1,0 +1,78 @@
+SCREENSHOT REQUIREMENTS FOR SAGA MANAGER THEME
+===============================================
+
+The screenshot.png should be 1200x900 pixels and display:
+
+LAYOUT:
+-------
+1. TOP SECTION (Header Area):
+   - GeneratePress-style clean header
+   - Theme name: "Saga Manager"
+   - Tagline: "Manage Your Fictional Universes"
+
+2. MAIN CONTENT AREA (70% of image):
+   - Grid of 6 entity cards (2 rows x 3 columns)
+   - Each card showing:
+     * Entity thumbnail/icon
+     * Entity name (e.g., "Luke Skywalker", "Tatooine", "Battle of Yavin")
+     * Entity type badge (colored: Character=blue, Location=green, Event=yellow)
+     * Importance score bar (gradient from red to green)
+     * "View Details" link
+
+3. SIDEBAR (Right side, 30%):
+   - "Filter Entities" widget
+   - Saga dropdown
+   - Entity type dropdown
+   - Importance range slider
+   - "Apply Filters" button
+
+COLOR SCHEME:
+-------------
+- Primary: #3b82f6 (blue)
+- Character badge: #dbeafe (light blue) / #1e40af (dark blue text)
+- Location badge: #dcfce7 (light green) / #166534 (dark green text)
+- Event badge: #fef3c7 (light yellow) / #92400e (brown text)
+- Background: #f9fafb (light gray)
+- Cards: #ffffff (white)
+- Borders: #e5e7eb (medium gray)
+
+TYPOGRAPHY:
+-----------
+- Headings: Bold, modern sans-serif
+- Body: Clean, readable sans-serif
+- Badges: Uppercase, small, bold
+
+VISUAL ELEMENTS:
+----------------
+- Rounded corners on cards (8px)
+- Subtle shadows on cards
+- Gradient importance bars
+- Clean, professional design
+- No cluttered elements
+- Plenty of white space
+
+EXAMPLE ENTITIES TO SHOW:
+--------------------------
+1. Luke Skywalker (Character) - Importance: 95
+2. Tatooine (Location) - Importance: 80
+3. Battle of Yavin (Event) - Importance: 90
+4. Rebel Alliance (Faction) - Importance: 85
+5. Millennium Falcon (Artifact) - Importance: 75
+6. The Force (Concept) - Importance: 100
+
+TOOLS TO CREATE:
+----------------
+You can create this screenshot using:
+- Figma (https://figma.com)
+- Canva (https://canva.com)
+- Adobe XD
+- Sketch
+- Or take an actual screenshot of the theme in action
+
+FILE SPECIFICATIONS:
+--------------------
+- Format: PNG
+- Dimensions: 1200 x 900 pixels
+- File name: screenshot.png
+- Location: /saga-manager-theme/screenshot.png
+- Max file size: 1 MB

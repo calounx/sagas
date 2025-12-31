@@ -1,0 +1,130 @@
+name: Release Theme
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Theme Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Release version: $VERSION"
+
+      - name: Verify version consistency
+        run: |
+          TAG_VERSION="${{ steps.version.outputs.version }}"
+          STYLE_VERSION=$(grep "^Version:" style.css | awk '{print $2}' | tr -d '\r')
+
+          echo "Tag version: $TAG_VERSION"
+          echo "style.css version: $STYLE_VERSION"
+
+          if [ "$TAG_VERSION" != "$STYLE_VERSION" ]; then
+            echo "ERROR: Version mismatch!"
+            echo "Tag version ($TAG_VERSION) does not match style.css version ($STYLE_VERSION)"
+            exit 1
+          fi
+
+          echo "Version verification passed: $TAG_VERSION"
+
+      - name: Prepare release package
+        run: |
+          chmod +x prepare-release.sh
+          ./prepare-release.sh
+
+      - name: Verify ZIP contents
+        run: |
+          if [ ! -f "saga-manager-theme.zip" ]; then
+            echo "ERROR: saga-manager-theme.zip not found!"
+            exit 1
+          fi
+
+          echo "ZIP file created successfully"
+          ls -lh saga-manager-theme.zip
+
+          echo ""
+          echo "ZIP contents:"
+          unzip -l saga-manager-theme.zip | head -50
+
+          echo ""
+          echo "Verifying exclusions..."
+          if unzip -l saga-manager-theme.zip | grep -E '(\.git/|node_modules/|\.github/)'; then
+            echo "ERROR: ZIP contains excluded files/directories!"
+            exit 1
+          fi
+
+          echo "ZIP verification passed"
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "First release - no previous tag found"
+            CHANGELOG="Initial release of Saga Manager Theme v${{ steps.version.outputs.version }}"
+          else
+            echo "Generating changelog from $PREVIOUS_TAG to ${{ github.ref_name }}"
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" $PREVIOUS_TAG..HEAD | grep -v "^$")
+          fi
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: saga-manager-theme.zip
+          body: |
+            # Saga Manager Theme v${{ steps.version.outputs.version }}
+
+            WordPress child theme for GeneratePress, optimized for the Saga Manager plugin.
+
+            ## Installation
+
+            1. Download `saga-manager-theme.zip`
+            2. Go to WordPress Admin > Appearance > Themes > Add New
+            3. Click "Upload Theme" and select the ZIP file
+            4. Activate the theme
+
+            **Requirements:**
+            - WordPress 6.0+
+            - PHP 8.2+
+            - GeneratePress theme (parent)
+            - Saga Manager plugin
+
+            ## Changes in this release
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ## Support
+
+            - GitHub Issues: https://github.com/calounx/sagas/issues
+            - Documentation: https://github.com/calounx/saga-manager-theme
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: saga-manager-theme-${{ steps.version.outputs.version }}
+          path: saga-manager-theme.zip
+          retention-days: 90

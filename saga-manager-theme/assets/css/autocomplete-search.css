@@ -1,0 +1,488 @@
+/**
+ * Saga Manager - Smart Autocomplete Search Styles
+ *
+ * Mobile-first responsive design with accessibility support
+ *
+ * @package SagaTheme
+ */
+
+/* ========================================
+   Autocomplete Container
+   ======================================== */
+
+.saga-autocomplete {
+    position: relative;
+    width: 100%;
+}
+
+.saga-autocomplete input[type="search"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.saga-autocomplete input[type="search"]:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* ========================================
+   Dropdown Container
+   ======================================== */
+
+.saga-autocomplete__dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    animation: saga-ac-slide-in 0.2s ease-out;
+}
+
+@keyframes saga-ac-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-0.5rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom scrollbar */
+.saga-autocomplete__dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.saga-autocomplete__dropdown::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 0 0.75rem 0.75rem 0;
+}
+
+.saga-autocomplete__dropdown::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+.saga-autocomplete__dropdown::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* ========================================
+   Group Container
+   ======================================== */
+
+.saga-autocomplete__group {
+    margin: 0;
+}
+
+.saga-autocomplete__group + .saga-autocomplete__group {
+    border-top: 1px solid #f3f4f6;
+}
+
+.saga-autocomplete__group-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background-color: #f9fafb;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.saga-autocomplete__group-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.saga-autocomplete__group-title {
+    flex: 1;
+}
+
+.saga-autocomplete__clear-recent {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #ef4444;
+    background: transparent;
+    border: 1px solid #fecaca;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saga-autocomplete__clear-recent:hover {
+    color: #fff;
+    background-color: #ef4444;
+    border-color: #ef4444;
+}
+
+.saga-autocomplete__group-items {
+    margin: 0;
+    padding: 0;
+}
+
+/* ========================================
+   Autocomplete Items
+   ======================================== */
+
+.saga-autocomplete__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    border-left: 3px solid transparent;
+}
+
+.saga-autocomplete__item:hover,
+.saga-autocomplete__item--active {
+    background-color: #f3f4f6;
+    border-left-color: #3b82f6;
+}
+
+.saga-autocomplete__item:active {
+    background-color: #e5e7eb;
+}
+
+.saga-autocomplete__item:focus {
+    outline: none;
+}
+
+.saga-autocomplete__item-content {
+    flex: 1;
+    min-width: 0; /* Allow text truncation */
+}
+
+.saga-autocomplete__item-title {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #111827;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.saga-autocomplete__item-title mark {
+    background-color: #fef3c7;
+    color: #92400e;
+    font-weight: 600;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.saga-autocomplete__item-excerpt {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.saga-autocomplete__item-excerpt mark {
+    background-color: #fef3c7;
+    color: #92400e;
+    font-weight: 500;
+    padding: 0.0625rem 0.1875rem;
+    border-radius: 0.1875rem;
+}
+
+.saga-autocomplete__item-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #3b82f6;
+    background-color: #dbeafe;
+    border-radius: 0.5rem;
+}
+
+/* ========================================
+   Special States
+   ======================================== */
+
+.saga-autocomplete__loading,
+.saga-autocomplete__empty,
+.saga-autocomplete__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+/* Loading spinner */
+.saga-autocomplete__spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid #f3f4f6;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: saga-ac-spin 0.8s linear infinite;
+}
+
+@keyframes saga-ac-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.saga-autocomplete__loading span {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Empty state */
+.saga-autocomplete__empty-icon {
+    font-size: 2.5rem;
+    opacity: 0.5;
+}
+
+.saga-autocomplete__empty-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Error state */
+.saga-autocomplete__error {
+    color: #ef4444;
+}
+
+.saga-autocomplete__error-icon {
+    font-size: 2rem;
+}
+
+.saga-autocomplete__error-text {
+    font-size: 0.875rem;
+}
+
+/* ========================================
+   Recent Searches
+   ======================================== */
+
+.saga-autocomplete__item--recent {
+    opacity: 0.85;
+}
+
+.saga-autocomplete__item--recent:hover,
+.saga-autocomplete__item--recent.saga-autocomplete__item--active {
+    opacity: 1;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Small screens */
+@media (max-width: 640px) {
+    .saga-autocomplete__dropdown {
+        max-height: 60vh;
+        border-radius: 0.5rem;
+    }
+
+    .saga-autocomplete__item {
+        padding: 0.875rem 1rem;
+    }
+
+    .saga-autocomplete__item-title {
+        font-size: 0.875rem;
+    }
+
+    .saga-autocomplete__item-excerpt {
+        font-size: 0.75rem;
+    }
+
+    .saga-autocomplete__group-header {
+        padding: 0.625rem 1rem;
+        font-size: 0.8125rem;
+    }
+
+    /* Fixed positioning on mobile for better UX */
+    .saga-autocomplete--mobile .saga-autocomplete__dropdown {
+        position: fixed;
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-height: 70vh;
+        border-radius: 1rem 1rem 0 0;
+        box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1),
+                    0 -4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+}
+
+/* Medium screens */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .saga-autocomplete__dropdown {
+        max-height: 500px;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1025px) {
+    .saga-autocomplete__dropdown {
+        max-height: 600px;
+    }
+
+    .saga-autocomplete__item {
+        padding: 0.875rem 1.25rem;
+    }
+}
+
+/* ========================================
+   Dark Mode Support (optional)
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    .saga-autocomplete input[type="search"] {
+        color: #f9fafb;
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+
+    .saga-autocomplete input[type="search"]:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+    }
+
+    .saga-autocomplete__dropdown {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+
+    .saga-autocomplete__group-header {
+        background-color: #111827;
+        border-color: #374151;
+        color: #9ca3af;
+    }
+
+    .saga-autocomplete__item:hover,
+    .saga-autocomplete__item--active {
+        background-color: #374151;
+        border-left-color: #60a5fa;
+    }
+
+    .saga-autocomplete__item-title {
+        color: #f9fafb;
+    }
+
+    .saga-autocomplete__item-title mark {
+        background-color: #854d0e;
+        color: #fef3c7;
+    }
+
+    .saga-autocomplete__item-excerpt {
+        color: #9ca3af;
+    }
+
+    .saga-autocomplete__item-badge {
+        color: #60a5fa;
+        background-color: #1e3a8a;
+    }
+
+    .saga-autocomplete__empty-text,
+    .saga-autocomplete__loading span {
+        color: #9ca3af;
+    }
+
+    .saga-autocomplete__dropdown::-webkit-scrollbar-track {
+        background: #111827;
+    }
+
+    .saga-autocomplete__dropdown::-webkit-scrollbar-thumb {
+        background: #4b5563;
+    }
+
+    .saga-autocomplete__dropdown::-webkit-scrollbar-thumb:hover {
+        background: #6b7280;
+    }
+
+    .saga-autocomplete__group + .saga-autocomplete__group {
+        border-top-color: #374151;
+    }
+}
+
+/* ========================================
+   Accessibility Enhancements
+   ======================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .saga-autocomplete input[type="search"] {
+        border-width: 2px;
+    }
+
+    .saga-autocomplete__item--active {
+        outline: 2px solid currentColor;
+        outline-offset: -2px;
+    }
+
+    .saga-autocomplete__item-title mark {
+        outline: 1px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .saga-autocomplete__dropdown,
+    .saga-autocomplete input[type="search"],
+    .saga-autocomplete__item {
+        animation: none;
+        transition: none;
+    }
+
+    .saga-autocomplete__item--active {
+        scroll-behavior: auto;
+    }
+}
+
+/* Focus visible for keyboard navigation */
+.saga-autocomplete input[type="search"]:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Screen reader only text */
+.saga-autocomplete__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saga Autocomplete - Visual Example</title>
+    <link rel="stylesheet" href="../assets/css/searchform.css">
+    <link rel="stylesheet" href="../assets/css/autocomplete-search.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f9fafb;
+        }
+        .demo-section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .demo-section h2 {
+            margin-top: 0;
+            color: #111827;
+        }
+        .demo-section p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .feature-card {
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            border-left: 3px solid #3b82f6;
+        }
+        .feature-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            color: #111827;
+        }
+        .feature-card p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <h1>Saga Manager - Smart Autocomplete Search</h1>
+    <p style="color: #6b7280; font-size: 1.125rem;">
+        Production-ready autocomplete search with accessibility and performance optimizations
+    </p>
+
+    <!-- Live Demo Section -->
+    <div class="demo-section">
+        <h2>Live Demo</h2>
+        <p>Type at least 2 characters to see autocomplete suggestions. Try "sky", "luke", or "tat".</p>
+
+        <form role="search" method="get" class="saga-search-form" action="#">
+            <div class="saga-search-form__wrapper">
+                <label for="demo-search-input" class="saga-search-form__label">
+                    Search Entities
+                </label>
+
+                <div class="saga-search-form__input-wrapper">
+                    <input
+                        type="search"
+                        id="demo-search-input"
+                        class="saga-search-form__input saga-search-input"
+                        name="s"
+                        placeholder="Search characters, locations, events..."
+                        aria-describedby="demo-search-desc"
+                    />
+
+                    <button type="submit" class="saga-search-form__submit" aria-label="Submit search">
+                        <svg class="saga-search-form__icon"
+                             xmlns="http://www.w3.org/2000/svg"
+                             width="20" height="20" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <span class="saga-search-form__submit-text">Search</span>
+                    </button>
+                </div>
+
+                <span id="demo-search-desc" class="saga-search-form__description">
+                    Start typing to see suggestions
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <!-- Features Section -->
+    <div class="demo-section">
+        <h2>Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>⚡ Real-time Search</h3>
+                <p>300ms debouncing for optimal performance without overwhelming the server</p>
+            </div>
+            <div class="feature-card">
+                <h3>📂 Grouped Results</h3>
+                <p>Results organized by entity type: characters, locations, events, factions, artifacts, concepts</p>
+            </div>
+            <div class="feature-card">
+                <h3>⌨️ Keyboard Navigation</h3>
+                <p>Arrow keys, Enter, Escape - full keyboard control without touching the mouse</p>
+            </div>
+            <div class="feature-card">
+                <h3>🕐 Recent Searches</h3>
+                <p>Stores last 10 searches in localStorage for quick access to previous queries</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎨 Highlighting</h3>
+                <p>Search terms highlighted in results for easy scanning</p>
+            </div>
+            <div class="feature-card">
+                <h3>📱 Mobile Responsive</h3>
+                <p>Optimized layouts for all screen sizes with touch-friendly targets</p>
+            </div>
+            <div class="feature-card">
+                <h3>♿ Accessible</h3>
+                <p>Full ARIA support, screen reader compatible, WCAG 2.1 AA compliant</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌓 Dark Mode</h3>
+                <p>Automatic dark mode support based on system preference</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example Results Section -->
+    <div class="demo-section">
+        <h2>Example Results Dropdown</h2>
+        <p>This shows how the autocomplete dropdown looks with grouped results:</p>
+
+        <!-- Static example of dropdown -->
+        <div class="saga-autocomplete">
+            <input type="search" class="saga-search-form__input" value="sky" readonly />
+
+            <div class="saga-autocomplete__dropdown" style="display: block; position: relative;">
+                <!-- Character Group -->
+                <div class="saga-autocomplete__group" role="group">
+                    <div class="saga-autocomplete__group-header">
+                        <span class="saga-autocomplete__group-icon">👤</span>
+                        <span class="saga-autocomplete__group-title">Characters</span>
+                    </div>
+                    <div class="saga-autocomplete__group-items">
+                        <div class="saga-autocomplete__item saga-autocomplete__item--active" role="option">
+                            <div class="saga-autocomplete__item-content">
+                                <div class="saga-autocomplete__item-title">
+                                    Luke <mark>Sky</mark>walker
+                                </div>
+                                <div class="saga-autocomplete__item-excerpt">
+                                    Jedi Knight from Tatooine
+                                </div>
+                            </div>
+                            <div class="saga-autocomplete__item-badge">95</div>
+                        </div>
+                        <div class="saga-autocomplete__item" role="option">
+                            <div class="saga-autocomplete__item-content">
+                                <div class="saga-autocomplete__item-title">
+                                    Anakin <mark>Sky</mark>walker
+                                </div>
+                                <div class="saga-autocomplete__item-excerpt">
+                                    Jedi who became Darth Vader
+                                </div>
+                            </div>
+                            <div class="saga-autocomplete__item-badge">90</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Group -->
+                <div class="saga-autocomplete__group" role="group">
+                    <div class="saga-autocomplete__group-header">
+                        <span class="saga-autocomplete__group-icon">📍</span>
+                        <span class="saga-autocomplete__group-title">Locations</span>
+                    </div>
+                    <div class="saga-autocomplete__group-items">
+                        <div class="saga-autocomplete__item" role="option">
+                            <div class="saga-autocomplete__item-content">
+                                <div class="saga-autocomplete__item-title">
+                                    <mark>Sky</mark>walker Ranch
+                                </div>
+                                <div class="saga-autocomplete__item-excerpt">
+                                    Film production compound
+                                </div>
+                            </div>
+                            <div class="saga-autocomplete__item-badge">45</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Section -->
+    <div class="demo-section">
+        <h2>Keyboard Shortcuts</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: #f9fafb; text-align: left;">
+                    <th style="padding: 0.75rem; border-bottom: 2px solid #e5e7eb;">Key</th>
+                    <th style="padding: 0.75rem; border-bottom: 2px solid #e5e7eb;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;"><code>↓</code> Arrow Down</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;">Move to next result</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;"><code>↑</code> Arrow Up</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;">Move to previous result</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;"><code>Enter</code></td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;">Select current result or submit form</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;"><code>Escape</code></td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;">Close dropdown</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem;"><code>Tab</code></td>
+                    <td style="padding: 0.75rem;">Close dropdown and continue navigation</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Technical Details Section -->
+    <div class="demo-section">
+        <h2>Technical Implementation</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Backend (PHP)</h3>
+                <p>AJAX endpoint with nonce verification, input sanitization, and grouped result formatting</p>
+            </div>
+            <div class="feature-card">
+                <h3>Frontend (JavaScript)</h3>
+                <p>Vanilla JS class with debouncing, caching, and keyboard navigation</p>
+            </div>
+            <div class="feature-card">
+                <h3>Styling (CSS)</h3>
+                <p>Mobile-first responsive design with dark mode and accessibility support</p>
+            </div>
+            <div class="feature-card">
+                <h3>Security</h3>
+                <p>WordPress nonce verification, sanitized inputs, XSS prevention</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Note about actual functionality -->
+    <div class="demo-section" style="background: #fef3c7; border-left: 4px solid #f59e0b;">
+        <h2 style="margin-top: 0;">Note</h2>
+        <p style="margin-bottom: 0;">
+            This is a static HTML preview. For the autocomplete to work, you need to:
+        </p>
+        <ol style="color: #6b7280; margin: 1rem 0 0 0;">
+            <li>Activate the Saga Manager theme in WordPress</li>
+            <li>Ensure the Saga Manager plugin is active</li>
+            <li>Have entities in the database</li>
+            <li>Include the JavaScript file with proper configuration</li>
+        </ol>
+    </div>
+
+    <!-- Mock autocomplete initialization for demo -->
+    <script>
+        // This is a simplified demo version - the actual implementation is in autocomplete-search.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('demo-search-input');
+            if (!input) return;
+
+            // Create mock autocomplete container
+            const container = document.createElement('div');
+            container.className = 'saga-autocomplete';
+            input.parentNode.insertBefore(container, input);
+            container.appendChild(input);
+
+            // Create mock dropdown
+            const dropdown = document.createElement('div');
+            dropdown.className = 'saga-autocomplete__dropdown';
+            dropdown.style.display = 'none';
+            container.appendChild(dropdown);
+
+            // Simple demo functionality
+            input.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+
+                if (query.length < 2) {
+                    dropdown.style.display = 'none';
+                    return;
+                }
+
+                // Mock results
+                const mockResults = {
+                    'character': [
+                        { title: 'Luke Skywalker', excerpt: 'Jedi Knight from Tatooine', score: 95 },
+                        { title: 'Anakin Skywalker', excerpt: 'Jedi who became Darth Vader', score: 90 }
+                    ],
+                    'location': [
+                        { title: 'Tatooine', excerpt: 'Desert planet in Outer Rim', score: 85 }
+                    ]
+                };
+
+                let html = '';
+                for (const [type, items] of Object.entries(mockResults)) {
+                    const filtered = items.filter(item =>
+                        item.title.toLowerCase().includes(query)
+                    );
+
+                    if (filtered.length > 0) {
+                        const icon = type === 'character' ? '👤' : '📍';
+                        html += `
+                            <div class="saga-autocomplete__group">
+                                <div class="saga-autocomplete__group-header">
+                                    <span class="saga-autocomplete__group-icon">${icon}</span>
+                                    <span class="saga-autocomplete__group-title">${type.charAt(0).toUpperCase() + type.slice(1)}s</span>
+                                </div>
+                                <div class="saga-autocomplete__group-items">
+                        `;
+
+                        filtered.forEach((item, index) => {
+                            const highlighted = item.title.replace(
+                                new RegExp(query, 'gi'),
+                                match => `<mark>${match}</mark>`
+                            );
+                            html += `
+                                <div class="saga-autocomplete__item ${index === 0 ? 'saga-autocomplete__item--active' : ''}" role="option">
+                                    <div class="saga-autocomplete__item-content">
+                                        <div class="saga-autocomplete__item-title">${highlighted}</div>
+                                        <div class="saga-autocomplete__item-excerpt">${item.excerpt}</div>
+                                    </div>
+                                    <div class="saga-autocomplete__item-badge">${item.score}</div>
+                                </div>
+                            `;
+                        });
+
+                        html += '</div></div>';
+                    }
+                }
+
+                if (html) {
+                    dropdown.innerHTML = html;
+                    dropdown.style.display = 'block';
+                } else {
+                    dropdown.innerHTML = `
+                        <div class="saga-autocomplete__empty">
+                            <div class="saga-autocomplete__empty-icon">🔍</div>
+                            <div class="saga-autocomplete__empty-text">No results found</div>
+                        </div>
+                    `;
+                    dropdown.style.display = 'block';
+                }
+            });
+
+            // Close on click outside
+            document.addEventListener('click', function(e) {
+                if (!container.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // Close on Escape
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    dropdown.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

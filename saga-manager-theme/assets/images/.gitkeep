@@ -1,0 +1,84 @@
+# PWA Icons Directory
+
+This directory should contain the following PWA icons:
+
+## Required Icons
+
+### Standard Icons
+- icon-72.png (72x72)
+- icon-96.png (96x96)
+- icon-128.png (128x128)
+- icon-144.png (144x144)
+- icon-152.png (152x152)
+- icon-192.png (192x192)
+- icon-384.png (384x384)
+- icon-512.png (512x512)
+
+### Maskable Icons (for Android)
+- icon-maskable-192.png (192x192)
+- icon-maskable-512.png (512x512)
+
+### Badge Icon
+- badge-72.png (72x72) - Notification badge
+
+### Shortcut Icons
+- shortcut-search.png (96x96)
+- shortcut-sagas.png (96x96)
+- shortcut-timeline.png (96x96)
+- shortcut-bookmarks.png (96x96)
+
+### Apple Splash Screens
+- splash-640x1136.png (iPhone SE)
+- splash-750x1334.png (iPhone 8)
+- splash-828x1792.png (iPhone 11)
+- splash-1125x2436.png (iPhone X)
+- splash-1242x2208.png (iPhone 8 Plus)
+- splash-1242x2688.png (iPhone 11 Pro Max)
+- splash-1536x2048.png (iPad)
+- splash-1668x2388.png (iPad Pro 11")
+- splash-2048x2732.png (iPad Pro 12.9")
+
+### Screenshots
+- screenshot-desktop.png (1280x720)
+- screenshot-mobile.png (750x1334)
+
+### Other Assets
+- logo.svg - Site logo
+
+## Icon Generation
+
+You can generate these icons from a single source image using tools like:
+- https://realfavicongenerator.net/
+- https://www.pwabuilder.com/imageGenerator
+- ImageMagick (command line)
+
+### ImageMagick Example
+
+```bash
+# From a 1024x1024 source image
+convert source.png -resize 72x72 icon-72.png
+convert source.png -resize 96x96 icon-96.png
+convert source.png -resize 128x128 icon-128.png
+convert source.png -resize 144x144 icon-144.png
+convert source.png -resize 152x152 icon-152.png
+convert source.png -resize 192x192 icon-192.png
+convert source.png -resize 384x384 icon-384.png
+convert source.png -resize 512x512 icon-512.png
+```
+
+### Maskable Icons
+
+For maskable icons, ensure there's a safe zone of at least 40% around your icon content.
+
+### Design Guidelines
+
+- Use PNG format with transparency
+- Ensure icons work on both light and dark backgrounds
+- Follow platform-specific guidelines:
+  - iOS: Rounded corners applied automatically
+  - Android: Adaptive icons with safe zones
+  - Windows: Solid background color
+
+## Current Status
+
+**TODO:** Generate and add all required icons for PWA functionality.

@@ -1,0 +1,349 @@
+/**
+ * Popular Entities Widget Styles
+ *
+ * @package Saga_Manager_Theme
+ */
+
+/* Widget Container */
+.saga-popular-entities-widget {
+    background: var(--color-surface, #ffffff);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.saga-popular-entities-widget .widget-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary, #1f2937);
+}
+
+/* Entity List */
+.popular-entities-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.popular-entity-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.popular-entity-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.popular-entity-item:first-child {
+    padding-top: 0;
+}
+
+/* Entity Link */
+.popular-entity-item .entity-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    text-decoration: none;
+    color: var(--color-text-primary, #1f2937);
+    transition: color 0.2s ease;
+}
+
+.popular-entity-item .entity-link:hover {
+    color: var(--color-primary, #3b82f6);
+}
+
+.popular-entity-item .entity-link:hover .entity-title {
+    text-decoration: underline;
+}
+
+/* Entity Type Icon */
+.entity-type {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface-secondary, #f3f4f6);
+    color: var(--color-text-secondary, #6b7280);
+}
+
+.entity-type svg {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.entity-type--character {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.entity-type--location {
+    background: #d1fae5;
+    color: #10b981;
+}
+
+.entity-type--event {
+    background: #fef3c7;
+    color: #f59e0b;
+}
+
+.entity-type--faction {
+    background: #ede9fe;
+    color: #8b5cf6;
+}
+
+.entity-type--artifact {
+    background: #fce7f3;
+    color: #ec4899;
+}
+
+.entity-type--concept {
+    background: #e0e7ff;
+    color: #6366f1;
+}
+
+/* Entity Title */
+.entity-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+/* Stats Container */
+.entity-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+}
+
+/* Mini Badge */
+.mini-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.mini-badge svg {
+    width: 0.625rem;
+    height: 0.625rem;
+}
+
+.mini-badge--trending {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: #ffffff;
+}
+
+.mini-badge--popular {
+    background: linear-gradient(135deg, #ffd93d 0%, #f6b93b 100%);
+    color: #2c3e50;
+}
+
+.mini-badge--rising {
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+    color: #ffffff;
+}
+
+/* View Count */
+.view-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary, #6b7280);
+}
+
+.view-count svg {
+    width: 0.75rem;
+    height: 0.75rem;
+    opacity: 0.7;
+}
+
+/* No Entities Message */
+.no-entities {
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 0.875rem;
+    font-style: italic;
+    margin: 0;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+/* Display Type Variations */
+.popular-entities-list--trending .popular-entity-item {
+    position: relative;
+}
+
+.popular-entities-list--trending .popular-entity-item::before {
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    top: 0;
+    bottom: 0;
+    width: 0.25rem;
+    background: linear-gradient(180deg, #ff6b6b 0%, #ee5a24 100%);
+    border-radius: 0.125rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.popular-entities-list--trending .popular-entity-item:hover::before {
+    opacity: 1;
+}
+
+/* Numbered List for Rankings */
+.popular-entities-list.show-numbers {
+    counter-reset: entity-counter;
+}
+
+.popular-entities-list.show-numbers .popular-entity-item {
+    counter-increment: entity-counter;
+}
+
+.popular-entities-list.show-numbers .popular-entity-item::before {
+    content: counter(entity-counter);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.5rem;
+    border-radius: 0.25rem;
+    background: var(--color-surface-secondary, #f3f4f6);
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.popular-entities-list.show-numbers .popular-entity-item:nth-child(1)::before {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #854d0e;
+}
+
+.popular-entities-list.show-numbers .popular-entity-item:nth-child(2)::before {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e0e0e0 100%);
+    color: #525252;
+}
+
+.popular-entities-list.show-numbers .popular-entity-item:nth-child(3)::before {
+    background: linear-gradient(135deg, #cd7f32 0%, #e89a5d 100%);
+    color: #78350f;
+}
+
+/* Compact Mode */
+.saga-popular-entities-widget.compact .popular-entity-item {
+    padding: 0.5rem 0;
+}
+
+.saga-popular-entities-widget.compact .entity-title {
+    font-size: 0.8125rem;
+}
+
+.saga-popular-entities-widget.compact .entity-stats {
+    gap: 0.25rem;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .saga-popular-entities-widget {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .popular-entity-item {
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .entity-type {
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .entity-link {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .entity-link:hover {
+        color: #60a5fa;
+    }
+
+    .view-count {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .no-entities {
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .saga-popular-entities-widget {
+        padding: 0.75rem;
+    }
+
+    .popular-entity-item {
+        padding: 0.625rem 0;
+    }
+
+    .entity-title {
+        font-size: 0.8125rem;
+    }
+
+    .entity-stats {
+        gap: 0.25rem;
+    }
+
+    .view-count {
+        font-size: 0.6875rem;
+    }
+}
+
+/* Loading State */
+.saga-popular-entities-widget.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.saga-popular-entities-widget.is-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid var(--color-border, #e5e7eb);
+    border-top-color: var(--color-primary, #3b82f6);
+    border-radius: 50%;
+    animation: widget-spinner 0.8s linear infinite;
+}
+
+@keyframes widget-spinner {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Sidebar Widget Specific */
+.widget.saga-popular-entities-widget {
+    background: transparent;
+    padding: 0;
+}
+
+.widget.saga-popular-entities-widget .widget-title {
+    border-bottom: 2px solid var(--color-primary, #3b82f6);
+    padding-bottom: 0.5rem;
+}

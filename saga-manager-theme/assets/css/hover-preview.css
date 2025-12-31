@@ -1,0 +1,375 @@
+/**
+ * Saga Entity Hover Preview Styles
+ *
+ * Styling for entity hover preview cards
+ * Includes dark mode support and smooth animations
+ *
+ * @package SagaManagerTheme
+ */
+
+/* Preview Card Container */
+.saga-preview-card {
+    position: fixed;
+    z-index: 10000;
+    width: 360px;
+    max-width: calc(100vw - 20px);
+    background: var(--preview-bg, #ffffff);
+    border: 1px solid var(--preview-border, #e5e7eb);
+    border-radius: 12px;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(-8px);
+}
+
+/* Animation */
+.saga-preview-card.saga-preview-animating {
+    transition: opacity 150ms ease-out, transform 150ms ease-out;
+}
+
+.saga-preview-card:not(.saga-preview-hiding) {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.saga-preview-card.saga-preview-hiding {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .saga-preview-card.saga-preview-animating {
+        transition: none;
+    }
+
+    .saga-preview-card {
+        transform: none;
+    }
+}
+
+/* Arrow Pointer */
+.saga-preview-arrow {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--preview-bg, #ffffff);
+    border: 1px solid var(--preview-border, #e5e7eb);
+    transform: rotate(45deg);
+}
+
+.saga-preview-arrow-left {
+    left: -6px;
+    top: 50%;
+    margin-top: -6px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.saga-preview-arrow-right {
+    right: -6px;
+    top: 50%;
+    margin-top: -6px;
+    border-left: none;
+    border-top: none;
+}
+
+.saga-preview-arrow-top {
+    top: -6px;
+    left: 50%;
+    margin-left: -6px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.saga-preview-arrow-bottom {
+    bottom: -6px;
+    left: 50%;
+    margin-left: -6px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Content Container */
+.saga-preview-content {
+    padding: 16px;
+    position: relative;
+}
+
+/* Loading State */
+.saga-preview-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    gap: 12px;
+}
+
+.saga-preview-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--preview-spinner-bg, #e5e7eb);
+    border-top-color: var(--preview-spinner-color, #3b82f6);
+    border-radius: 50%;
+    animation: saga-preview-spin 0.8s linear infinite;
+}
+
+@keyframes saga-preview-spin {
+    to { transform: rotate(360deg); }
+}
+
+.saga-preview-loading-text {
+    font-size: 14px;
+    color: var(--preview-text-muted, #6b7280);
+}
+
+/* Loaded State */
+.saga-preview-loaded {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Header */
+.saga-preview-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.saga-preview-thumbnail {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--preview-thumbnail-bg, #f3f4f6);
+}
+
+.saga-preview-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.saga-preview-header-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.saga-preview-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--preview-text, #111827);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Type Badge */
+.saga-preview-type-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 6px;
+    text-transform: capitalize;
+    background: var(--preview-badge-bg, #f3f4f6);
+    color: var(--preview-badge-text, #6b7280);
+    width: fit-content;
+}
+
+.saga-preview-type-character {
+    background: var(--preview-badge-character-bg, #dbeafe);
+    color: var(--preview-badge-character-text, #1e40af);
+}
+
+.saga-preview-type-location {
+    background: var(--preview-badge-location-bg, #dcfce7);
+    color: var(--preview-badge-location-text, #166534);
+}
+
+.saga-preview-type-event {
+    background: var(--preview-badge-event-bg, #fef3c7);
+    color: var(--preview-badge-event-text, #92400e);
+}
+
+.saga-preview-type-faction {
+    background: var(--preview-badge-faction-bg, #fce7f3);
+    color: var(--preview-badge-faction-text, #9f1239);
+}
+
+.saga-preview-type-artifact {
+    background: var(--preview-badge-artifact-bg, #e0e7ff);
+    color: var(--preview-badge-artifact-text, #3730a3);
+}
+
+.saga-preview-type-concept {
+    background: var(--preview-badge-concept-bg, #f3e8ff);
+    color: var(--preview-badge-concept-text, #6b21a8);
+}
+
+/* Body */
+.saga-preview-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.saga-preview-excerpt {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--preview-text-muted, #6b7280);
+}
+
+/* Attributes */
+.saga-preview-attributes {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 12px;
+    margin: 0;
+    padding: 12px;
+    background: var(--preview-attributes-bg, #f9fafb);
+    border-radius: 8px;
+}
+
+.saga-preview-attribute {
+    display: contents;
+}
+
+.saga-preview-attribute-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--preview-text-muted, #6b7280);
+    margin: 0;
+}
+
+.saga-preview-attribute-value {
+    font-size: 13px;
+    color: var(--preview-text, #111827);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Footer */
+.saga-preview-footer {
+    padding-top: 8px;
+    border-top: 1px solid var(--preview-border, #e5e7eb);
+}
+
+.saga-preview-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--preview-link-color, #3b82f6);
+    text-decoration: none;
+    transition: color 150ms ease;
+}
+
+.saga-preview-link:hover {
+    color: var(--preview-link-hover-color, #2563eb);
+}
+
+.saga-preview-link-icon {
+    width: 12px;
+    height: 12px;
+    transition: transform 150ms ease;
+}
+
+.saga-preview-link:hover .saga-preview-link-icon {
+    transform: translate(2px, -2px);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .saga-preview-card {
+        --preview-bg: #1f2937;
+        --preview-border: #374151;
+        --preview-text: #f9fafb;
+        --preview-text-muted: #9ca3af;
+        --preview-thumbnail-bg: #374151;
+        --preview-spinner-bg: #374151;
+        --preview-spinner-color: #60a5fa;
+        --preview-badge-bg: #374151;
+        --preview-badge-text: #9ca3af;
+        --preview-attributes-bg: #111827;
+        --preview-link-color: #60a5fa;
+        --preview-link-hover-color: #93c5fd;
+
+        /* Type badge colors for dark mode */
+        --preview-badge-character-bg: #1e3a8a;
+        --preview-badge-character-text: #bfdbfe;
+        --preview-badge-location-bg: #14532d;
+        --preview-badge-location-text: #bbf7d0;
+        --preview-badge-event-bg: #78350f;
+        --preview-badge-event-text: #fef3c7;
+        --preview-badge-faction-bg: #881337;
+        --preview-badge-faction-text: #fce7f3;
+        --preview-badge-artifact-bg: #312e81;
+        --preview-badge-artifact-text: #e0e7ff;
+        --preview-badge-concept-bg: #581c87;
+        --preview-badge-concept-text: #f3e8ff;
+    }
+}
+
+/* Explicit dark mode class support */
+.dark .saga-preview-card,
+[data-theme="dark"] .saga-preview-card {
+    --preview-bg: #1f2937;
+    --preview-border: #374151;
+    --preview-text: #f9fafb;
+    --preview-text-muted: #9ca3af;
+    --preview-thumbnail-bg: #374151;
+    --preview-spinner-bg: #374151;
+    --preview-spinner-color: #60a5fa;
+    --preview-badge-bg: #374151;
+    --preview-badge-text: #9ca3af;
+    --preview-attributes-bg: #111827;
+    --preview-link-color: #60a5fa;
+    --preview-link-hover-color: #93c5fd;
+
+    /* Type badge colors for dark mode */
+    --preview-badge-character-bg: #1e3a8a;
+    --preview-badge-character-text: #bfdbfe;
+    --preview-badge-location-bg: #14532d;
+    --preview-badge-location-text: #bbf7d0;
+    --preview-badge-event-bg: #78350f;
+    --preview-badge-event-text: #fef3c7;
+    --preview-badge-faction-bg: #881337;
+    --preview-badge-faction-text: #fce7f3;
+    --preview-badge-artifact-bg: #312e81;
+    --preview-badge-artifact-text: #e0e7ff;
+    --preview-badge-concept-bg: #581c87;
+    --preview-badge-concept-text: #f3e8ff;
+}
+
+/* Responsive - Hide on mobile */
+@media (max-width: 768px) {
+    .saga-preview-card {
+        display: none;
+    }
+}
+
+/* Print - Hide previews */
+@media print {
+    .saga-preview-card {
+        display: none !important;
+    }
+}

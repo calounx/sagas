@@ -1,0 +1,610 @@
+/**
+ * Command Palette Styles
+ *
+ * @package SagaManagerTheme
+ */
+
+/* ============================================
+   Command Palette Container
+   ============================================ */
+
+.saga-command-palette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+}
+
+.saga-command-palette[hidden] {
+    display: none;
+}
+
+/* ============================================
+   Backdrop
+   ============================================ */
+
+.command-palette__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   Main Container
+   ============================================ */
+
+.command-palette__container {
+    position: relative;
+    width: 90%;
+    max-width: 640px;
+    max-height: 70vh;
+    background: var(--color-background, #ffffff);
+    border-radius: 12px;
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dark Mode */
+.dark-mode .command-palette__container {
+    background: var(--color-background-dark, #1a1a1a);
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   Search Input
+   ============================================ */
+
+.command-palette__search {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.dark-mode .command-palette__search {
+    border-bottom-color: var(--color-border-dark, #374151);
+}
+
+.command-palette__input {
+    width: 100%;
+    font-size: 16px;
+    line-height: 1.5;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--color-text, #1f2937);
+    font-family: inherit;
+}
+
+.command-palette__input::placeholder {
+    color: var(--color-text-muted, #9ca3af);
+}
+
+.dark-mode .command-palette__input {
+    color: var(--color-text-dark, #f3f4f6);
+}
+
+.dark-mode .command-palette__input::placeholder {
+    color: var(--color-text-muted-dark, #6b7280);
+}
+
+/* ============================================
+   Results Container
+   ============================================ */
+
+.command-palette__results {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    min-height: 200px;
+    max-height: calc(70vh - 80px);
+}
+
+.command-palette__results::-webkit-scrollbar {
+    width: 8px;
+}
+
+.command-palette__results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.command-palette__results::-webkit-scrollbar-thumb {
+    background: var(--color-border, #e5e7eb);
+    border-radius: 4px;
+}
+
+.dark-mode .command-palette__results::-webkit-scrollbar-thumb {
+    background: var(--color-border-dark, #374151);
+}
+
+/* ============================================
+   Command Sections
+   ============================================ */
+
+.command-section {
+    margin-bottom: 16px;
+}
+
+.command-section:last-child {
+    margin-bottom: 0;
+}
+
+.command-section__title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #9ca3af);
+    padding: 8px 12px 4px;
+    margin: 0;
+}
+
+.dark-mode .command-section__title {
+    color: var(--color-text-muted-dark, #6b7280);
+}
+
+.command-section__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================
+   Command Items
+   ============================================ */
+
+.command-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: var(--color-text, #1f2937);
+}
+
+.command-item:hover {
+    background: var(--color-background-hover, #f3f4f6);
+}
+
+.command-item.selected {
+    background: var(--color-primary-light, #dbeafe);
+    color: var(--color-primary, #2563eb);
+}
+
+.dark-mode .command-item {
+    color: var(--color-text-dark, #f3f4f6);
+}
+
+.dark-mode .command-item:hover {
+    background: var(--color-background-hover-dark, #374151);
+}
+
+.dark-mode .command-item.selected {
+    background: var(--color-primary-dark, #1e40af);
+    color: #ffffff;
+}
+
+/* Command Icon */
+.command-item__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.command-item.selected .command-item__icon {
+    opacity: 1;
+}
+
+/* Command Content */
+.command-item__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.command-item__label {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.command-item__description {
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--color-text-muted, #9ca3af);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dark-mode .command-item__description {
+    color: var(--color-text-muted-dark, #6b7280);
+}
+
+.command-item.selected .command-item__description {
+    color: currentColor;
+    opacity: 0.8;
+}
+
+/* Command Shortcut */
+.command-item__shortcut {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    background: var(--color-background-secondary, #f9fafb);
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: 4px;
+    color: var(--color-text-muted, #6b7280);
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
+}
+
+.dark-mode .command-item__shortcut {
+    background: var(--color-background-secondary-dark, #111827);
+    border-color: var(--color-border-dark, #374151);
+    color: var(--color-text-muted-dark, #9ca3af);
+}
+
+.command-item.selected .command-item__shortcut {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: currentColor;
+}
+
+/* ============================================
+   No Results
+   ============================================ */
+
+.command-palette__no-results {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--color-text-muted, #9ca3af);
+    font-size: 14px;
+}
+
+.dark-mode .command-palette__no-results {
+    color: var(--color-text-muted-dark, #6b7280);
+}
+
+/* ============================================
+   Sequence Indicator
+   ============================================ */
+
+.saga-sequence-indicator {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    padding: 12px 20px;
+    background: var(--color-background, #ffffff);
+    border: 2px solid var(--color-primary, #2563eb);
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
+    color: var(--color-primary, #2563eb);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    animation: slideUp 0.2s ease-out;
+    pointer-events: none;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.saga-sequence-indicator[hidden] {
+    display: none;
+}
+
+.dark-mode .saga-sequence-indicator {
+    background: var(--color-background-dark, #1a1a1a);
+    border-color: var(--color-primary-dark, #3b82f6);
+    color: var(--color-primary-dark, #3b82f6);
+}
+
+/* ============================================
+   Shortcuts Help Overlay
+   ============================================ */
+
+.saga-shortcuts-help {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10001;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.saga-shortcuts-help[hidden] {
+    display: none;
+}
+
+.shortcuts-help__container {
+    background: var(--color-background, #ffffff);
+    border-radius: 12px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: slideDown 0.2s ease-out;
+}
+
+.dark-mode .shortcuts-help__container {
+    background: var(--color-background-dark, #1a1a1a);
+}
+
+.shortcuts-help__header {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dark-mode .shortcuts-help__header {
+    border-bottom-color: var(--color-border-dark, #374151);
+}
+
+.shortcuts-help__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text, #1f2937);
+}
+
+.dark-mode .shortcuts-help__title {
+    color: var(--color-text-dark, #f3f4f6);
+}
+
+.shortcuts-close {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--color-text-muted, #6b7280);
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.15s ease;
+}
+
+.shortcuts-close:hover {
+    color: var(--color-text, #1f2937);
+}
+
+.dark-mode .shortcuts-close:hover {
+    color: var(--color-text-dark, #f3f4f6);
+}
+
+.shortcuts-help__content {
+    padding: 32px;
+}
+
+.shortcuts-section {
+    margin-bottom: 32px;
+}
+
+.shortcuts-section:last-child {
+    margin-bottom: 0;
+}
+
+.shortcuts-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    color: var(--color-text, #1f2937);
+}
+
+.dark-mode .shortcuts-section h3 {
+    color: var(--color-text-dark, #f3f4f6);
+}
+
+.shortcuts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px;
+    background: var(--color-background-secondary, #f9fafb);
+    border-radius: 8px;
+}
+
+.dark-mode .shortcut-item {
+    background: var(--color-background-secondary-dark, #111827);
+}
+
+.shortcut-item__label {
+    font-size: 14px;
+    color: var(--color-text, #1f2937);
+}
+
+.dark-mode .shortcut-item__label {
+    color: var(--color-text-dark, #f3f4f6);
+}
+
+.shortcut-item__keys {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.shortcut-item__keys kbd {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    background: var(--color-background, #ffffff);
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: 4px;
+    color: var(--color-text, #1f2937);
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .shortcut-item__keys kbd {
+    background: var(--color-background-dark, #1a1a1a);
+    border-color: var(--color-border-dark, #374151);
+    color: var(--color-text-dark, #f3f4f6);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 640px) {
+    .saga-command-palette {
+        padding-top: 10vh;
+    }
+
+    .command-palette__container {
+        width: 95%;
+        max-height: 80vh;
+        border-radius: 8px;
+    }
+
+    .command-palette__search {
+        padding: 12px 16px;
+    }
+
+    .command-palette__input {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+
+    .saga-sequence-indicator {
+        bottom: 20px;
+        right: 20px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .shortcuts-help__content {
+        padding: 24px;
+    }
+
+    .shortcuts-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Focus Styles */
+.command-palette__input:focus {
+    outline: none;
+}
+
+.command-item:focus {
+    outline: 2px solid var(--color-primary, #2563eb);
+    outline-offset: -2px;
+}
+
+.dark-mode .command-item:focus {
+    outline-color: var(--color-primary-dark, #3b82f6);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .command-palette__backdrop,
+    .command-palette__container,
+    .saga-sequence-indicator,
+    .command-item,
+    .shortcuts-help__container {
+        animation: none;
+    }
+
+    .command-item {
+        transition: none;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .command-palette__container {
+        border: 2px solid currentColor;
+    }
+
+    .command-item.selected {
+        outline: 2px solid currentColor;
+    }
+}

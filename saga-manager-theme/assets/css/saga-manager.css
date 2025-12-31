@@ -1,0 +1,88 @@
+/**
+ * Saga Manager Theme - Custom Styles
+ *
+ * Additional styles beyond what's in style.css
+ * Focuses on interactive components and JavaScript-enhanced features
+ */
+
+/* Loading States */
+.saga-loading {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.saga-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: saga-spin 0.8s linear infinite;
+}
+
+@keyframes saga-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Filter Reset Button */
+.saga-filters__reset {
+    background: transparent;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saga-filters__reset:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+
+/* Fade In Animation */
+@keyframes saga-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.saga-entity-card--animated {
+    animation: saga-fade-in 0.3s ease-out;
+}
+
+/* Hover Effects */
+.saga-interactive {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saga-interactive:hover {
+    transform: translateY(-2px);
+}
+
+/* Print Styles */
+@media print {
+    .saga-filters,
+    .saga-entity-navigation,
+    .saga-archive-header__sort {
+        display: none;
+    }
+
+    .saga-entity-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}

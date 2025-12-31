@@ -1,0 +1,83 @@
+# Git export-ignore attributes for clean distribution builds
+
+# Development files
+.git* export-ignore
+.github/ export-ignore
+prepare-release.sh export-ignore
+
+# Documentation (keep README.md)
+# Note: All .md files are excluded except in special handling
+*.md export-ignore
+SCREENSHOT.txt export-ignore
+docs/ export-ignore
+
+# Development documentation
+ANALYTICS_IMPLEMENTATION.md export-ignore
+ANALYTICS_INTEGRATION_GUIDE.md export-ignore
+ANALYTICS_README.md export-ignore
+ARCHITECTURE.md export-ignore
+CODE_QUALITY_CHECKLIST.md export-ignore
+COLLAPSIBLE-QUICK-REF.md export-ignore
+COLLAPSIBLE-SECTIONS.md export-ignore
+COLLECTIONS_IMPLEMENTATION_SUMMARY.md export-ignore
+COLLECTIONS_USAGE.md export-ignore
+COMPARISON-FEATURE.md export-ignore
+DARK_MODE_IMPLEMENTATION.md export-ignore
+DARK_MODE_QUICK_REFERENCE.md export-ignore
+DARK_MODE_SUMMARY.md export-ignore
+DARK_MODE_TESTING.md export-ignore
+HOVER_PREVIEWS.md export-ignore
+IMPLEMENTATION-SUMMARY.md export-ignore
+IMPLEMENTATION_COMPLETE.md export-ignore
+IMPLEMENTATION_SUMMARY.md export-ignore
+INTEGRATION_GUIDE.md export-ignore
+PWA-README.md export-ignore
+READING-MODE-IMPLEMENTATION.md export-ignore
+READING-MODE-README.md export-ignore
+READING-MODE-SUMMARY.md export-ignore
+RELATIONSHIP-GRAPH.md export-ignore
+THEME_COMPLETION_SUMMARY.md export-ignore
+TIMELINE-FEATURE.md export-ignore
+UX_RESEARCH_REPORT.md export-ignore
+
+# Example files
+example-*.php export-ignore
+
+# Node modules
+node_modules/ export-ignore
+
+# Testing
+tests/ export-ignore
+.phpunit.result.cache export-ignore
+phpunit.xml export-ignore
+
+# Build artifacts
+dist/ export-ignore
+build/ export-ignore
+
+# IDE
+.vscode/ export-ignore
+.idea/ export-ignore
+*.swp export-ignore
+*.swo export-ignore
+*~ export-ignore
+
+# OS
+.DS_Store export-ignore
+Thumbs.db export-ignore
+
+# Line ending normalization
+* text=auto
+
+# PHP files
+*.php text eol=lf
+
+# JavaScript
+*.js text eol=lf
+*.json text eol=lf
+
+# CSS
+*.css text eol=lf
+
+# Shell scripts
+*.sh text eol=lf

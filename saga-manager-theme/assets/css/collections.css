@@ -1,0 +1,574 @@
+/**
+ * Saga Collections - Bookmark and Collection Styling
+ *
+ * @package Saga_Manager_Theme
+ */
+
+/* ==========================================================================
+   Bookmark Button
+   ========================================================================== */
+
+.saga-bookmark-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--wp--preset--color--primary, #007cba);
+    border-radius: 0.25rem;
+    color: var(--wp--preset--color--primary, #007cba);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    user-select: none;
+}
+
+.saga-bookmark-btn:hover {
+    background: var(--wp--preset--color--primary, #007cba);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 124, 186, 0.2);
+}
+
+.saga-bookmark-btn:active {
+    transform: translateY(0);
+}
+
+.saga-bookmark-btn.is-bookmarked {
+    background: var(--wp--preset--color--primary, #007cba);
+    color: #fff;
+}
+
+.saga-bookmark-btn.is-bookmarked:hover {
+    background: var(--wp--preset--color--secondary, #c92c2c);
+    border-color: var(--wp--preset--color--secondary, #c92c2c);
+}
+
+.saga-bookmark-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.saga-bookmark-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: transform 0.2s ease-in-out;
+}
+
+.saga-bookmark-btn:hover .saga-bookmark-icon {
+    transform: scale(1.1);
+}
+
+.saga-bookmark-btn.is-bookmarked .saga-bookmark-icon {
+    animation: heartbeat 0.6s ease-in-out;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.2);
+    }
+    50% {
+        transform: scale(1);
+    }
+}
+
+/* Icon-only variant */
+.saga-bookmark-btn.icon-only {
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+}
+
+.saga-bookmark-btn.icon-only:hover {
+    background: rgba(0, 124, 186, 0.1);
+}
+
+.saga-bookmark-btn.icon-only.is-bookmarked {
+    background: transparent;
+    color: var(--wp--preset--color--primary, #007cba);
+}
+
+/* ==========================================================================
+   Collection Selector Dropdown
+   ========================================================================== */
+
+.saga-collection-selector {
+    position: relative;
+    display: inline-block;
+}
+
+.saga-collection-selector .dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--wp--preset--color--primary, #007cba);
+    border-radius: 0.25rem;
+    color: var(--wp--preset--color--primary, #007cba);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.saga-collection-selector .dropdown-toggle:hover {
+    background: var(--wp--preset--color--primary, #007cba);
+    color: #fff;
+}
+
+.saga-collection-selector .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 200px;
+    margin-top: 0.25rem;
+    padding: 0.5rem 0;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    list-style: none;
+}
+
+.saga-collection-selector.show .dropdown-menu {
+    display: block;
+}
+
+.saga-collection-selector .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.saga-collection-selector .dropdown-item:hover {
+    background-color: rgba(0, 124, 186, 0.1);
+}
+
+.saga-collection-selector .dropdown-item.is-selected {
+    color: var(--wp--preset--color--primary, #007cba);
+    font-weight: 500;
+}
+
+.saga-collection-selector .dropdown-item.is-selected::before {
+    content: '✓';
+    margin-right: 0.25rem;
+}
+
+/* ==========================================================================
+   Toast Notifications
+   ========================================================================== */
+
+.saga-toast-container {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 360px;
+}
+
+.saga-toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #fff;
+    border-left: 4px solid;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease-in-out;
+}
+
+.saga-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.saga-toast-success {
+    border-left-color: #28a745;
+}
+
+.saga-toast-error {
+    border-left-color: #dc3545;
+}
+
+.saga-toast-info {
+    border-left-color: #17a2b8;
+}
+
+.saga-toast-warning {
+    border-left-color: #ffc107;
+}
+
+.saga-toast-message {
+    flex: 1;
+    color: #333;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.saga-toast-close {
+    flex-shrink: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.saga-toast-close:hover {
+    color: #333;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+    .saga-toast-container {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+    }
+}
+
+/* ==========================================================================
+   Collection Management Page
+   ========================================================================== */
+
+.saga-collections-page {
+    padding: 2rem 0;
+}
+
+.saga-collections-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.saga-collections-header h1 {
+    margin: 0 0 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.saga-collections-header p {
+    margin: 0;
+    color: #666;
+    font-size: 1rem;
+}
+
+/* Create collection form */
+.saga-create-collection-card {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+}
+
+#saga-create-collection-form {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+#saga-create-collection-form .form-group {
+    flex: 1;
+    margin: 0;
+}
+
+#saga-create-collection-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+#saga-create-collection-form input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.25rem;
+    font-size: 1rem;
+}
+
+#saga-create-collection-form button[type="submit"] {
+    padding: 0.75rem 1.5rem;
+    background: var(--wp--preset--color--primary, #007cba);
+    border: none;
+    border-radius: 0.25rem;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#saga-create-collection-form button[type="submit"]:hover {
+    background: var(--wp--preset--color--secondary, #005a87);
+}
+
+/* Collections grid */
+.saga-collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.saga-collection-item {
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.saga-collection-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.saga-collection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.saga-collection-name {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.saga-collection-count {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--wp--preset--color--primary, #007cba);
+    border-radius: 1rem;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.saga-collection-meta {
+    margin-bottom: 1rem;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.saga-collection-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.saga-collection-actions button,
+.saga-collection-actions a {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.25rem;
+    color: #333;
+    font-size: 0.875rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.saga-collection-actions button:hover,
+.saga-collection-actions a:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.saga-collection-actions .saga-delete-collection {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.saga-collection-actions .saga-delete-collection:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+.saga-collection-actions .saga-export-collection {
+    border-color: var(--wp--preset--color--primary, #007cba);
+    color: var(--wp--preset--color--primary, #007cba);
+}
+
+.saga-collection-actions .saga-export-collection:hover {
+    background: var(--wp--preset--color--primary, #007cba);
+    color: #fff;
+}
+
+/* Collection entities list */
+.saga-collection-entities {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.saga-collection-entity-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.saga-collection-entity-item:hover {
+    background: #e9ecef;
+}
+
+.saga-collection-entity-item a {
+    flex: 1;
+    color: #333;
+    text-decoration: none;
+}
+
+.saga-collection-entity-item a:hover {
+    color: var(--wp--preset--color--primary, #007cba);
+}
+
+.saga-collection-entity-type {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 124, 186, 0.1);
+    border-radius: 0.25rem;
+    color: var(--wp--preset--color--primary, #007cba);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+/* Empty state */
+.saga-collection-empty {
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+}
+
+.saga-collection-empty-icon {
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    opacity: 0.3;
+}
+
+.saga-collection-empty p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Guest user notice */
+.saga-guest-notice {
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 0.25rem;
+}
+
+.saga-guest-notice p {
+    margin: 0;
+    color: #856404;
+    font-size: 0.875rem;
+}
+
+.saga-guest-notice a {
+    color: #856404;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+/* Rename form */
+.saga-rename-collection-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.saga-rename-collection-form input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.saga-rename-collection-form button {
+    padding: 0.5rem 1rem;
+    background: var(--wp--preset--color--primary, #007cba);
+    border: none;
+    border-radius: 0.25rem;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .saga-collections-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #saga-create-collection-form {
+        flex-direction: column;
+    }
+
+    .saga-collection-actions {
+        flex-direction: column;
+    }
+
+    .saga-collection-actions button,
+    .saga-collection-actions a {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   Loading State
+   ========================================================================== */
+
+.saga-bookmark-btn.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.saga-bookmark-btn.is-loading .saga-bookmark-icon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,326 @@
+/**
+ * Saga Manager - Search Form Styles
+ *
+ * Styling for the search form component
+ *
+ * @package SagaTheme
+ */
+
+/* ========================================
+   Search Form Container
+   ======================================== */
+
+.saga-search-form {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.saga-search-form__wrapper {
+    position: relative;
+}
+
+/* ========================================
+   Search Form Label
+   ======================================== */
+
+.saga-search-form__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Screen reader only label (if you want to hide it visually) */
+.saga-search-form__label--sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ========================================
+   Input Wrapper
+   ======================================== */
+
+.saga-search-form__input-wrapper {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ========================================
+   Search Input
+   ======================================== */
+
+.saga-search-form__input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #111827;
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.saga-search-form__input::placeholder {
+    color: #9ca3af;
+}
+
+.saga-search-form__input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.saga-search-form__input:hover {
+    border-color: #9ca3af;
+}
+
+/* Remove default search input styling */
+.saga-search-form__input::-webkit-search-decoration,
+.saga-search-form__input::-webkit-search-cancel-button,
+.saga-search-form__input::-webkit-search-results-button,
+.saga-search-form__input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* ========================================
+   Submit Button
+   ======================================== */
+
+.saga-search-form__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+
+.saga-search-form__submit:hover {
+    background-color: #2563eb;
+}
+
+.saga-search-form__submit:active {
+    transform: scale(0.98);
+}
+
+.saga-search-form__submit:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Icon inside submit button */
+.saga-search-form__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke-width: 2;
+}
+
+/* Hide submit text on small screens, show only icon */
+.saga-search-form__submit-text {
+    display: none;
+}
+
+/* ========================================
+   Description Text
+   ======================================== */
+
+.saga-search-form__description {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Small screens */
+@media (max-width: 640px) {
+    .saga-search-form {
+        max-width: 100%;
+    }
+
+    .saga-search-form__input {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.9375rem;
+    }
+
+    .saga-search-form__submit {
+        padding: 0.625rem 1rem;
+    }
+
+    .saga-search-form__submit-text {
+        display: none;
+    }
+
+    .saga-search-form__description {
+        font-size: 0.6875rem;
+    }
+}
+
+/* Medium screens and up */
+@media (min-width: 641px) {
+    .saga-search-form__submit-text {
+        display: inline;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1024px) {
+    .saga-search-form__input {
+        padding: 0.875rem 1.25rem;
+        font-size: 1.0625rem;
+    }
+
+    .saga-search-form__submit {
+        padding: 0.875rem 1.75rem;
+    }
+}
+
+/* ========================================
+   Dark Mode Support
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    .saga-search-form__label {
+        color: #d1d5db;
+    }
+
+    .saga-search-form__input {
+        color: #f9fafb;
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+
+    .saga-search-form__input::placeholder {
+        color: #6b7280;
+    }
+
+    .saga-search-form__input:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+    }
+
+    .saga-search-form__input:hover {
+        border-color: #6b7280;
+    }
+
+    .saga-search-form__submit {
+        background-color: #2563eb;
+    }
+
+    .saga-search-form__submit:hover {
+        background-color: #1d4ed8;
+    }
+
+    .saga-search-form__description {
+        color: #9ca3af;
+    }
+}
+
+/* ========================================
+   Accessibility Enhancements
+   ======================================== */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .saga-search-form__input {
+        border-width: 2px;
+    }
+
+    .saga-search-form__submit {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .saga-search-form__input,
+    .saga-search-form__submit {
+        transition: none;
+    }
+}
+
+/* Focus visible for keyboard navigation */
+.saga-search-form__input:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.saga-search-form__submit:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* ========================================
+   Compact Variant (for sidebars)
+   ======================================== */
+
+.saga-search-form--compact .saga-search-form__label {
+    font-size: 0.8125rem;
+    margin-bottom: 0.375rem;
+}
+
+.saga-search-form--compact .saga-search-form__input {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.saga-search-form--compact .saga-search-form__submit {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.saga-search-form--compact .saga-search-form__description {
+    font-size: 0.6875rem;
+}
+
+/* ========================================
+   Inline Variant (for headers)
+   ======================================== */
+
+.saga-search-form--inline .saga-search-form__label {
+    display: none;
+}
+
+.saga-search-form--inline .saga-search-form__description {
+    display: none;
+}
+
+.saga-search-form--inline .saga-search-form__input-wrapper {
+    gap: 0;
+}
+
+.saga-search-form--inline .saga-search-form__input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.saga-search-form--inline .saga-search-form__submit {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

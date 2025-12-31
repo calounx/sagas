@@ -1,0 +1,278 @@
+/**
+ * Popularity Indicators Styles
+ *
+ * @package Saga_Manager_Theme
+ */
+
+/* Container */
+.saga-popularity-indicators {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* Popularity Badges */
+.popularity-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.popularity-badge .badge-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+}
+
+.popularity-badge .badge-label {
+    display: inline-block;
+    margin-top: 1px;
+}
+
+/* Trending Badge */
+.popularity-badge--trending {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(238, 90, 36, 0.3);
+}
+
+.popularity-badge--trending:hover {
+    box-shadow: 0 4px 12px rgba(238, 90, 36, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Popular Badge */
+.popularity-badge--popular {
+    background: linear-gradient(135deg, #ffd93d 0%, #f6b93b 100%);
+    color: #2c3e50;
+    box-shadow: 0 2px 8px rgba(246, 185, 59, 0.3);
+}
+
+.popularity-badge--popular:hover {
+    box-shadow: 0 4px 12px rgba(246, 185, 59, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Rising Badge */
+.popularity-badge--rising {
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.3);
+}
+
+.popularity-badge--rising:hover {
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Popularity Indicators */
+.popularity-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary, #6b7280);
+    background: var(--color-surface, #f3f4f6);
+    transition: all 0.2s ease;
+}
+
+.popularity-indicator:hover {
+    background: var(--color-surface-hover, #e5e7eb);
+}
+
+.popularity-indicator .indicator-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.popularity-indicator .indicator-value {
+    font-weight: 600;
+    color: var(--color-text-primary, #1f2937);
+}
+
+.popularity-indicator .indicator-label {
+    opacity: 0.8;
+}
+
+/* Specific Indicator Colors */
+.popularity-indicator--views .indicator-icon {
+    color: #3b82f6;
+}
+
+.popularity-indicator--bookmarks .indicator-icon {
+    color: #10b981;
+}
+
+.popularity-indicator--annotations .indicator-icon {
+    color: #8b5cf6;
+}
+
+/* Compact View (for cards) */
+.saga-popularity-indicators--compact {
+    gap: 0.5rem;
+}
+
+.saga-popularity-indicators--compact .popularity-badge {
+    padding: 0.125rem 0.5rem;
+    font-size: 0.625rem;
+}
+
+.saga-popularity-indicators--compact .popularity-badge .badge-icon {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+.saga-popularity-indicators--compact .popularity-indicator {
+    padding: 0.125rem 0.375rem;
+    font-size: 0.625rem;
+}
+
+.saga-popularity-indicators--compact .popularity-indicator .indicator-icon {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+.saga-popularity-indicators--compact .popularity-indicator .indicator-label {
+    display: none;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .popularity-indicator {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .popularity-indicator:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .popularity-indicator .indicator-value {
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .saga-popularity-indicators {
+        gap: 0.5rem;
+    }
+
+    .popularity-badge {
+        padding: 0.125rem 0.5rem;
+        font-size: 0.625rem;
+    }
+
+    .popularity-badge .badge-icon {
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+
+    .popularity-indicator {
+        padding: 0.125rem 0.375rem;
+        font-size: 0.625rem;
+    }
+
+    .popularity-indicator .indicator-icon {
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+
+    .popularity-indicator .indicator-label {
+        display: none;
+    }
+}
+
+/* Animation for real-time updates */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 2px 8px rgba(238, 90, 36, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 16px rgba(238, 90, 36, 0.5);
+    }
+}
+
+.popularity-badge--trending.is-live {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Loading state */
+.saga-popularity-indicators.is-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.saga-popularity-indicators.is-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Tooltip for detailed stats */
+.popularity-indicator[data-tooltip] {
+    position: relative;
+    cursor: help;
+}
+
+.popularity-indicator[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    background: var(--color-tooltip-bg, #1f2937);
+    color: var(--color-tooltip-text, #ffffff);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 100;
+}
+
+.popularity-indicator[data-tooltip]::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 0.125rem);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 0.25rem solid transparent;
+    border-top-color: var(--color-tooltip-bg, #1f2937);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.popularity-indicator[data-tooltip]:hover::before,
+.popularity-indicator[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}

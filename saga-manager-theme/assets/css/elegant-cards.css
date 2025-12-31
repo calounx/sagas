@@ -1,0 +1,509 @@
+/**
+ * Elegant Entity Card Styles
+ *
+ * Premium card design with sophisticated aesthetics
+ * Frosted glass effects, gradients, and smooth animations
+ *
+ * @package SagaTheme
+ * @version 1.0.0
+ */
+
+/* =============================================================================
+   Typography - Elegant Fonts
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Color Palette - Sophisticated Neutrals */
+    --saga-card-bg: #ffffff;
+    --saga-card-bg-gradient: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    --saga-text-primary: #111827;
+    --saga-text-secondary: #4b5563;
+    --saga-text-muted: #6b7280;
+    --saga-accent-color: #6366f1;
+    --saga-accent-dark: #4f46e5;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.06), 0 8px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.08), 0 16px 32px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.12), 0 24px 48px rgba(0, 0, 0, 0.16);
+}
+
+/* Dark Mode Palette */
+[data-theme="dark"] {
+    --saga-card-bg: #1f2937;
+    --saga-card-bg-gradient: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    --saga-text-primary: #f9fafb;
+    --saga-text-secondary: #d1d5db;
+    --saga-text-muted: #9ca3af;
+    --saga-accent-color: #818cf8;
+    --saga-accent-dark: #6366f1;
+
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4), 0 8px 16px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5), 0 16px 32px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.6), 0 24px 48px rgba(0, 0, 0, 0.7);
+}
+
+/* =============================================================================
+   Entity Card Base
+   ========================================================================== */
+
+.saga-entity-card-masonry {
+    background: var(--saga-card-bg-gradient);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+}
+
+.saga-entity-card-masonry:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.saga-entity-card-masonry__inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* =============================================================================
+   Card Image
+   ========================================================================== */
+
+.saga-entity-card-masonry__image {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+}
+
+.saga-entity-card-masonry__image-link {
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.saga-entity-card-masonry__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    object-fit: cover;
+}
+
+.saga-entity-card-masonry:hover .saga-entity-card-masonry__img {
+    transform: scale(1.08);
+}
+
+/* Gradient overlay on images */
+.saga-entity-card-masonry__image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.saga-entity-card-masonry:hover .saga-entity-card-masonry__image::after {
+    opacity: 1;
+}
+
+/* Height variations for masonry effect */
+.saga-entity-card-masonry--short .saga-entity-card-masonry__img {
+    aspect-ratio: 16 / 9;
+}
+
+.saga-entity-card-masonry--medium .saga-entity-card-masonry__img {
+    aspect-ratio: 4 / 3;
+}
+
+.saga-entity-card-masonry--tall .saga-entity-card-masonry__img {
+    aspect-ratio: 3 / 4;
+}
+
+/* =============================================================================
+   Card Content
+   ========================================================================== */
+
+.saga-entity-card-masonry__content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+}
+
+/* =============================================================================
+   Card Header (Type Badge & Importance)
+   ========================================================================== */
+
+.saga-entity-card-masonry__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.saga-entity-card-masonry__type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    transition: transform 0.2s ease;
+}
+
+.saga-entity-card-masonry:hover .saga-entity-card-masonry__type-badge {
+    transform: scale(1.05);
+}
+
+/* Entity type colors */
+.saga-entity-card-masonry__type-badge--character {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1e40af;
+}
+
+.saga-entity-card-masonry__type-badge--location {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+}
+
+.saga-entity-card-masonry__type-badge--event {
+    background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+    color: #9f1239;
+}
+
+.saga-entity-card-masonry__type-badge--faction {
+    background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+    color: #92400e;
+}
+
+.saga-entity-card-masonry__type-badge--artifact {
+    background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+    color: #6b21a8;
+}
+
+.saga-entity-card-masonry__type-badge--concept {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    color: #334155;
+}
+
+/* Dark mode type badges */
+[data-theme="dark"] .saga-entity-card-masonry__type-badge--character {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: #dbeafe;
+}
+
+[data-theme="dark"] .saga-entity-card-masonry__type-badge--location {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    color: #d1fae5;
+}
+
+[data-theme="dark"] .saga-entity-card-masonry__type-badge--event {
+    background: linear-gradient(135deg, #831843 0%, #9f1239 100%);
+    color: #fce7f3;
+}
+
+[data-theme="dark"] .saga-entity-card-masonry__type-badge--faction {
+    background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+    color: #fed7aa;
+}
+
+[data-theme="dark"] .saga-entity-card-masonry__type-badge--artifact {
+    background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);
+    color: #e9d5ff;
+}
+
+[data-theme="dark"] .saga-entity-card-masonry__type-badge--concept {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: #e2e8f0;
+}
+
+/* =============================================================================
+   Importance Score
+   ========================================================================== */
+
+.saga-entity-card-masonry__importance {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.saga-entity-card-masonry__importance-bar {
+    width: 60px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .saga-entity-card-masonry__importance-bar {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.saga-entity-card-masonry__importance-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--saga-accent-color), var(--saga-accent-dark));
+    border-radius: 3px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.saga-entity-card-masonry__importance-value {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--saga-text-muted);
+    font-family: var(--font-body);
+}
+
+/* =============================================================================
+   Card Title
+   ========================================================================== */
+
+.saga-entity-card-masonry__title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--saga-text-primary);
+}
+
+.saga-entity-card-masonry__title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: block;
+}
+
+.saga-entity-card-masonry__title-link:hover {
+    color: var(--saga-accent-color);
+}
+
+.saga-entity-card-masonry__title-link:focus-visible {
+    outline: 3px solid var(--saga-accent-color);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* =============================================================================
+   Card Excerpt
+   ========================================================================== */
+
+.saga-entity-card-masonry__excerpt {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--saga-text-secondary);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* =============================================================================
+   Card Footer (Read More & Bookmark)
+   ========================================================================== */
+
+.saga-entity-card-masonry__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .saga-entity-card-masonry__footer {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.saga-entity-card-masonry__read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--saga-accent-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.saga-entity-card-masonry__read-more:hover {
+    gap: 12px;
+    color: var(--saga-accent-dark);
+}
+
+.saga-entity-card-masonry__arrow {
+    transition: transform 0.2s ease;
+}
+
+.saga-entity-card-masonry__read-more:hover .saga-entity-card-masonry__arrow {
+    transform: translateX(4px);
+}
+
+.saga-entity-card-masonry__bookmark {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    color: var(--saga-text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saga-entity-card-masonry__bookmark:hover {
+    background: var(--saga-accent-color);
+    border-color: var(--saga-accent-color);
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.saga-entity-card-masonry__bookmark:focus-visible {
+    outline: 3px solid var(--saga-accent-color);
+    outline-offset: 2px;
+}
+
+[data-theme="dark"] .saga-entity-card-masonry__bookmark {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* =============================================================================
+   Importance-Based Styling
+   ========================================================================== */
+
+.saga-entity-card-masonry--high-importance {
+    border: 2px solid rgba(99, 102, 241, 0.2);
+}
+
+.saga-entity-card-masonry--high-importance .saga-entity-card-masonry__title {
+    color: var(--saga-accent-color);
+}
+
+/* =============================================================================
+   Frosted Glass Effect (Optional Premium Enhancement)
+   ========================================================================== */
+
+@supports (backdrop-filter: blur(10px)) {
+    .saga-entity-card-masonry--frosted .saga-entity-card-masonry__content {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    [data-theme="dark"] .saga-entity-card-masonry--frosted .saga-entity-card-masonry__content {
+        background: rgba(31, 41, 55, 0.7);
+    }
+}
+
+/* =============================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .saga-entity-card-masonry__content {
+        padding: 20px;
+        gap: 14px;
+    }
+
+    .saga-entity-card-masonry__title {
+        font-size: 1.25rem;
+    }
+
+    .saga-entity-card-masonry__excerpt {
+        font-size: 0.9rem;
+        -webkit-line-clamp: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .saga-entity-card-masonry__content {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .saga-entity-card-masonry__title {
+        font-size: 1.125rem;
+    }
+
+    .saga-entity-card-masonry__header {
+        flex-wrap: wrap;
+    }
+
+    .saga-entity-card-masonry__importance {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+/* =============================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .saga-entity-card-masonry {
+        transition: box-shadow 0.3s ease;
+    }
+
+    .saga-entity-card-masonry:hover {
+        transform: none;
+    }
+
+    .saga-entity-card-masonry__img {
+        transition: none;
+    }
+
+    .saga-entity-card-masonry:hover .saga-entity-card-masonry__img {
+        transform: none;
+    }
+
+    .saga-entity-card-masonry__image::after {
+        transition: none;
+    }
+}
+
+/* =============================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .saga-entity-card-masonry {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .saga-entity-card-masonry__bookmark {
+        display: none;
+    }
+
+    .saga-entity-card-masonry__read-more {
+        display: none;
+    }
+}
