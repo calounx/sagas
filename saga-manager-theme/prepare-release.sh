@@ -57,7 +57,27 @@ mkdir -p "$BUILD_DIR/$THEME_SLUG"
 
 # Copy theme files using git archive (respects .gitattributes)
 print_status "Copying theme files..."
-git archive HEAD | tar -x -C "$BUILD_DIR/$THEME_SLUG"
+
+# Check if we can use git archive (check if any files are tracked)
+if git ls-tree -r HEAD --name-only . 2>/dev/null | grep -q .; then
+    # Directory is tracked, use git archive
+    git archive HEAD | tar -x -C "$BUILD_DIR/$THEME_SLUG"
+else
+    # Directory is untracked, use rsync/cp with exclusions
+    print_warning "Directory not tracked in git, using manual copy..."
+
+    # Use rsync if available, otherwise cp
+    if command -v rsync >/dev/null 2>&1; then
+        rsync -aq --exclude='.git' --exclude='node_modules' --exclude='build' \
+              --exclude='.github' --exclude='prepare-release.sh' \
+              --exclude='*.log' --exclude='.DS_Store' --exclude='Thumbs.db' \
+              --exclude='example-*.php' --exclude='*.md' --exclude='docs' \
+              --exclude='SCREENSHOT.txt' --exclude='generate-pwa-icons.sh' \
+              . "$BUILD_DIR/$THEME_SLUG/"
+    else
+        cp -r . "$BUILD_DIR/$THEME_SLUG/"
+    fi
+fi
 
 # Verify required files exist in build
 print_status "Verifying required files..."
