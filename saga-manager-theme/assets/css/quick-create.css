@@ -1,0 +1,880 @@
+/**
+ * Saga Manager - Quick Create Entity Styles
+ *
+ * @package SagaManager
+ * @since 1.3.0
+ */
+
+/* ============================================
+   Admin Bar Styles
+   ============================================ */
+
+.saga-entity-count-badge {
+    display: inline-block;
+    background: #0073aa;
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    padding: 3px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+#wpadminbar .saga-quick-create-trigger:hover .saga-entity-count-badge {
+    background: #005177;
+}
+
+#wpadminbar .saga-quick-create-type .dashicons {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+#wpadminbar .saga-recent-header {
+    cursor: default;
+    opacity: 0.7;
+    font-size: 11px;
+    padding-top: 5px;
+}
+
+/* ============================================
+   Modal Overlay
+   ============================================ */
+
+.saga-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.saga-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.saga-modal-open {
+    overflow: hidden;
+}
+
+/* ============================================
+   Modal Container
+   ============================================ */
+
+.saga-modal-container {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease-out;
+    z-index: 1;
+}
+
+/* ============================================
+   Modal Header
+   ============================================ */
+
+.saga-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e0e0e0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+}
+
+.saga-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+}
+
+.saga-modal-header .dashicons {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.saga-modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.saga-modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.saga-keyboard-hint {
+    position: absolute;
+    top: 100%;
+    right: 24px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.saga-keyboard-hint kbd {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-family: monospace;
+}
+
+.saga-hint-separator {
+    opacity: 0.5;
+    margin: 0 5px;
+}
+
+/* ============================================
+   Modal Body
+   ============================================ */
+
+.saga-modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.saga-form-section {
+    margin-bottom: 24px;
+}
+
+.saga-form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #23282d;
+    font-size: 14px;
+}
+
+.saga-form-label .required {
+    color: #dc3232;
+    margin-left: 3px;
+}
+
+/* ============================================
+   Entity Type Selector
+   ============================================ */
+
+.saga-entity-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.saga-entity-type-option {
+    position: relative;
+    cursor: pointer;
+}
+
+.saga-entity-type-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.saga-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    transition: all 0.2s;
+    text-align: center;
+    min-height: 100px;
+}
+
+.saga-type-card .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.saga-type-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+}
+
+.saga-entity-type-option:hover .saga-type-card {
+    border-color: #0073aa;
+    box-shadow: 0 2px 8px rgba(0, 115, 170, 0.1);
+}
+
+.saga-entity-type-option input[type="radio"]:checked + .saga-type-card {
+    border-color: #0073aa;
+    background: linear-gradient(135deg, #0073aa 0%, #005177 100%);
+}
+
+.saga-entity-type-option input[type="radio"]:checked + .saga-type-card .dashicons,
+.saga-entity-type-option input[type="radio"]:checked + .saga-type-card .saga-type-label {
+    color: #fff;
+}
+
+.saga-entity-type-option input[type="radio"]:focus + .saga-type-card {
+    outline: 2px solid #0073aa;
+    outline-offset: 2px;
+}
+
+/* ============================================
+   Form Inputs
+   ============================================ */
+
+.saga-form-input,
+.saga-form-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.saga-form-input:focus,
+.saga-form-select:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+}
+
+.saga-input-wrapper {
+    position: relative;
+}
+
+.saga-duplicate-indicator {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #dc3232;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+}
+
+.saga-duplicate-indicator .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* ============================================
+   Text Editor
+   ============================================ */
+
+.saga-editor-wrapper {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.saga-editor-wrapper:focus-within {
+    border-color: #0073aa;
+    box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+}
+
+/* ============================================
+   Importance Slider
+   ============================================ */
+
+.saga-importance-value {
+    float: right;
+    background: #0073aa;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.saga-slider-wrapper {
+    margin-top: 12px;
+}
+
+.saga-importance-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    background: linear-gradient(90deg, #0073aa 50%, #ddd 50%);
+    cursor: pointer;
+}
+
+.saga-importance-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0073aa;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+}
+
+.saga-importance-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.saga-importance-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0073aa;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.saga-slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* ============================================
+   Advanced Options
+   ============================================ */
+
+.saga-toggle-advanced {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f6f7f7;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+}
+
+.saga-toggle-advanced:hover {
+    background: #e8e9ea;
+    border-color: #999;
+}
+
+.saga-toggle-advanced.active {
+    background: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+.saga-toggle-advanced .dashicons {
+    transition: transform 0.3s;
+}
+
+.saga-toggle-advanced.active .dashicons {
+    transform: rotate(90deg);
+}
+
+.saga-advanced-section {
+    padding-top: 20px;
+    border-top: 2px dashed #e0e0e0;
+    margin-top: 20px;
+}
+
+/* ============================================
+   Image Upload
+   ============================================ */
+
+.saga-image-upload {
+    position: relative;
+}
+
+.saga-image-preview {
+    position: relative;
+    width: 200px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid #ddd;
+}
+
+.saga-image-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.saga-remove-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(220, 50, 50, 0.9);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.saga-remove-image:hover {
+    background: #dc3232;
+    transform: scale(1.1);
+}
+
+.saga-upload-image {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ============================================
+   Relationship Search
+   ============================================ */
+
+.saga-relationship-search {
+    position: relative;
+}
+
+.saga-search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.saga-selected-relationships {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.saga-relationship-tag {
+    background: #f0f0f1;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 4px 12px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.saga-relationship-tag button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #dc3232;
+}
+
+/* ============================================
+   Templates
+   ============================================ */
+
+.saga-templates-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.saga-template-button {
+    background: #fff;
+    border: 1px solid #0073aa;
+    color: #0073aa;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.saga-template-button:hover {
+    background: #0073aa;
+    color: #fff;
+}
+
+/* ============================================
+   Draft Recovery
+   ============================================ */
+
+.saga-draft-recovery {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.saga-draft-recovery .dashicons {
+    color: #856404;
+}
+
+.saga-clear-draft {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #0073aa;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 13px;
+}
+
+/* ============================================
+   Field Errors
+   ============================================ */
+
+.saga-field-error {
+    color: #dc3232;
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+}
+
+.saga-field-error:before {
+    content: "⚠ ";
+}
+
+/* ============================================
+   Modal Footer
+   ============================================ */
+
+.saga-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    background: #f6f7f7;
+    border-radius: 0 0 8px 8px;
+}
+
+.saga-footer-left {
+    flex: 1;
+}
+
+.saga-autosave-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #666;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.saga-autosave-indicator.active {
+    opacity: 1;
+}
+
+.saga-autosave-indicator .dashicons {
+    animation: pulse 1s infinite;
+}
+
+.saga-footer-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.saga-publish-button {
+    background: linear-gradient(135deg, #46b450 0%, #3e9b47 100%);
+    border-color: #3e9b47;
+}
+
+.saga-publish-button:hover {
+    background: linear-gradient(135deg, #3e9b47 0%, #2e7d32 100%);
+}
+
+/* ============================================
+   Loading Overlay
+   ============================================ */
+
+.saga-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 8px;
+}
+
+.saga-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #0073aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.saga-loading-text {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #555;
+}
+
+/* ============================================
+   Notifications
+   ============================================ */
+
+.saga-notification {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 16px 20px;
+    max-width: 400px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    z-index: 100001;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.saga-notification-success {
+    border-left: 4px solid #46b450;
+}
+
+.saga-notification-error {
+    border-left: 4px solid #dc3232;
+}
+
+.saga-notification > .dashicons {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.saga-notification-success > .dashicons {
+    color: #46b450;
+}
+
+.saga-notification-error > .dashicons {
+    color: #dc3232;
+}
+
+.saga-notification-content {
+    flex: 1;
+}
+
+.saga-notification-title {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.saga-notification-message {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+}
+
+.saga-notification-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.saga-notification-link {
+    font-size: 13px;
+    text-decoration: none;
+    color: #0073aa;
+    font-weight: 500;
+}
+
+.saga-notification-link:hover {
+    text-decoration: underline;
+}
+
+.saga-notification-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.saga-notification-close:hover {
+    color: #000;
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+    .saga-modal-container {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .saga-entity-types {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .saga-modal-footer {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .saga-footer-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .saga-footer-actions .button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .saga-notification {
+        bottom: 12px;
+        right: 12px;
+        left: 12px;
+        max-width: none;
+    }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+.saga-modal:focus {
+    outline: none;
+}
+
+.saga-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

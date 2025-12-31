@@ -1250,3 +1250,71 @@ function saga_enqueue_timeline_assets(): void
     ]);
 }
 add_action('wp_enqueue_scripts', 'saga_enqueue_timeline_assets');
+
+/**
+ * =============================================================================
+ * 3D Semantic Galaxy Visualization (Phase 1 - Next-Gen Features)
+ * =============================================================================
+ */
+
+/**
+ * Load galaxy shortcode handler
+ */
+require_once SAGA_THEME_DIR . '/inc/shortcodes/galaxy-shortcode.php';
+
+/**
+ * Load galaxy AJAX data handler
+ */
+require_once SAGA_THEME_DIR . '/inc/ajax/galaxy-data-handler.php';
+
+/**
+ * =============================================================================
+ * WebGPU Infinite Zoom Timeline (Phase 1 - Next-Gen Features v1.3.0)
+ * =============================================================================
+ */
+
+/**
+ * Load timeline shortcode handler
+ */
+require_once SAGA_THEME_DIR . '/inc/shortcodes/timeline-shortcode.php';
+
+/**
+ * Load timeline AJAX data handler
+ */
+require_once SAGA_THEME_DIR . '/inc/ajax/timeline-data-handler.php';
+
+/**
+ * Load calendar converter helper
+ */
+require_once SAGA_THEME_DIR . '/inc/helpers/calendar-converter.php';
+
+/**
+ * =============================================================================
+ * Entity Quick Create (Phase 1 - Next-Gen Features v1.3.0)
+ * =============================================================================
+ */
+
+/**
+ * Initialize quick create system
+ *
+ * Provides rapid entity creation through admin bar shortcut and modal interface
+ * Includes keyboard shortcuts (Ctrl+Shift+E), AJAX submission, and localStorage autosave
+ *
+ * @return void
+ */
+function saga_init_quick_create(): void
+{
+    // Load required files
+    require_once SAGA_THEME_DIR . '/inc/admin/quick-create.php';
+    require_once SAGA_THEME_DIR . '/inc/ajax/quick-create-handler.php';
+    require_once SAGA_THEME_DIR . '/inc/admin/entity-templates.php';
+
+    // Initialize quick create
+    $quick_create = new \SagaManager\Admin\QuickCreate();
+    $quick_create->init();
+
+    // Initialize AJAX handler
+    $ajax_handler = new \SagaManager\Ajax\QuickCreateHandler();
+    $ajax_handler->register();
+}
+add_action('init', 'saga_init_quick_create');

@@ -1,0 +1,944 @@
+/**
+ * Enhanced Relationship Graph Styles v2
+ *
+ * Advanced styling for D3 v7 graph with animations, effects, and accessibility
+ *
+ * @package SagaManager
+ * @since 1.3.0
+ */
+
+/* ============================================
+   Container
+   ============================================ */
+
+.saga-graph-v2-container {
+    position: relative;
+    width: 100%;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.saga-graph-v2-container.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999;
+    border-radius: 0;
+}
+
+/* ============================================
+   SVG & Canvas
+   ============================================ */
+
+.saga-graph-v2-svg {
+    display: block;
+    background: #ffffff;
+    cursor: grab;
+}
+
+.saga-graph-v2-svg:active {
+    cursor: grabbing;
+}
+
+.saga-graph-v2-canvas {
+    display: block;
+    background: transparent;
+}
+
+/* ============================================
+   Nodes
+   ============================================ */
+
+.saga-graph-node-v2 {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.saga-graph-node-v2:hover .saga-graph-node-circle-v2 {
+    filter: brightness(1.2) drop-shadow(0 0 8px rgba(1, 115, 178, 0.5));
+    transform: scale(1.1);
+}
+
+.saga-graph-node-v2:focus {
+    outline: none;
+}
+
+.saga-graph-node-v2:focus .saga-graph-node-circle-v2 {
+    stroke: #ff9900 !important;
+    stroke-width: 3 !important;
+    filter: drop-shadow(0 0 12px rgba(255, 153, 0, 0.8));
+}
+
+.saga-graph-node-circle-v2 {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+.saga-graph-node-icon-v2 {
+    user-select: none;
+    pointer-events: none;
+    transition: transform 0.3s ease;
+}
+
+.saga-graph-node-v2:hover .saga-graph-node-icon-v2 {
+    transform: scale(1.2);
+}
+
+.importance-ring {
+    animation: pulse-ring 2s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+/* ============================================
+   Edges
+   ============================================ */
+
+.saga-graph-edge-v2 {
+    transition: all 0.3s ease;
+}
+
+.saga-graph-edge-v2:hover {
+    stroke-width: 4 !important;
+    stroke-opacity: 1 !important;
+    filter: drop-shadow(0 0 4px rgba(1, 115, 178, 0.5));
+}
+
+.saga-graph-edge-label-v2 {
+    user-select: none;
+    pointer-events: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 600;
+    fill: #495057;
+    transition: opacity 0.3s ease;
+}
+
+/* Particle effects on edges */
+.edge-particle {
+    animation: flow-particle 3s linear infinite;
+}
+
+@keyframes flow-particle {
+    from {
+        offset-distance: 0%;
+    }
+    to {
+        offset-distance: 100%;
+    }
+}
+
+/* ============================================
+   Labels
+   ============================================ */
+
+.saga-graph-label-v2 {
+    user-select: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 600;
+    text-shadow:
+        0 1px 2px rgba(255, 255, 255, 0.9),
+        0 2px 4px rgba(255, 255, 255, 0.5);
+    transition: opacity 0.3s ease, font-size 0.3s ease;
+}
+
+/* ============================================
+   Advanced Controls Panel
+   ============================================ */
+
+.saga-graph-controls-panel {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10;
+    max-width: 300px;
+}
+
+.saga-graph-controls-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.saga-graph-controls-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.saga-graph-button-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.saga-graph-btn-v2 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 12px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    color: #495057;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.saga-graph-btn-v2:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-color: #0173B2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(1, 115, 178, 0.2);
+}
+
+.saga-graph-btn-v2:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.saga-graph-btn-v2.active {
+    background: linear-gradient(135deg, #0173B2 0%, #015a8f 100%);
+    color: #ffffff;
+    border-color: #015a8f;
+}
+
+.saga-graph-btn-v2:focus {
+    outline: 2px solid #0173B2;
+    outline-offset: 2px;
+}
+
+/* Layout buttons with icons */
+.layout-btn::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.layout-btn[data-layout="force"]::before {
+    content: '⚡';
+}
+
+.layout-btn[data-layout="hierarchical"]::before {
+    content: '🌳';
+}
+
+.layout-btn[data-layout="circular"]::before {
+    content: '⭕';
+}
+
+.layout-btn[data-layout="radial"]::before {
+    content: '☀️';
+}
+
+.layout-btn[data-layout="grid"]::before {
+    content: '⊞';
+}
+
+.layout-btn[data-layout="clustered"]::before {
+    content: '🔘';
+}
+
+/* ============================================
+   Filters & Sliders
+   ============================================ */
+
+.saga-graph-filter-control {
+    margin-bottom: 12px;
+}
+
+.saga-graph-filter-control:last-child {
+    margin-bottom: 0;
+}
+
+.saga-graph-filter-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.saga-graph-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #dee2e6;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.saga-graph-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0173B2 0%, #015a8f 100%);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(1, 115, 178, 0.3);
+    transition: all 0.2s ease;
+}
+
+.saga-graph-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 8px rgba(1, 115, 178, 0.5);
+}
+
+.saga-graph-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0173B2 0%, #015a8f 100%);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(1, 115, 178, 0.3);
+}
+
+.saga-graph-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 13px;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saga-graph-select:hover {
+    border-color: #0173B2;
+}
+
+.saga-graph-select:focus {
+    outline: 2px solid #0173B2;
+    outline-offset: 1px;
+    border-color: #0173B2;
+}
+
+/* ============================================
+   Context Menu
+   ============================================ */
+
+.saga-graph-context-menu {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 180px;
+}
+
+.saga-graph-context-menu .menu-item {
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #495057;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.saga-graph-context-menu .menu-item:hover {
+    background: #0173B2;
+    color: #ffffff;
+}
+
+.saga-graph-context-menu .separator {
+    height: 1px;
+    background: #dee2e6;
+    margin: 4px 0;
+}
+
+/* ============================================
+   Analytics Panel
+   ============================================ */
+
+.saga-graph-analytics-panel {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    z-index: 10;
+}
+
+.saga-graph-analytics-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 12px;
+}
+
+.saga-graph-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.saga-graph-stat:last-child {
+    border-bottom: none;
+}
+
+.saga-graph-stat-label {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.saga-graph-stat-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0173B2;
+}
+
+/* ============================================
+   Temporal Playback Controls
+   ============================================ */
+
+.saga-graph-temporal-controls {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 300px;
+}
+
+.saga-graph-timeline-slider {
+    width: 100%;
+    margin: 12px 0;
+}
+
+.saga-graph-playback-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.saga-graph-playback-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0173B2 0%, #015a8f 100%);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(1, 115, 178, 0.3);
+}
+
+.saga-graph-playback-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(1, 115, 178, 0.5);
+}
+
+.saga-graph-playback-btn.playing {
+    background: linear-gradient(135deg, #D55E00 0%, #b94d00 100%);
+}
+
+/* ============================================
+   Lasso Selection
+   ============================================ */
+
+.lasso-path {
+    fill: url(#lasso-pattern);
+    stroke: #0173B2;
+    stroke-width: 2;
+    stroke-dasharray: 5, 5;
+    opacity: 0.3;
+}
+
+/* ============================================
+   Highlights & Effects
+   ============================================ */
+
+.highlight-pulse {
+    animation: highlight-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes highlight-pulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.highlight-glow {
+    filter: drop-shadow(0 0 12px rgba(255, 107, 107, 0.8));
+}
+
+/* ============================================
+   Minimap
+   ============================================ */
+
+.saga-graph-minimap-v2 {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 180px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    overflow: hidden;
+}
+
+.saga-graph-minimap-v2 svg {
+    width: 100%;
+    height: 100%;
+}
+
+.minimap-viewport {
+    fill: rgba(1, 115, 178, 0.2);
+    stroke: #0173B2;
+    stroke-width: 2;
+    cursor: move;
+}
+
+/* ============================================
+   Legend
+   ============================================ */
+
+.saga-graph-legend-v2 {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.saga-graph-legend-title-v2 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 12px;
+}
+
+.saga-graph-legend-items-v2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.saga-graph-legend-item-v2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.saga-graph-legend-color-v2 {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.saga-graph-legend-label-v2 {
+    color: #495057;
+    font-weight: 600;
+}
+
+/* ============================================
+   Tooltip
+   ============================================ */
+
+.saga-graph-tooltip-v2 {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 280px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.saga-graph-tooltip-v2::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid rgba(0, 0, 0, 0.92);
+}
+
+.saga-graph-tooltip-v2 img {
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* ============================================
+   Messages & States
+   ============================================ */
+
+.saga-graph-loading,
+.saga-graph-error,
+.saga-graph-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 24px 32px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    font-size: 16px;
+    font-weight: 600;
+    z-index: 100;
+}
+
+.saga-graph-loading {
+    color: #0173B2;
+}
+
+.saga-graph-loading::after {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: 12px;
+    border: 3px solid #0173B2;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: saga-spin 0.8s linear infinite;
+}
+
+@keyframes saga-spin {
+    to { transform: rotate(360deg); }
+}
+
+.saga-graph-error {
+    color: #dc3545;
+    border: 2px solid #dc3545;
+}
+
+.saga-graph-message {
+    color: #28a745;
+    border: 2px solid #28a745;
+    animation: fade-out 3s ease-out forwards;
+}
+
+@keyframes fade-out {
+    0%, 80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ============================================
+   Keyboard Shortcuts Help
+   ============================================ */
+
+.saga-graph-shortcuts {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    max-width: 400px;
+    display: none;
+}
+
+.saga-graph-shortcuts.visible {
+    display: block;
+}
+
+.saga-graph-shortcuts-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 16px;
+}
+
+.saga-graph-shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.saga-graph-shortcut-key {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+.saga-graph-shortcut-desc {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+
+.saga-graph-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+@media (prefers-contrast: high) {
+    .saga-graph-node-circle-v2 {
+        stroke-width: 3 !important;
+    }
+
+    .saga-graph-edge-v2 {
+        stroke-width: 2 !important;
+        stroke-opacity: 1 !important;
+    }
+
+    .saga-graph-label-v2 {
+        text-shadow:
+            -2px -2px 0 #fff,
+            2px -2px 0 #fff,
+            -2px 2px 0 #fff,
+            2px 2px 0 #fff;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 768px) {
+    .saga-graph-controls-panel {
+        max-width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .saga-graph-controls-section {
+        flex: 1 1 45%;
+    }
+
+    .saga-graph-minimap-v2 {
+        width: 120px;
+        height: 80px;
+    }
+
+    .saga-graph-analytics-panel,
+    .saga-graph-legend-v2 {
+        position: static;
+        margin-top: 16px;
+    }
+
+    .saga-graph-temporal-controls {
+        position: static;
+        margin-top: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .saga-graph-v2-container {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .saga-graph-controls-section {
+        flex: 1 1 100%;
+    }
+
+    .saga-graph-minimap-v2 {
+        display: none;
+    }
+
+    .saga-graph-legend-items-v2 {
+        grid-template-columns: 1fr;
+    }
+
+    .saga-graph-button-group {
+        flex-direction: column;
+    }
+
+    .saga-graph-btn-v2 {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   Dark Mode
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .saga-graph-v2-container {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        border-color: #444;
+    }
+
+    .saga-graph-v2-svg {
+        background: #2d2d2d;
+    }
+
+    .saga-graph-label-v2 {
+        fill: #e0e0e0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    }
+
+    .saga-graph-controls-section,
+    .saga-graph-analytics-panel,
+    .saga-graph-legend-v2,
+    .saga-graph-temporal-controls,
+    .saga-graph-minimap-v2 {
+        background: rgba(45, 45, 45, 0.95);
+        border-color: #555;
+        color: #e0e0e0;
+    }
+
+    .saga-graph-btn-v2 {
+        background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%);
+        border-color: #555;
+        color: #e0e0e0;
+    }
+
+    .saga-graph-btn-v2:hover {
+        background: linear-gradient(135deg, #4d4d4d 0%, #3d3d3d 100%);
+        border-color: #0173B2;
+    }
+
+    .saga-graph-select {
+        background: #2d2d2d;
+        border-color: #555;
+        color: #e0e0e0;
+    }
+
+    .saga-graph-context-menu {
+        background: rgba(45, 45, 45, 0.98);
+        border-color: #555;
+    }
+
+    .saga-graph-context-menu .menu-item {
+        color: #e0e0e0;
+    }
+
+    .saga-graph-tooltip-v2 {
+        background: rgba(20, 20, 20, 0.95);
+    }
+
+    .saga-graph-loading,
+    .saga-graph-error,
+    .saga-graph-message {
+        background: rgba(45, 45, 45, 0.98);
+        color: #e0e0e0;
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+    .saga-graph-controls-panel,
+    .saga-graph-minimap-v2,
+    .saga-graph-temporal-controls,
+    .saga-graph-analytics-panel,
+    .saga-graph-tooltip-v2 {
+        display: none !important;
+    }
+
+    .saga-graph-v2-container {
+        border: none;
+        box-shadow: none;
+        background: #ffffff;
+    }
+
+    .saga-graph-v2-svg {
+        background: #ffffff;
+    }
+}

@@ -1,0 +1,753 @@
+/**
+ * WebGPU Infinite Zoom Timeline Styles
+ * Dark/Light mode support with beautiful gradients and animations
+ *
+ * @package SagaManager
+ * @since 1.3.0
+ */
+
+/* ============================================
+   CSS Custom Properties (Theming)
+   ============================================ */
+
+:root {
+    /* Dark theme (default) */
+    --timeline-bg-primary: #1a1a2e;
+    --timeline-bg-secondary: #16213e;
+    --timeline-bg-tertiary: #0f3460;
+    --timeline-accent: #e94560;
+    --timeline-accent-hover: #ff5d7a;
+    --timeline-text-primary: #ffffff;
+    --timeline-text-secondary: rgba(255, 255, 255, 0.8);
+    --timeline-text-muted: rgba(255, 255, 255, 0.5);
+    --timeline-border: rgba(255, 255, 255, 0.2);
+    --timeline-shadow: rgba(0, 0, 0, 0.5);
+
+    /* Entity type colors */
+    --timeline-color-character: #e94560;
+    --timeline-color-location: #0f3460;
+    --timeline-color-event: #16213e;
+    --timeline-color-faction: #533483;
+    --timeline-color-artifact: #f97068;
+    --timeline-color-concept: #57cc99;
+
+    /* Animation */
+    --timeline-transition-fast: 150ms ease;
+    --timeline-transition-normal: 300ms ease;
+    --timeline-transition-slow: 500ms ease;
+}
+
+/* Light theme */
+.saga-timeline-theme-light {
+    --timeline-bg-primary: #f5f5f5;
+    --timeline-bg-secondary: #e0e0e0;
+    --timeline-bg-tertiary: #d0d0d0;
+    --timeline-accent: #d32f2f;
+    --timeline-accent-hover: #f44336;
+    --timeline-text-primary: #212121;
+    --timeline-text-secondary: rgba(0, 0, 0, 0.8);
+    --timeline-text-muted: rgba(0, 0, 0, 0.5);
+    --timeline-border: rgba(0, 0, 0, 0.2);
+    --timeline-shadow: rgba(0, 0, 0, 0.2);
+
+    /* Adjust entity colors for light mode */
+    --timeline-color-character: #c62828;
+    --timeline-color-location: #1565c0;
+    --timeline-color-event: #5e35b1;
+    --timeline-color-faction: #6a1b9a;
+    --timeline-color-artifact: #d84315;
+    --timeline-color-concept: #2e7d32;
+}
+
+/* ============================================
+   Container & Layout
+   ============================================ */
+
+.saga-timeline-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--timeline-bg-primary);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px var(--timeline-shadow);
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.saga-timeline-header {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--timeline-bg-secondary) 0%, var(--timeline-bg-tertiary) 100%);
+    border-bottom: 1px solid var(--timeline-border);
+}
+
+.saga-timeline-title {
+    margin: 0 0 4px 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--timeline-text-primary);
+    letter-spacing: -0.5px;
+}
+
+.saga-timeline-subtitle {
+    margin: 0;
+    font-size: 14px;
+    color: var(--timeline-text-secondary);
+    font-weight: 500;
+}
+
+.saga-timeline-viewport {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: var(--timeline-bg-primary);
+}
+
+/* ============================================
+   Canvas
+   ============================================ */
+
+.saga-timeline-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    touch-action: none;
+}
+
+.saga-timeline-canvas:active {
+    cursor: grabbing;
+}
+
+/* ============================================
+   Controls
+   ============================================ */
+
+.saga-timeline-controls {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.saga-timeline-controls > * {
+    pointer-events: auto;
+}
+
+.timeline-control-group {
+    display: flex;
+    gap: 4px;
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--timeline-border);
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 4px 16px var(--timeline-shadow);
+}
+
+.timeline-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: var(--timeline-text-primary);
+    cursor: pointer;
+    transition: all var(--timeline-transition-fast);
+}
+
+.timeline-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--timeline-accent);
+}
+
+.timeline-btn:active {
+    transform: scale(0.95);
+}
+
+.timeline-btn:focus-visible {
+    outline: 2px solid var(--timeline-accent);
+    outline-offset: 2px;
+}
+
+.timeline-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.timeline-zoom-level {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--timeline-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px var(--timeline-shadow);
+}
+
+.zoom-label {
+    font-size: 12px;
+    color: var(--timeline-text-muted);
+    font-weight: 500;
+}
+
+.zoom-value {
+    font-size: 14px;
+    color: var(--timeline-text-primary);
+    font-weight: 700;
+    min-width: 50px;
+    text-align: right;
+}
+
+/* ============================================
+   Minimap
+   ============================================ */
+
+.saga-timeline-minimap {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--timeline-border);
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 4px 16px var(--timeline-shadow);
+    z-index: 100;
+}
+
+.minimap-canvas {
+    display: block;
+    width: 100%;
+    height: 60px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.minimap-viewport {
+    position: absolute;
+    top: 8px;
+    height: 60px;
+    background: rgba(233, 69, 96, 0.2);
+    border: 2px solid var(--timeline-accent);
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+/* ============================================
+   Tooltip
+   ============================================ */
+
+.saga-timeline-tooltip {
+    position: fixed;
+    max-width: 320px;
+    background: rgba(26, 26, 46, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--timeline-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px var(--timeline-shadow);
+    padding: 12px 16px;
+    z-index: 10000;
+    pointer-events: none;
+    animation: tooltipFadeIn var(--timeline-transition-fast);
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.tooltip-type {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--timeline-accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.tooltip-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--timeline-text-primary);
+}
+
+.tooltip-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tooltip-date {
+    font-size: 12px;
+    color: var(--timeline-accent);
+    font-weight: 600;
+}
+
+.tooltip-description {
+    font-size: 12px;
+    color: var(--timeline-text-secondary);
+    line-height: 1.5;
+}
+
+/* ============================================
+   Search Panel
+   ============================================ */
+
+.saga-timeline-search-panel {
+    position: absolute;
+    top: 80px;
+    right: 16px;
+    width: 320px;
+    background: rgba(26, 26, 46, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--timeline-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px var(--timeline-shadow);
+    z-index: 200;
+    animation: panelSlideIn var(--timeline-transition-normal);
+}
+
+@keyframes panelSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-panel-header,
+.bookmark-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--timeline-border);
+}
+
+.search-panel-header h3,
+.bookmark-panel-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--timeline-text-primary);
+}
+
+.close-panel {
+    background: transparent;
+    border: none;
+    color: var(--timeline-text-secondary);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    transition: color var(--timeline-transition-fast);
+}
+
+.close-panel:hover {
+    color: var(--timeline-accent);
+}
+
+.search-panel-content,
+.bookmark-panel-content {
+    padding: 16px 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--timeline-bg-secondary);
+    border: 1px solid var(--timeline-border);
+    border-radius: 8px;
+    color: var(--timeline-text-primary);
+    font-size: 14px;
+    transition: all var(--timeline-transition-fast);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--timeline-accent);
+    box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+}
+
+.search-input::placeholder {
+    color: var(--timeline-text-muted);
+}
+
+.search-results {
+    margin-top: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: var(--timeline-bg-secondary);
+    border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: var(--timeline-accent);
+    border-radius: 3px;
+}
+
+.search-result-item {
+    padding: 12px;
+    background: var(--timeline-bg-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--timeline-transition-fast);
+    margin-bottom: 8px;
+}
+
+.search-result-item:hover {
+    background: var(--timeline-bg-tertiary);
+    transform: translateX(4px);
+}
+
+.result-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--timeline-text-primary);
+    margin-bottom: 4px;
+}
+
+.result-title mark {
+    background: var(--timeline-accent);
+    color: white;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.result-date {
+    font-size: 12px;
+    color: var(--timeline-text-muted);
+}
+
+.no-results {
+    text-align: center;
+    padding: 24px;
+    color: var(--timeline-text-muted);
+    font-size: 14px;
+}
+
+/* ============================================
+   Bookmark Panel
+   ============================================ */
+
+.saga-timeline-bookmark-panel {
+    position: absolute;
+    top: 80px;
+    right: 16px;
+    width: 320px;
+    background: rgba(26, 26, 46, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--timeline-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px var(--timeline-shadow);
+    z-index: 200;
+    animation: panelSlideIn var(--timeline-transition-normal);
+}
+
+.bookmark-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.bookmark-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--timeline-bg-secondary);
+    border-radius: 8px;
+    transition: background var(--timeline-transition-fast);
+}
+
+.bookmark-item:hover {
+    background: var(--timeline-bg-tertiary);
+}
+
+.bookmark-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--timeline-text-primary);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bookmark-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.bookmark-goto,
+.bookmark-delete {
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all var(--timeline-transition-fast);
+}
+
+.bookmark-goto {
+    background: var(--timeline-accent);
+    color: white;
+}
+
+.bookmark-goto:hover {
+    background: var(--timeline-accent-hover);
+    transform: translateY(-1px);
+}
+
+.bookmark-delete {
+    background: transparent;
+    color: var(--timeline-text-muted);
+}
+
+.bookmark-delete:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--timeline-accent);
+}
+
+.no-bookmarks {
+    text-align: center;
+    padding: 24px;
+    color: var(--timeline-text-muted);
+    font-size: 14px;
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+
+.saga-timeline-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--timeline-border);
+    border-top-color: var(--timeline-accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-size: 14px;
+    color: var(--timeline-text-secondary);
+    font-weight: 500;
+}
+
+/* ============================================
+   Error State
+   ============================================ */
+
+.saga-timeline-error {
+    padding: 24px;
+    background: rgba(233, 69, 96, 0.1);
+    border: 1px solid var(--timeline-accent);
+    border-radius: 8px;
+    color: var(--timeline-accent);
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 768px) {
+    .saga-timeline-controls {
+        top: 8px;
+        right: 8px;
+        gap: 8px;
+    }
+
+    .timeline-control-group {
+        padding: 2px;
+    }
+
+    .timeline-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .timeline-zoom-level {
+        display: none; /* Hide on mobile to save space */
+    }
+
+    .saga-timeline-minimap {
+        width: calc(100% - 32px);
+        bottom: 8px;
+    }
+
+    .saga-timeline-search-panel,
+    .saga-timeline-bookmark-panel {
+        top: auto;
+        bottom: 80px;
+        right: 8px;
+        left: 8px;
+        width: auto;
+    }
+
+    .saga-timeline-header {
+        padding: 16px;
+    }
+
+    .saga-timeline-title {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .timeline-control-group {
+        flex-wrap: wrap;
+    }
+
+    .saga-timeline-header {
+        padding: 12px;
+    }
+
+    .saga-timeline-title {
+        font-size: 18px;
+    }
+
+    .saga-timeline-subtitle {
+        font-size: 12px;
+    }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .saga-timeline-container {
+        border: 2px solid var(--timeline-border);
+    }
+
+    .timeline-btn:focus-visible {
+        outline-width: 3px;
+    }
+
+    .search-input:focus {
+        border-width: 2px;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .saga-timeline-canvas {
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Dark mode preference */
+@media (prefers-color-scheme: dark) {
+    .saga-timeline-container:not(.saga-timeline-theme-light) {
+        /* Already using dark theme by default */
+    }
+}
+
+/* Light mode preference */
+@media (prefers-color-scheme: light) {
+    .saga-timeline-container:not(.saga-timeline-theme-dark) {
+        --timeline-bg-primary: #f5f5f5;
+        --timeline-bg-secondary: #e0e0e0;
+        --timeline-bg-tertiary: #d0d0d0;
+        --timeline-accent: #d32f2f;
+        --timeline-accent-hover: #f44336;
+        --timeline-text-primary: #212121;
+        --timeline-text-secondary: rgba(0, 0, 0, 0.8);
+        --timeline-text-muted: rgba(0, 0, 0, 0.5);
+        --timeline-border: rgba(0, 0, 0, 0.2);
+        --timeline-shadow: rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+    .saga-timeline-controls,
+    .saga-timeline-minimap,
+    .saga-timeline-search-panel,
+    .saga-timeline-bookmark-panel {
+        display: none !important;
+    }
+
+    .saga-timeline-container {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+
+    .saga-timeline-canvas {
+        cursor: default;
+    }
+}
