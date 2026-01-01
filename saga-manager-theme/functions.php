@@ -1420,3 +1420,15 @@ function saga_get_consistency_stats(int $sagaId): array
     $analyzer = saga_get_consistency_analyzer();
     return $analyzer->getStatistics($sagaId);
 }
+
+/**
+ * Load Entity Extraction Admin Interface
+ *
+ * Initializes the admin menu, AJAX handlers, and dashboard widgets
+ * for AI-powered entity extraction workflow.
+ *
+ * @since 1.4.0
+ */
+if (is_admin()) {
+    require_once SAGA_THEME_DIR . '/inc/admin/extraction-admin-init.php';
+}
