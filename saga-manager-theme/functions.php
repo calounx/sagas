@@ -1432,3 +1432,29 @@ function saga_get_consistency_stats(int $sagaId): array
 if (is_admin()) {
     require_once SAGA_THEME_DIR . '/inc/admin/extraction-admin-init.php';
 }
+
+/**
+ * =============================================================================
+ * AI Relationship Suggestions (Phase 3 - v1.5.0)
+ * =============================================================================
+ */
+
+/**
+ * Initialize AI Relationship Suggestions
+ *
+ * Provides ML-powered relationship suggestions with learning capabilities
+ * Includes admin interface, background processing, and AJAX endpoints
+ *
+ * @since 1.5.0
+ */
+function saga_init_relationship_suggestions(): void
+{
+    // Load AJAX endpoints (always load for AJAX handlers)
+    require_once SAGA_THEME_DIR . '/inc/ajax/suggestions-ajax.php';
+
+    // Load admin interface (only in admin)
+    if (is_admin()) {
+        require_once SAGA_THEME_DIR . '/inc/admin/suggestions-admin-init.php';
+    }
+}
+add_action('init', 'saga_init_relationship_suggestions');

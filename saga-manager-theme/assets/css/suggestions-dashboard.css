@@ -1,0 +1,914 @@
+/**
+ * Relationship Suggestions Dashboard Styles
+ *
+ * Responsive styling for the AI suggestions interface.
+ */
+
+/* ==========================================================================
+   Layout & Container
+   ========================================================================== */
+
+.saga-suggestions-page {
+    background: #f0f0f1;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.saga-suggestions-wrapper {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.suggestions-header {
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.suggestions-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.suggestions-header h1 .dashicons {
+    color: #2271b1;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.saga-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.saga-selector label {
+    font-weight: 500;
+}
+
+.saga-selector select {
+    min-width: 200px;
+}
+
+#generate-suggestions-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Generation Progress */
+
+.generation-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2271b1, #1e5a8e);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-weight: 600;
+    color: #2271b1;
+    min-width: 40px;
+}
+
+/* Accuracy Metrics */
+
+.accuracy-metrics {
+    display: flex;
+    gap: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.metric-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.metric-label {
+    font-size: 14px;
+    color: #646970;
+}
+
+.metric-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+/* ==========================================================================
+   Statistics Cards
+   ========================================================================== */
+
+.statistics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.stat-icon.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.stat-icon.accepted {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.stat-icon.accuracy {
+    background: #cfe2ff;
+    color: #084298;
+}
+
+.stat-icon.confidence {
+    background: #f8d7da;
+    color: #842029;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1d2327;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #646970;
+}
+
+/* ==========================================================================
+   Tabs
+   ========================================================================== */
+
+.suggestions-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.tab-button {
+    background: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #646970;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+    background: #f6f7f7;
+}
+
+.tab-button.active {
+    background: white;
+    color: #2271b1;
+    box-shadow: 0 -2px 0 #2271b1 inset;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ==========================================================================
+   Filters Bar
+   ========================================================================== */
+
+.filters-bar {
+    background: white;
+    padding: 16px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #646970;
+}
+
+.filter-group select {
+    min-width: 150px;
+}
+
+/* ==========================================================================
+   Bulk Actions Bar
+   ========================================================================== */
+
+.bulk-actions-bar {
+    background: #f0f0f1;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.bulk-actions-bar span {
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.bulk-actions-bar .button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ==========================================================================
+   Suggestions Table
+   ========================================================================== */
+
+.suggestions-table-wrapper {
+    background: white;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.suggestions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.suggestions-table thead {
+    background: #f6f7f7;
+    border-bottom: 2px solid #c3c4c7;
+}
+
+.suggestions-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.suggestions-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.suggestions-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.suggestions-table tbody tr:hover {
+    background: #f6f7f7;
+}
+
+.suggestions-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.suggestions-table tbody tr:nth-child(even):hover {
+    background: #f6f7f7;
+}
+
+/* Table Columns */
+
+.col-checkbox {
+    width: 40px;
+}
+
+.col-entities {
+    min-width: 200px;
+}
+
+.col-type {
+    width: 150px;
+}
+
+.col-confidence {
+    width: 120px;
+}
+
+.col-strength {
+    width: 150px;
+}
+
+.col-actions {
+    width: 180px;
+    text-align: right;
+}
+
+/* Entity Display */
+
+.entity-type {
+    font-size: 11px;
+    color: #646970;
+    text-transform: uppercase;
+}
+
+/* Relationship Badge */
+
+.relationship-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #e5e5e5;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Confidence Badge */
+
+.confidence-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+}
+
+.confidence-badge.high {
+    background: #00a32a;
+}
+
+.confidence-badge.medium {
+    background: #dba617;
+}
+
+.confidence-badge.low {
+    background: #d63638;
+}
+
+/* Strength Bar */
+
+.strength-bar {
+    width: 80px;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.strength-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2271b1, #1e5a8e);
+    transition: width 0.3s ease;
+}
+
+.strength-value {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 12px;
+    color: #646970;
+}
+
+/* Action Buttons */
+
+.col-actions .button {
+    margin-right: 4px;
+}
+
+.col-actions .button:last-child {
+    margin-right: 0;
+}
+
+.col-actions .button .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Row States */
+
+.suggestions-table tr.accepting {
+    opacity: 0.6;
+    background: #d1e7dd !important;
+}
+
+.suggestions-table tr.rejecting {
+    opacity: 0.6;
+    background: #f8d7da !important;
+}
+
+/* Loading State */
+
+.suggestions-loading {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.suggestions-loading .spinner {
+    margin: 0 auto 16px;
+}
+
+.suggestions-loading p {
+    color: #646970;
+    font-size: 14px;
+}
+
+/* Empty State */
+
+.suggestions-empty {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.suggestions-empty .dashicons {
+    font-size: 48px;
+    color: #c3c4c7;
+    margin-bottom: 16px;
+}
+
+.suggestions-empty p {
+    color: #646970;
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+
+.suggestions-pagination {
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+#page-info {
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Learning Dashboard
+   ========================================================================== */
+
+.learning-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.dashboard-card h3 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+/* Feature List */
+
+.features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.feature-name {
+    min-width: 150px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.feature-bar {
+    flex: 1;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.feature-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2271b1, #1e5a8e);
+}
+
+.feature-value {
+    font-size: 12px;
+    color: #646970;
+    min-width: 100px;
+    text-align: right;
+}
+
+/* Feedback Log */
+
+.feedback-log {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Learning Controls */
+
+.learning-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.learning-controls .button {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.learning-controls .description {
+    margin: 8px 0 0;
+    color: #646970;
+    font-size: 13px;
+}
+
+/* ==========================================================================
+   Modal
+   ========================================================================== */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #646970;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #1d2327;
+}
+
+.modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-section {
+    margin-bottom: 24px;
+}
+
+.modal-section:last-child {
+    margin-bottom: 0;
+}
+
+.modal-section h3 {
+    margin: 0 0 12px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* Entity Cards */
+
+.entity-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.entity-card {
+    flex: 1;
+    padding: 16px;
+    background: #f6f7f7;
+    border-radius: 8px;
+}
+
+.entity-card h4 {
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+
+.entity-card p {
+    margin: 4px 0;
+    font-size: 13px;
+    color: #646970;
+}
+
+.entity-info .arrow {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2271b1;
+}
+
+/* Reasoning Text */
+
+.reasoning-text {
+    padding: 12px;
+    background: #f6f7f7;
+    border-left: 3px solid #2271b1;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   Toast Notifications
+   ========================================================================== */
+
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100001;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast {
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 400px;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast-success {
+    background: #00a32a;
+    color: white;
+}
+
+.toast-error {
+    background: #d63638;
+    color: white;
+}
+
+.toast-warning {
+    background: #dba617;
+    color: white;
+}
+
+.toast-info {
+    background: #2271b1;
+    color: white;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .saga-suggestions-wrapper {
+        padding: 0 12px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-controls {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .saga-selector select {
+        width: 100%;
+    }
+
+    #generate-suggestions-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .statistics-row {
+        grid-template-columns: 1fr;
+    }
+
+    .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group select {
+        width: 100%;
+    }
+
+    .suggestions-table {
+        font-size: 12px;
+    }
+
+    .suggestions-table th,
+    .suggestions-table td {
+        padding: 8px;
+    }
+
+    .col-actions .button {
+        padding: 4px 8px;
+    }
+
+    .learning-dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .entity-info {
+        flex-direction: column;
+    }
+
+    .entity-info .arrow {
+        transform: rotate(90deg);
+    }
+
+    .toast-container {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .toast {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .suggestions-header h1 {
+        font-size: 20px;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+
+    .accuracy-metrics {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
