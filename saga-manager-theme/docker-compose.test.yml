@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # MariaDB database for testing
+  db:
+    image: mariadb:11.4
+    container_name: saga-test-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: wordpress_test
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # WordPress with PHP 8.2 and testing tools
+  wordpress:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: saga-test-wordpress
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress_test
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_DEBUG_LOG: 1
+      WP_TESTS_DIR: /tmp/wordpress-tests-lib
+      WP_CORE_DIR: /var/www/html
+    volumes:
+      # Mount theme directory
+      - .:/var/www/html/wp-content/themes/saga-manager-theme
+      # Mount test results directory
+      - ./tests/results:/var/www/html/wp-content/themes/saga-manager-theme/tests/results
+      # Mount composer cache
+      - composer_cache:/root/.composer
+    ports:
+      - "8080:80"
+    working_dir: /var/www/html/wp-content/themes/saga-manager-theme
+    command: apache2-foreground
+
+  # PHPUnit test runner (separate container for clean test execution)
+  phpunit:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: saga-phpunit
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress_test
+      WP_TESTS_DIR: /tmp/wordpress-tests-lib
+      WP_CORE_DIR: /tmp/wordpress
+    volumes:
+      - .:/app
+      - ./tests/results:/app/tests/results
+      - composer_cache:/root/.composer
+    working_dir: /app
+    command: tail -f /dev/null  # Keep container running
+
+volumes:
+  db_data:
+  composer_cache:
+
+networks:
+  default:
+    name: saga-test-network

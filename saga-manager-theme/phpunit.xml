@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTodoAnnotatedTests="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    cacheDirectory=".phpunit.cache"
+>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/integration</directory>
+        </testsuite>
+        <testsuite name="all">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage includeUncoveredFiles="true"
+              pathCoverage="false"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+        <report>
+            <html outputDirectory="tests/results/coverage-html"/>
+            <text outputFile="tests/results/coverage.txt"/>
+            <clover outputFile="tests/results/coverage.xml"/>
+        </report>
+    </coverage>
+
+    <source>
+        <include>
+            <directory suffix=".php">inc</directory>
+        </include>
+        <exclude>
+            <directory>inc/ajax</directory>
+            <directory>tests</directory>
+            <directory>vendor</directory>
+            <directory>node_modules</directory>
+        </exclude>
+    </source>
+
+    <php>
+        <!-- WordPress Test Configuration -->
+        <const name="WP_TESTS_PHPUNIT_POLYFILLS_PATH" value="vendor/yoast/phpunit-polyfills"/>
+
+        <!-- Test Database Configuration -->
+        <env name="WP_TESTS_DB_NAME" value="wordpress_test"/>
+        <env name="WP_TESTS_DB_USER" value="wordpress"/>
+        <env name="WP_TESTS_DB_PASSWORD" value="wordpress"/>
+        <env name="WP_TESTS_DB_HOST" value="db:3306"/>
+
+        <!-- WordPress Configuration -->
+        <env name="WP_TESTS_DOMAIN" value="localhost"/>
+        <env name="WP_TESTS_EMAIL" value="admin@example.org"/>
+        <env name="WP_TESTS_TITLE" value="Test Site"/>
+
+        <!-- Plugin Configuration -->
+        <const name="WP_PLUGIN_DIR" value="/var/www/html/wp-content/plugins"/>
+        <const name="WP_DEFAULT_THEME" value="saga-manager-theme"/>
+
+        <!-- Test Configuration -->
+        <const name="WP_DEBUG" value="true"/>
+        <const name="WP_DEBUG_LOG" value="false"/>
+        <const name="WP_DEBUG_DISPLAY" value="false"/>
+
+        <!-- Skip some tests that require network -->
+        <const name="WP_TESTS_SKIP_INSTALL" value="false"/>
+    </php>
+
+    <logging>
+        <junit outputFile="tests/results/junit.xml"/>
+        <testdoxHtml outputFile="tests/results/testdox.html"/>
+        <testdoxText outputFile="tests/results/testdox.txt"/>
+    </logging>
+</phpunit>
