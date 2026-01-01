@@ -4,7 +4,7 @@ services:
   # MariaDB database for testing
   db:
     image: mariadb:11.4
-    container_name: saga-test-db
+    container_name: saga_test_db
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: wordpress_test
@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
-    container_name: saga-test-wordpress
+    container_name: saga_test_wordpress
     depends_on:
       db:
         condition: service_healthy
@@ -55,7 +55,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
-    container_name: saga-phpunit
+    container_name: saga_phpunit
     depends_on:
       db:
         condition: service_healthy
@@ -79,4 +79,4 @@ volumes:
 
 networks:
   default:
-    name: saga-test-network
+    name: saga_test_network
