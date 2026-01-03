@@ -6,29 +6,42 @@ namespace SagaTheme;
 /**
  * PSR-4 Autoloader for Saga Manager Theme
  *
- * Maps SagaTheme namespace to inc/ directory
+ * Maps namespaces to directories:
+ * - SagaTheme\  → inc/
+ * - SagaManager\ → inc/
  * Follows PSR-4 autoloading standard
  */
-spl_autoload_register(function (string $class): void {
-    // Only autoload SagaTheme namespace classes
-    $prefix = 'SagaTheme\\';
-    $baseDir = __DIR__ . '/';
+spl_autoload_register(
+	function ( string $class ): void {
+		$baseDir = __DIR__ . '/';
 
-    // Check if class uses the namespace prefix
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
+		// Handle SagaManager namespace (inc/ai/, inc/ajax/, etc.)
+		$managerPrefix = 'SagaManager\\';
+		if ( strncmp( $managerPrefix, $class, strlen( $managerPrefix ) ) === 0 ) {
+			$relativeClass = substr( $class, strlen( $managerPrefix ) );
+			// Convert namespace to path: SagaManager\AI\Interfaces\Foo → inc/ai/interfaces/Foo.php
+			// Use lowercase for directory names, preserve case for filenames
+			$parts = explode( '\\', $relativeClass );
+			$filename = array_pop( $parts ); // Preserve class name case
+			$path = strtolower( implode( '/', $parts ) ); // Lowercase directories
+			$file = $baseDir . $path . ( $path ? '/' : '' ) . $filename . '.php';
 
-    // Get the relative class name
-    $relativeClass = substr($class, $len);
+			if ( file_exists( $file ) ) {
+				require_once $file;
+			}
+			return;
+		}
 
-    // Replace namespace separators with directory separators
-    // Convert to lowercase and add 'class-' prefix per WordPress conventions
-    $file = $baseDir . 'class-' . str_replace('\\', '/', strtolower($relativeClass)) . '.php';
+		// Handle SagaTheme namespace (legacy WordPress-style naming)
+		$themePrefix = 'SagaTheme\\';
+		if ( strncmp( $themePrefix, $class, strlen( $themePrefix ) ) === 0 ) {
+			$relativeClass = substr( $class, strlen( $themePrefix ) );
+			// WordPress convention: 'class-' prefix and lowercase
+			$file = $baseDir . 'class-' . str_replace( '\\', '/', strtolower( $relativeClass ) ) . '.php';
 
-    // If the file exists, require it
-    if (file_exists($file)) {
-        require_once $file;
-    }
-});
+			if ( file_exists( $file ) ) {
+				require_once $file;
+			}
+		}
+	}
+);

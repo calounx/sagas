@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace SagaManager\AI\EntityExtractor;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -24,67 +24,64 @@ if (!defined('ABSPATH')) {
  *
  * Handles database schema creation and versioning for entity extraction feature.
  */
-class EntityExtractorMigrator
-{
-    private const SCHEMA_VERSION = '1.0.0';
-    private const VERSION_OPTION = 'saga_extractor_schema_version';
+class EntityExtractorMigrator {
 
-    /**
-     * Run database migrations
-     *
-     * @return bool True on success, false on failure
-     */
-    public static function migrate(): bool
-    {
-        global $wpdb;
+	private const SCHEMA_VERSION = '1.0.0';
+	private const VERSION_OPTION = 'saga_extractor_schema_version';
 
-        $current_version = get_option(self::VERSION_OPTION, '0.0.0');
+	/**
+	 * Run database migrations
+	 *
+	 * @return bool True on success, false on failure
+	 */
+	public static function migrate(): bool {
+		global $wpdb;
 
-        if (version_compare($current_version, self::SCHEMA_VERSION, '>=')) {
-            return true; // Already up to date
-        }
+		$current_version = get_option( self::VERSION_OPTION, '0.0.0' );
 
-        $wpdb->hide_errors();
-        $success = true;
+		if ( version_compare( $current_version, self::SCHEMA_VERSION, '>=' ) ) {
+			return true; // Already up to date
+		}
 
-        try {
-            // Create extraction_jobs table
-            $success = $success && self::createExtractionJobsTable();
+		$wpdb->hide_errors();
+		$success = true;
 
-            // Create extracted_entities table
-            $success = $success && self::createExtractedEntitiesTable();
+		try {
+			// Create extraction_jobs table
+			$success = $success && self::createExtractionJobsTable();
 
-            // Create extraction_duplicates table
-            $success = $success && self::createExtractionDuplicatesTable();
+			// Create extracted_entities table
+			$success = $success && self::createExtractedEntitiesTable();
 
-            if ($success) {
-                update_option(self::VERSION_OPTION, self::SCHEMA_VERSION);
-                error_log('[SAGA][EXTRACTOR] Database schema created successfully');
-            } else {
-                error_log('[SAGA][EXTRACTOR][ERROR] Database schema creation failed');
-            }
+			// Create extraction_duplicates table
+			$success = $success && self::createExtractionDuplicatesTable();
 
-        } catch (\Exception $e) {
-            error_log('[SAGA][EXTRACTOR][ERROR] Migration failed: ' . $e->getMessage());
-            return false;
-        }
+			if ( $success ) {
+				update_option( self::VERSION_OPTION, self::SCHEMA_VERSION );
+				error_log( '[SAGA][EXTRACTOR] Database schema created successfully' );
+			} else {
+				error_log( '[SAGA][EXTRACTOR][ERROR] Database schema creation failed' );
+			}
+		} catch ( \Exception $e ) {
+			error_log( '[SAGA][EXTRACTOR][ERROR] Migration failed: ' . $e->getMessage() );
+			return false;
+		}
 
-        return $success;
-    }
+		return $success;
+	}
 
-    /**
-     * Create extraction_jobs table
-     *
-     * Tracks extraction job requests, status, and results
-     */
-    private static function createExtractionJobsTable(): bool
-    {
-        global $wpdb;
+	/**
+	 * Create extraction_jobs table
+	 *
+	 * Tracks extraction job requests, status, and results
+	 */
+	private static function createExtractionJobsTable(): bool {
+		global $wpdb;
 
-        $table_name = $wpdb->prefix . 'saga_extraction_jobs';
-        $charset_collate = $wpdb->get_charset_collate();
+		$table_name      = $wpdb->prefix . 'saga_extraction_jobs';
+		$charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
+		$sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             saga_id INT UNSIGNED NOT NULL,
             user_id BIGINT UNSIGNED NOT NULL,
@@ -116,25 +113,24 @@ class EntityExtractorMigrator
             FOREIGN KEY (user_id) REFERENCES {$wpdb->prefix}users(ID) ON DELETE CASCADE
         ) ENGINE=InnoDB {$charset_collate}";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql );
 
-        return $wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") === $table_name;
-    }
+		return $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) === $table_name;
+	}
 
-    /**
-     * Create extracted_entities table
-     *
-     * Stores extracted entities awaiting user approval before batch creation
-     */
-    private static function createExtractedEntitiesTable(): bool
-    {
-        global $wpdb;
+	/**
+	 * Create extracted_entities table
+	 *
+	 * Stores extracted entities awaiting user approval before batch creation
+	 */
+	private static function createExtractedEntitiesTable(): bool {
+		global $wpdb;
 
-        $table_name = $wpdb->prefix . 'saga_extracted_entities';
-        $charset_collate = $wpdb->get_charset_collate();
+		$table_name      = $wpdb->prefix . 'saga_extracted_entities';
+		$charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
+		$sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             job_id BIGINT UNSIGNED NOT NULL,
             entity_type ENUM('character', 'location', 'event', 'faction', 'artifact', 'concept') NOT NULL,
@@ -163,25 +159,24 @@ class EntityExtractorMigrator
             FOREIGN KEY (reviewed_by) REFERENCES {$wpdb->prefix}users(ID) ON DELETE SET NULL
         ) ENGINE=InnoDB {$charset_collate}";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql );
 
-        return $wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") === $table_name;
-    }
+		return $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) === $table_name;
+	}
 
-    /**
-     * Create extraction_duplicates table
-     *
-     * Tracks potential duplicate entities found during extraction
-     */
-    private static function createExtractionDuplicatesTable(): bool
-    {
-        global $wpdb;
+	/**
+	 * Create extraction_duplicates table
+	 *
+	 * Tracks potential duplicate entities found during extraction
+	 */
+	private static function createExtractionDuplicatesTable(): bool {
+		global $wpdb;
 
-        $table_name = $wpdb->prefix . 'saga_extraction_duplicates';
-        $charset_collate = $wpdb->get_charset_collate();
+		$table_name      = $wpdb->prefix . 'saga_extraction_duplicates';
+		$charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
+		$sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             extracted_entity_id BIGINT UNSIGNED NOT NULL,
             existing_entity_id BIGINT UNSIGNED NOT NULL,
@@ -202,86 +197,82 @@ class EntityExtractorMigrator
             UNIQUE KEY uk_pair (extracted_entity_id, existing_entity_id)
         ) ENGINE=InnoDB {$charset_collate}";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql );
 
-        return $wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") === $table_name;
-    }
+		return $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) === $table_name;
+	}
 
-    /**
-     * Rollback database changes
-     *
-     * Drops all extraction-related tables. Use with extreme caution.
-     *
-     * @return bool True on success
-     */
-    public static function rollback(): bool
-    {
-        global $wpdb;
+	/**
+	 * Rollback database changes
+	 *
+	 * Drops all extraction-related tables. Use with extreme caution.
+	 *
+	 * @return bool True on success
+	 */
+	public static function rollback(): bool {
+		global $wpdb;
 
-        $tables = [
-            $wpdb->prefix . 'saga_extraction_duplicates',
-            $wpdb->prefix . 'saga_extracted_entities',
-            $wpdb->prefix . 'saga_extraction_jobs'
-        ];
+		$tables = array(
+			$wpdb->prefix . 'saga_extraction_duplicates',
+			$wpdb->prefix . 'saga_extracted_entities',
+			$wpdb->prefix . 'saga_extraction_jobs',
+		);
 
-        $success = true;
-        foreach ($tables as $table) {
-            $result = $wpdb->query("DROP TABLE IF EXISTS {$table}");
-            $success = $success && ($result !== false);
-        }
+		$success = true;
+		foreach ( $tables as $table ) {
+			$result  = $wpdb->query( "DROP TABLE IF EXISTS {$table}" );
+			$success = $success && ( $result !== false );
+		}
 
-        if ($success) {
-            delete_option(self::VERSION_OPTION);
-            error_log('[SAGA][EXTRACTOR] Database schema rolled back');
-        }
+		if ( $success ) {
+			delete_option( self::VERSION_OPTION );
+			error_log( '[SAGA][EXTRACTOR] Database schema rolled back' );
+		}
 
-        return $success;
-    }
+		return $success;
+	}
 
-    /**
-     * Get current schema version
-     *
-     * @return string Version number
-     */
-    public static function getCurrentVersion(): string
-    {
-        return get_option(self::VERSION_OPTION, '0.0.0');
-    }
+	/**
+	 * Get current schema version
+	 *
+	 * @return string Version number
+	 */
+	public static function getCurrentVersion(): string {
+		return get_option( self::VERSION_OPTION, '0.0.0' );
+	}
 
-    /**
-     * Check if migration is needed
-     *
-     * @return bool True if migration needed
-     */
-    public static function needsMigration(): bool
-    {
-        $current = self::getCurrentVersion();
-        return version_compare($current, self::SCHEMA_VERSION, '<');
-    }
+	/**
+	 * Check if migration is needed
+	 *
+	 * @return bool True if migration needed
+	 */
+	public static function needsMigration(): bool {
+		$current = self::getCurrentVersion();
+		return version_compare( $current, self::SCHEMA_VERSION, '<' );
+	}
 
-    /**
-     * Get table statistics
-     *
-     * @return array Table names and row counts
-     */
-    public static function getTableStats(): array
-    {
-        global $wpdb;
+	/**
+	 * Get table statistics
+	 *
+	 * @return array Table names and row counts
+	 */
+	public static function getTableStats(): array {
+		global $wpdb;
 
-        $stats = [];
+		$stats = array();
 
-        $tables = [
-            'jobs' => $wpdb->prefix . 'saga_extraction_jobs',
-            'entities' => $wpdb->prefix . 'saga_extracted_entities',
-            'duplicates' => $wpdb->prefix . 'saga_extraction_duplicates'
-        ];
+		$tables = array(
+			'jobs'       => $wpdb->prefix . 'saga_extraction_jobs',
+			'entities'   => $wpdb->prefix . 'saga_extracted_entities',
+			'duplicates' => $wpdb->prefix . 'saga_extraction_duplicates',
+		);
 
-        foreach ($tables as $key => $table) {
-            $count = $wpdb->get_var("SELECT COUNT(*) FROM {$table}");
-            $stats[$key] = $count !== null ? (int)$count : 0;
-        }
+		foreach ( $tables as $key => $table ) {
+			$count         = $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" );
+			$stats[ $key ] = $count !== null ? (int) $count : 0;
+		}
 
-        return $stats;
-    }
+		return $stats;
+	}
 }

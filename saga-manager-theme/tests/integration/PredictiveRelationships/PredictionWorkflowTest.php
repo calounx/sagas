@@ -114,9 +114,9 @@ class PredictionWorkflowTest extends TestCase
             $suggestionId
         ), ARRAY_A);
 
-        $this->assertEquals(3, $stats['total']);
-        $this->assertEquals(2, $stats['correct']);
-        $this->assertEquals(0.67, round($stats['accuracy'], 2));
+        $this->assertEquals(3, (int)$stats['total']);
+        $this->assertEquals(2, (int)$stats['correct']);
+        $this->assertEquals(0.67, round((float)$stats['accuracy'], 2));
     }
 
     public function test_accuracy_metrics_calculation(): void
@@ -154,8 +154,8 @@ class PredictionWorkflowTest extends TestCase
             $sagaId
         ), ARRAY_A);
 
-        $this->assertEquals(10, $metrics['total']);
-        $this->assertEquals(7, $metrics['accepted']);
-        $this->assertEquals(70.0, round($metrics['acceptance_rate'], 1));
+        $this->assertEquals(10, (int)$metrics['total']);
+        $this->assertEquals(7, (int)$metrics['accepted']);
+        $this->assertEquals(70.0, round((float)$metrics['acceptance_rate'], 1));
     }
 }

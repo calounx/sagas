@@ -100,7 +100,8 @@ class SuggestionFeatureTest extends TestCase
 
         $weighted = $feature->getWeightedValue();
 
-        $this->assertEquals(0.56, $weighted); // 0.8 * 0.7
+        // Use delta for floating point comparison to avoid precision issues
+        $this->assertEqualsWithDelta(0.56, $weighted, 0.0001, '0.8 * 0.7 should equal 0.56');
     }
 
     public function test_get_strength_label(): void

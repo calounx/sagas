@@ -1,0 +1,190 @@
+Consistency Issue (SagaManager\Tests\Unit\ConsistencyGuardian\ConsistencyIssue)
+ [x] Can create consistency issue
+ [x] Validates issue type
+ [x] Accepts valid issue types
+ [x] Validates severity range
+ [x] Accepts valid severity levels
+ [x] Validates status
+ [x] Accepts valid statuses
+ [x] Validates ai confidence range
+ [x] Validates ai confidence negative
+ [x] Rounds ai confidence
+ [x] Accepts null ai confidence
+ [x] Converts to array
+ [x] Creates from database row
+ [x] Creates from database object
+ [x] Resolve creates resolved copy
+ [x] Dismiss creates dismissed copy
+ [x] Dismiss as false positive
+ [x] Is open
+ [x] Is resolved
+ [x] Get severity label
+ [x] Get issue type label
+ [x] Handles empty context
+ [x] Handles complex context
+
+Consistency Repository (SagaManager\Tests\Integration\ConsistencyGuardian\ConsistencyRepository)
+ [x] Consistency issues table exists
+ [x] Can create consistency issue
+ [x] Can retrieve issues by saga
+ [x] Can filter by status
+ [x] Can filter by severity
+ [x] Can update issue status
+ [x] Cascade delete when saga deleted
+ [x] Can count issues by type
+ [x] Wordpress object cache
+ [x] Calculates statistics
+ [x] Orders by priority
+ [x] Searches json context
+
+Extracted Entity (SagaManager\Tests\Unit\EntityExtractor\ExtractedEntity)
+ [x] Can create extracted entity
+ [x] Validates empty canonical name
+ [x] Validates confidence score range
+ [x] Validates duplicate similarity range
+ [x] Validates chunk index not negative
+ [x] Get confidence level
+ [x] Approve changes status
+ [x] Reject changes status
+ [x] Mark duplicate
+ [x] Mark created
+ [x] Get quality score
+ [x] Get all names
+ [x] Has attribute
+ [x] Get attribute
+ [x] Needs review
+ [x] Converts to array
+ [x] Creates from array
+
+Extraction Job (SagaManager\Tests\Unit\EntityExtractor\ExtractionJob)
+ [x] Can create extraction job
+ [x] Validates chunk size minimum
+ [x] Validates chunk size maximum
+ [x] Validates total chunks minimum
+ [x] Validates processed chunks not exceeding total
+ [x] Validates accuracy score minimum
+ [x] Validates accuracy score maximum
+ [x] Validates api cost not negative
+ [x] Creates from array
+ [x] Converts to array
+ [x] Calculates progress percentage
+ [x] Calculates 100 percent progress
+ [x] Calculates acceptance rate
+ [x] Calculates zero acceptance rate with no entities
+ [x] Gets text length
+ [x] Calculates cost per entity
+ [x] Cost per entity returns null when no cost
+ [x] Is complete
+ [x] Is successful
+ [x] With status creates new instance
+ [x] With progress creates new instance
+ [x] Gets processing duration
+ [x] Processing duration null when not started
+ [x] Job status enum methods
+
+Extraction Workflow (SagaManager\Tests\Integration\EntityExtractor\ExtractionWorkflow)
+ [x] Extraction jobs table exists
+ [x] Extracted entities table exists
+ [x] Complete extraction workflow
+ [x] Duplicate detection
+ [x] Batch entity creation
+ [x] Extraction job statistics
+ [x] Feedback recording
+ [x] Cascade delete extracted entities
+
+Feature Extraction (SagaManager\Tests\Integration\PredictiveRelationships\FeatureExtraction)
+ [x] Extract co occurrence features
+ [x] Extract timeline proximity features
+ [x] Extract attribute similarity features
+ [x] Feature normalization
+ [x] Combined weighted features
+ [x] Stores features for suggestion
+
+Generated Summary (SagaManager\Tests\Unit\SummaryGenerator\GeneratedSummary)
+ [x] Can create generated summary
+ [x] Validates title not empty
+ [x] Validates summary text not empty
+ [x] Validates quality score range
+ [x] Validates version minimum
+ [x] Calculates word count
+ [x] Calculates readability score
+ [x] Generates cache key
+ [x] Creates new version
+ [x] Marks as old version
+ [x] Updates cache expiration
+ [x] Checks cache expiration
+ [x] Gets quality label
+ [x] Detects source references
+ [x] Extracts key points
+ [x] Converts to array
+
+Prediction Workflow (SagaManager\Tests\Integration\PredictiveRelationships\PredictionWorkflow)
+ [x] Relationship suggestions table exists
+ [x] Suggestion features table exists
+ [x] Complete prediction workflow
+ [x] Learning from feedback
+ [x] Accuracy metrics calculation
+
+Relationship Suggestion (SagaManager\Tests\Unit\PredictiveRelationships\RelationshipSuggestion)
+ [x] Can create relationship suggestion
+ [x] Validates confidence score range
+ [x] Validates strength range
+ [x] Validates no self relationship
+ [x] Get confidence level
+ [x] Accept changes status
+ [x] Reject changes status
+ [x] Modify changes status
+ [x] Calculate priority score
+ [x] Should auto accept
+ [x] Is pending
+ [x] Converts to array
+ [x] Creates from array
+
+Suggestion Feature (SagaManager\Tests\Unit\PredictiveRelationships\SuggestionFeature)
+ [x] Can create suggestion feature
+ [x] Validates feature value range minimum
+ [x] Validates feature value range maximum
+ [x] Validates weight range
+ [x] Get weighted value
+ [x] Get strength label
+ [x] With weight creates new instance
+ [x] With weight validates range
+ [x] Get contribution
+ [x] Get contribution with zero total
+ [x] Is high value
+ [x] Create normalized
+ [x] Create normalized with custom weight
+ [x] Create normalized clamps to range
+ [x] Converts to array
+ [x] Creates from array
+ [x] Feature type descriptions
+ [x] Feature type default weights
+
+Summary Request (SagaManager\Tests\Unit\SummaryGenerator\SummaryRequest)
+ [x] Can create summary request
+ [x] Validates priority range
+ [x] Validates retry count
+ [x] Validates entity requirement for character arc
+ [x] Can transition to generating status
+ [x] Can transition to completed status
+ [x] Cannot change from final status
+ [x] Can mark as failed with error
+ [x] Can increment retry count
+ [x] Cannot retry beyond maximum
+ [x] Can track token usage
+ [x] Can estimate tokens
+ [x] Can check retry eligibility
+ [x] Calculates progress percentage
+ [x] Converts to array
+ [x] Creates from database row
+
+Summary Workflow (SagaManager\Tests\Integration\SummaryGenerator\SummaryWorkflow)
+ [x] Complete summary workflow
+ [x] Summary storage and retrieval
+ [x] Finds summaries by saga
+ [x] Finds summary by cache key
+ [x] Calculates summary statistics
+ [x] Manages summary versions
+ [x] Cascades delete on saga deletion
+ [x] Searches summaries
+

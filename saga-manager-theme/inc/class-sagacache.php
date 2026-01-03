@@ -11,178 +11,167 @@ namespace SagaTheme;
  *
  * @package SagaTheme
  */
-class SagaCache
-{
-    private const CACHE_GROUP = 'saga_theme';
-    private const DEFAULT_TTL = 300; // 5 minutes
+class SagaCache {
 
-    /**
-     * Get entity data from cache or database
-     *
-     * @param int $postId WordPress post ID
-     * @return object|null Entity object or null if not found
-     */
-    public function getEntity(int $postId): ?object
-    {
-        $key = "entity_{$postId}";
-        $cached = wp_cache_get($key, self::CACHE_GROUP);
+	private const CACHE_GROUP = 'saga_theme';
+	private const DEFAULT_TTL = 300; // 5 minutes
 
-        if ($cached !== false) {
-            return $cached;
-        }
+	/**
+	 * Get entity data from cache or database
+	 *
+	 * @param int $postId WordPress post ID
+	 * @return object|null Entity object or null if not found
+	 */
+	public function getEntity( int $postId ): ?object {
+		$key    = "entity_{$postId}";
+		$cached = wp_cache_get( $key, self::CACHE_GROUP );
 
-        return null;
-    }
+		if ( $cached !== false ) {
+			return $cached;
+		}
 
-    /**
-     * Store entity in cache
-     *
-     * @param int $postId WordPress post ID
-     * @param object $entity Entity object to cache
-     * @param int $ttl Time to live in seconds
-     * @return bool True on success, false on failure
-     */
-    public function setEntity(int $postId, object $entity, int $ttl = self::DEFAULT_TTL): bool
-    {
-        $key = "entity_{$postId}";
-        return wp_cache_set($key, $entity, self::CACHE_GROUP, $ttl);
-    }
+		return null;
+	}
 
-    /**
-     * Get entity relationships from cache
-     *
-     * @param int $entityId Entity ID
-     * @param string $direction Relationship direction: 'outgoing', 'incoming', 'both'
-     * @return array|null Array of relationships or null if not cached
-     */
-    public function getRelationships(int $entityId, string $direction = 'both'): ?array
-    {
-        $key = "relationships_{$entityId}_{$direction}";
-        $cached = wp_cache_get($key, self::CACHE_GROUP);
+	/**
+	 * Store entity in cache
+	 *
+	 * @param int    $postId WordPress post ID
+	 * @param object $entity Entity object to cache
+	 * @param int    $ttl Time to live in seconds
+	 * @return bool True on success, false on failure
+	 */
+	public function setEntity( int $postId, object $entity, int $ttl = self::DEFAULT_TTL ): bool {
+		$key = "entity_{$postId}";
+		return wp_cache_set( $key, $entity, self::CACHE_GROUP, $ttl );
+	}
 
-        return $cached !== false ? $cached : null;
-    }
+	/**
+	 * Get entity relationships from cache
+	 *
+	 * @param int    $entityId Entity ID
+	 * @param string $direction Relationship direction: 'outgoing', 'incoming', 'both'
+	 * @return array|null Array of relationships or null if not cached
+	 */
+	public function getRelationships( int $entityId, string $direction = 'both' ): ?array {
+		$key    = "relationships_{$entityId}_{$direction}";
+		$cached = wp_cache_get( $key, self::CACHE_GROUP );
 
-    /**
-     * Store relationships in cache
-     *
-     * @param int $entityId Entity ID
-     * @param array $relationships Array of relationship objects
-     * @param string $direction Relationship direction
-     * @param int $ttl Time to live in seconds
-     * @return bool True on success, false on failure
-     */
-    public function setRelationships(int $entityId, array $relationships, string $direction = 'both', int $ttl = self::DEFAULT_TTL): bool
-    {
-        $key = "relationships_{$entityId}_{$direction}";
-        return wp_cache_set($key, $relationships, self::CACHE_GROUP, $ttl);
-    }
+		return $cached !== false ? $cached : null;
+	}
 
-    /**
-     * Get attribute values from cache
-     *
-     * @param int $entityId Entity ID
-     * @return array|null Array of attribute values or null if not cached
-     */
-    public function getAttributes(int $entityId): ?array
-    {
-        $key = "attributes_{$entityId}";
-        $cached = wp_cache_get($key, self::CACHE_GROUP);
+	/**
+	 * Store relationships in cache
+	 *
+	 * @param int    $entityId Entity ID
+	 * @param array  $relationships Array of relationship objects
+	 * @param string $direction Relationship direction
+	 * @param int    $ttl Time to live in seconds
+	 * @return bool True on success, false on failure
+	 */
+	public function setRelationships( int $entityId, array $relationships, string $direction = 'both', int $ttl = self::DEFAULT_TTL ): bool {
+		$key = "relationships_{$entityId}_{$direction}";
+		return wp_cache_set( $key, $relationships, self::CACHE_GROUP, $ttl );
+	}
 
-        return $cached !== false ? $cached : null;
-    }
+	/**
+	 * Get attribute values from cache
+	 *
+	 * @param int $entityId Entity ID
+	 * @return array|null Array of attribute values or null if not cached
+	 */
+	public function getAttributes( int $entityId ): ?array {
+		$key    = "attributes_{$entityId}";
+		$cached = wp_cache_get( $key, self::CACHE_GROUP );
 
-    /**
-     * Store attribute values in cache
-     *
-     * @param int $entityId Entity ID
-     * @param array $attributes Array of attribute values
-     * @param int $ttl Time to live in seconds
-     * @return bool True on success, false on failure
-     */
-    public function setAttributes(int $entityId, array $attributes, int $ttl = self::DEFAULT_TTL): bool
-    {
-        $key = "attributes_{$entityId}";
-        return wp_cache_set($key, $attributes, self::CACHE_GROUP, $ttl);
-    }
+		return $cached !== false ? $cached : null;
+	}
 
-    /**
-     * Invalidate entity cache
-     *
-     * @param int $postId WordPress post ID
-     * @return bool True on success, false on failure
-     */
-    public function invalidateEntity(int $postId): bool
-    {
-        $key = "entity_{$postId}";
-        return wp_cache_delete($key, self::CACHE_GROUP);
-    }
+	/**
+	 * Store attribute values in cache
+	 *
+	 * @param int   $entityId Entity ID
+	 * @param array $attributes Array of attribute values
+	 * @param int   $ttl Time to live in seconds
+	 * @return bool True on success, false on failure
+	 */
+	public function setAttributes( int $entityId, array $attributes, int $ttl = self::DEFAULT_TTL ): bool {
+		$key = "attributes_{$entityId}";
+		return wp_cache_set( $key, $attributes, self::CACHE_GROUP, $ttl );
+	}
 
-    /**
-     * Invalidate relationship cache for an entity
-     *
-     * @param int $entityId Entity ID
-     * @return bool True if all deletions succeeded
-     */
-    public function invalidateRelationships(int $entityId): bool
-    {
-        $success = true;
-        $directions = ['outgoing', 'incoming', 'both'];
+	/**
+	 * Invalidate entity cache
+	 *
+	 * @param int $postId WordPress post ID
+	 * @return bool True on success, false on failure
+	 */
+	public function invalidateEntity( int $postId ): bool {
+		$key = "entity_{$postId}";
+		return wp_cache_delete( $key, self::CACHE_GROUP );
+	}
 
-        foreach ($directions as $direction) {
-            $key = "relationships_{$entityId}_{$direction}";
-            if (!wp_cache_delete($key, self::CACHE_GROUP)) {
-                $success = false;
-            }
-        }
+	/**
+	 * Invalidate relationship cache for an entity
+	 *
+	 * @param int $entityId Entity ID
+	 * @return bool True if all deletions succeeded
+	 */
+	public function invalidateRelationships( int $entityId ): bool {
+		$success    = true;
+		$directions = array( 'outgoing', 'incoming', 'both' );
 
-        return $success;
-    }
+		foreach ( $directions as $direction ) {
+			$key = "relationships_{$entityId}_{$direction}";
+			if ( ! wp_cache_delete( $key, self::CACHE_GROUP ) ) {
+				$success = false;
+			}
+		}
 
-    /**
-     * Invalidate attribute cache for an entity
-     *
-     * @param int $entityId Entity ID
-     * @return bool True on success, false on failure
-     */
-    public function invalidateAttributes(int $entityId): bool
-    {
-        $key = "attributes_{$entityId}";
-        return wp_cache_delete($key, self::CACHE_GROUP);
-    }
+		return $success;
+	}
 
-    /**
-     * Invalidate all entity-related caches
-     *
-     * @param int $entityId Entity ID
-     * @param int|null $postId Optional WordPress post ID
-     * @return bool True if all deletions succeeded
-     */
-    public function invalidateAll(int $entityId, ?int $postId = null): bool
-    {
-        $success = true;
+	/**
+	 * Invalidate attribute cache for an entity
+	 *
+	 * @param int $entityId Entity ID
+	 * @return bool True on success, false on failure
+	 */
+	public function invalidateAttributes( int $entityId ): bool {
+		$key = "attributes_{$entityId}";
+		return wp_cache_delete( $key, self::CACHE_GROUP );
+	}
 
-        if ($postId !== null) {
-            $success = $this->invalidateEntity($postId) && $success;
-        }
+	/**
+	 * Invalidate all entity-related caches
+	 *
+	 * @param int      $entityId Entity ID
+	 * @param int|null $postId Optional WordPress post ID
+	 * @return bool True if all deletions succeeded
+	 */
+	public function invalidateAll( int $entityId, ?int $postId = null ): bool {
+		$success = true;
 
-        $success = $this->invalidateRelationships($entityId) && $success;
-        $success = $this->invalidateAttributes($entityId) && $success;
+		if ( $postId !== null ) {
+			$success = $this->invalidateEntity( $postId ) && $success;
+		}
 
-        return $success;
-    }
+		$success = $this->invalidateRelationships( $entityId ) && $success;
+		$success = $this->invalidateAttributes( $entityId ) && $success;
 
-    /**
-     * Flush all saga theme caches
-     *
-     * Use sparingly - only on major data changes
-     *
-     * @return bool True on success
-     */
-    public function flushAll(): bool
-    {
-        // WordPress doesn't provide group-level flush, so we rely on cache expiration
-        // For persistent cache backends (Redis, Memcached), consider implementing group flush
-        return wp_cache_flush();
-    }
+		return $success;
+	}
+
+	/**
+	 * Flush all saga theme caches
+	 *
+	 * Use sparingly - only on major data changes
+	 *
+	 * @return bool True on success
+	 */
+	public function flushAll(): bool {
+		// WordPress doesn't provide group-level flush, so we rely on cache expiration
+		// For persistent cache backends (Redis, Memcached), consider implementing group flush
+		return wp_cache_flush();
+	}
 }

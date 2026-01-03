@@ -35,8 +35,8 @@ make up
 ```
 
 Services:
-- Database: `localhost:3307` (MariaDB)
-- WordPress: `localhost:8080` (if needed)
+- Database: `localhost:3308` (MariaDB)
+- WordPress: `localhost:8081` (if needed)
 - PHPUnit: Headless test runner
 
 ### 3. Install Dependencies

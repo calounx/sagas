@@ -24,7 +24,15 @@ abstract class TestCase extends WP_UnitTestCase
      */
     public function setUp(): void
     {
-        parent::setUp();
+        // Handle PHPUnit 10 compatibility issue with WordPress test suite
+        try {
+            parent::setUp();
+        } catch (\Error $e) {
+            // Ignore parseTestMethodAnnotations error (PHPUnit 10 deprecation)
+            if (strpos($e->getMessage(), 'parseTestMethodAnnotations') === false) {
+                throw $e;
+            }
+        }
 
         // Clear caches
         wp_cache_flush();
@@ -54,25 +62,54 @@ abstract class TestCase extends WP_UnitTestCase
     {
         global $wpdb;
 
-        // Clean custom tables
+        // Clean custom tables in correct order (respecting foreign key constraints)
+        // Order: Child tables first, parent tables last
+        // CASCADE dependencies:
+        //   - saga_sagas (root parent)
+        //   - saga_entities (depends on saga_sagas)
+        //   - saga_summary_requests (depends on saga_sagas, saga_entities, users)
+        //   - saga_extraction_jobs (depends on saga_sagas, users)
+        //   - saga_relationship_suggestions (depends on saga_sagas, saga_entities)
+
         $tables = [
-            $wpdb->prefix . 'saga_consistency_issues',
-            $wpdb->prefix . 'saga_extraction_jobs',
-            $wpdb->prefix . 'saga_extracted_entities',
-            $wpdb->prefix . 'saga_extraction_duplicates',
-            $wpdb->prefix . 'saga_relationship_suggestions',
-            $wpdb->prefix . 'saga_suggestion_features',
-            $wpdb->prefix . 'saga_suggestion_feedback',
-            $wpdb->prefix . 'saga_learning_weights',
+            // Level 4: Deepest children (depend on suggestions/requests/jobs)
+            'saga_suggestion_features',        // → saga_relationship_suggestions
+            'saga_suggestion_feedback',        // → saga_relationship_suggestions
+            'saga_learning_weights',           // → saga_relationship_suggestions (via feedback)
+            'saga_generated_summaries',        // → saga_summary_requests
+            'saga_consistency_issues',         // → saga_sagas
+            'saga_extraction_duplicates',      // → saga_extracted_entities
+
+            // Level 3: Mid-level children (depend on jobs/entities/sagas)
+            'saga_extracted_entities',         // → saga_extraction_jobs
+            'saga_relationship_suggestions',   // → saga_sagas, saga_entities
+            'saga_summary_requests',           // → saga_sagas, saga_entities, users
+
+            // Level 2: Parent children (depend on saga_entities)
+            'saga_extraction_jobs',            // → saga_sagas, users
+            'saga_attribute_values',           // → saga_entities, saga_attribute_definitions
+            'saga_content_fragments',          // → saga_entities
+            'saga_quality_metrics',            // → saga_entities
+            'saga_entity_relationships',       // → saga_entities
+            'saga_timeline_events',            // → saga_sagas, saga_entities
+
+            // Level 1: Direct children of saga_sagas
+            'saga_attribute_definitions',      // No FK, but referenced by saga_attribute_values
+            'saga_entities',                   // → saga_sagas
+
+            // Level 0: Root parent (must be LAST)
+            'saga_sagas',                      // Root parent table
         ];
 
-        foreach ($tables as $table) {
-            $wpdb->query("DELETE FROM {$table}");
-        }
+        foreach ($tables as $table_name) {
+            $table = $wpdb->prefix . $table_name;
 
-        // Reset auto-increment
-        foreach ($tables as $table) {
-            $wpdb->query("ALTER TABLE {$table} AUTO_INCREMENT = 1");
+            // Check if table exists before cleaning
+            $exists = $wpdb->get_var("SHOW TABLES LIKE '{$table}'");
+            if ($exists) {
+                $wpdb->query("DELETE FROM {$table}");
+                $wpdb->query("ALTER TABLE {$table} AUTO_INCREMENT = 1");
+            }
         }
     }
 

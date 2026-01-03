@@ -11,270 +11,279 @@ namespace SagaTheme;
  *
  * @package SagaTheme
  */
-class SagaTheme
-{
-    private SagaHelpers $helpers;
-    private SagaQueries $queries;
-    private SagaHooks $hooks;
-    private SagaAjaxHandler $ajaxHandler;
-    private SagaCache $cache;
+class SagaTheme {
 
-    /**
-     * Constructor with dependency injection
-     *
-     * @param SagaHelpers $helpers Helper service
-     * @param SagaQueries $queries Query service
-     * @param SagaHooks $hooks Hook manager
-     * @param SagaAjaxHandler $ajaxHandler AJAX handler
-     * @param SagaCache $cache Cache layer
-     */
-    public function __construct(
-        SagaHelpers $helpers,
-        SagaQueries $queries,
-        SagaHooks $hooks,
-        SagaAjaxHandler $ajaxHandler,
-        SagaCache $cache
-    ) {
-        $this->helpers = $helpers;
-        $this->queries = $queries;
-        $this->hooks = $hooks;
-        $this->ajaxHandler = $ajaxHandler;
-        $this->cache = $cache;
-    }
+	private SagaHelpers $helpers;
+	private SagaQueries $queries;
+	private SagaHooks $hooks;
+	private SagaAjaxHandler $ajaxHandler;
+	private SagaCache $cache;
 
-    /**
-     * Initialize theme
-     *
-     * @return void
-     */
-    public function init(): void
-    {
-        // Check if Saga Manager plugin is active
-        if (!$this->helpers->isSagaManagerActive()) {
-            add_action('admin_notices', [$this, 'showPluginDependencyNotice']);
-            return;
-        }
+	/**
+	 * Constructor with dependency injection
+	 *
+	 * @param SagaHelpers     $helpers Helper service
+	 * @param SagaQueries     $queries Query service
+	 * @param SagaHooks       $hooks Hook manager
+	 * @param SagaAjaxHandler $ajaxHandler AJAX handler
+	 * @param SagaCache       $cache Cache layer
+	 */
+	public function __construct(
+		SagaHelpers $helpers,
+		SagaQueries $queries,
+		SagaHooks $hooks,
+		SagaAjaxHandler $ajaxHandler,
+		SagaCache $cache
+	) {
+		$this->helpers     = $helpers;
+		$this->queries     = $queries;
+		$this->hooks       = $hooks;
+		$this->ajaxHandler = $ajaxHandler;
+		$this->cache       = $cache;
+	}
 
-        // Register hooks
-        $this->hooks->registerHooks();
+	/**
+	 * Initialize theme
+	 *
+	 * @return void
+	 */
+	public function init(): void {
+		// Check if Saga Manager plugin is active
+		if ( ! $this->helpers->isSagaManagerActive() ) {
+			add_action( 'admin_notices', array( $this, 'showPluginDependencyNotice' ) );
+			return;
+		}
 
-        // Register AJAX endpoints
-        $this->ajaxHandler->registerEndpoints();
+		// Register hooks
+		$this->hooks->registerHooks();
 
-        // Enqueue scripts and styles
-        add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
+		// Register AJAX endpoints
+		$this->ajaxHandler->registerEndpoints();
 
-        // Add theme support
-        add_action('after_setup_theme', [$this, 'addThemeSupport']);
+		// Enqueue scripts and styles
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueueAssets' ) );
 
-        // Add keyboard shortcuts help overlay to footer
-        add_action('wp_footer', [$this, 'addShortcutsHelp']);
-    }
+		// Add theme support
+		add_action( 'after_setup_theme', array( $this, 'addThemeSupport' ) );
 
-    /**
-     * Enqueue theme assets (CSS and JavaScript)
-     *
-     * @return void
-     */
-    public function enqueueAssets(): void
-    {
-        $themeVersion = wp_get_theme()->get('Version');
-        $themeUri = get_stylesheet_directory_uri();
+		// Add keyboard shortcuts help overlay to footer
+		add_action( 'wp_footer', array( $this, 'addShortcutsHelp' ) );
+	}
 
-        // Enqueue custom CSS
-        wp_enqueue_style(
-            'saga-manager-theme',
-            $themeUri . '/assets/css/saga-manager.css',
-            ['generate-style'], // Depend on GeneratePress parent styles
-            $themeVersion
-        );
+	/**
+	 * Enqueue theme assets (CSS and JavaScript)
+	 *
+	 * @return void
+	 */
+	public function enqueueAssets(): void {
+		$themeVersion = wp_get_theme()->get( 'Version' );
+		$themeUri     = get_stylesheet_directory_uri();
 
-        // Enqueue search form CSS
-        wp_enqueue_style(
-            'saga-searchform',
-            $themeUri . '/assets/css/searchform.css',
-            ['saga-manager-theme'],
-            $themeVersion
-        );
+		// Enqueue custom CSS
+		wp_enqueue_style(
+			'saga-manager-theme',
+			$themeUri . '/assets/css/saga-manager.css',
+			array( 'generate-style' ), // Depend on GeneratePress parent styles
+			$themeVersion
+		);
 
-        // Enqueue autocomplete CSS
-        wp_enqueue_style(
-            'saga-autocomplete',
-            $themeUri . '/assets/css/autocomplete-search.css',
-            ['saga-searchform'],
-            $themeVersion
-        );
+		// Enqueue search form CSS
+		wp_enqueue_style(
+			'saga-searchform',
+			$themeUri . '/assets/css/searchform.css',
+			array( 'saga-manager-theme' ),
+			$themeVersion
+		);
 
-        // Enqueue command palette CSS
-        wp_enqueue_style(
-            'saga-command-palette',
-            $themeUri . '/assets/css/command-palette.css',
-            ['saga-manager-theme'],
-            $themeVersion
-        );
+		// Enqueue autocomplete CSS
+		wp_enqueue_style(
+			'saga-autocomplete',
+			$themeUri . '/assets/css/autocomplete-search.css',
+			array( 'saga-searchform' ),
+			$themeVersion
+		);
 
-        // Enqueue custom JavaScript
-        wp_enqueue_script(
-            'saga-manager-theme',
-            $themeUri . '/assets/js/saga-manager.js',
-            ['jquery'],
-            $themeVersion,
-            true // Load in footer
-        );
+		// Enqueue command palette CSS
+		wp_enqueue_style(
+			'saga-command-palette',
+			$themeUri . '/assets/css/command-palette.css',
+			array( 'saga-manager-theme' ),
+			$themeVersion
+		);
 
-        // Enqueue autocomplete JavaScript (vanilla JS, no dependencies)
-        wp_enqueue_script(
-            'saga-autocomplete',
-            $themeUri . '/assets/js/autocomplete-search.js',
-            [], // No dependencies
-            $themeVersion,
-            true // Load in footer
-        );
+		// Enqueue custom JavaScript
+		wp_enqueue_script(
+			'saga-manager-theme',
+			$themeUri . '/assets/js/saga-manager.js',
+			array( 'jquery' ),
+			$themeVersion,
+			true // Load in footer
+		);
 
-        // Enqueue keyboard shortcuts JavaScript
-        wp_enqueue_script(
-            'saga-keyboard-shortcuts',
-            $themeUri . '/assets/js/keyboard-shortcuts.js',
-            [], // No dependencies
-            $themeVersion,
-            true // Load in footer
-        );
+		// Enqueue autocomplete JavaScript (vanilla JS, no dependencies)
+		wp_enqueue_script(
+			'saga-autocomplete',
+			$themeUri . '/assets/js/autocomplete-search.js',
+			array(), // No dependencies
+			$themeVersion,
+			true // Load in footer
+		);
 
-        // Enqueue command palette JavaScript
-        wp_enqueue_script(
-            'saga-command-palette',
-            $themeUri . '/assets/js/command-palette.js',
-            ['saga-keyboard-shortcuts'], // Depends on shortcuts
-            $themeVersion,
-            true // Load in footer
-        );
+		// Enqueue keyboard shortcuts JavaScript
+		wp_enqueue_script(
+			'saga-keyboard-shortcuts',
+			$themeUri . '/assets/js/keyboard-shortcuts.js',
+			array(), // No dependencies
+			$themeVersion,
+			true // Load in footer
+		);
 
-        // Register commands from command registry
-        \SagaManagerTheme\Commands\CommandRegistry::enqueue_commands();
+		// Enqueue command palette JavaScript
+		wp_enqueue_script(
+			'saga-command-palette',
+			$themeUri . '/assets/js/command-palette.js',
+			array( 'saga-keyboard-shortcuts' ), // Depends on shortcuts
+			$themeVersion,
+			true // Load in footer
+		);
 
-        // Localize script with AJAX URL and nonces
-        wp_localize_script('saga-manager-theme', 'sagaAjax', [
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonces' => [
-                'filter' => wp_create_nonce('saga_filter'),
-                'search' => wp_create_nonce('saga_search'),
-                'relationships' => wp_create_nonce('saga_relationships'),
-            ],
-            'strings' => [
-                'loading' => __('Loading...', 'saga-manager-theme'),
-                'error' => __('An error occurred. Please try again.', 'saga-manager-theme'),
-                'noResults' => __('No results found.', 'saga-manager-theme'),
-            ],
-        ]);
+		// Register commands from command registry
+		\SagaManagerTheme\Commands\CommandRegistry::enqueue_commands();
 
-        // Localize autocomplete script
-        wp_localize_script('saga-autocomplete', 'sagaAutocomplete', [
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('saga_autocomplete'),
-            'strings' => [
-                'searching' => __('Searching...', 'saga-manager-theme'),
-                'noResults' => __('No results found', 'saga-manager-theme'),
-                'recentSearches' => __('Recent Searches', 'saga-manager-theme'),
-                'clearRecent' => __('Clear', 'saga-manager-theme'),
-                'error' => __('Search failed. Please try again.', 'saga-manager-theme'),
-            ],
-        ]);
-    }
+		// Localize script with AJAX URL and nonces
+		wp_localize_script(
+			'saga-manager-theme',
+			'sagaAjax',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonces'  => array(
+					'filter'        => wp_create_nonce( 'saga_filter' ),
+					'search'        => wp_create_nonce( 'saga_search' ),
+					'relationships' => wp_create_nonce( 'saga_relationships' ),
+				),
+				'strings' => array(
+					'loading'   => __( 'Loading...', 'saga-manager-theme' ),
+					'error'     => __( 'An error occurred. Please try again.', 'saga-manager-theme' ),
+					'noResults' => __( 'No results found.', 'saga-manager-theme' ),
+				),
+			)
+		);
 
-    /**
-     * Add theme support for various features
-     *
-     * @return void
-     */
-    public function addThemeSupport(): void
-    {
-        // Add custom logo support
-        add_theme_support('custom-logo', [
-            'height' => 100,
-            'width' => 400,
-            'flex-height' => true,
-            'flex-width' => true,
-        ]);
+		// Localize autocomplete script
+		wp_localize_script(
+			'saga-autocomplete',
+			'sagaAutocomplete',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'saga_autocomplete' ),
+				'strings' => array(
+					'searching'      => __( 'Searching...', 'saga-manager-theme' ),
+					'noResults'      => __( 'No results found', 'saga-manager-theme' ),
+					'recentSearches' => __( 'Recent Searches', 'saga-manager-theme' ),
+					'clearRecent'    => __( 'Clear', 'saga-manager-theme' ),
+					'error'          => __( 'Search failed. Please try again.', 'saga-manager-theme' ),
+				),
+			)
+		);
+	}
 
-        // Add post thumbnail support
-        add_theme_support('post-thumbnails');
+	/**
+	 * Add theme support for various features
+	 *
+	 * @return void
+	 */
+	public function addThemeSupport(): void {
+		// Add custom logo support
+		add_theme_support(
+			'custom-logo',
+			array(
+				'height'      => 100,
+				'width'       => 400,
+				'flex-height' => true,
+				'flex-width'  => true,
+			)
+		);
 
-        // Add custom image sizes for entity thumbnails
-        add_image_size('saga-entity-card', 400, 300, true);
-        add_image_size('saga-entity-thumbnail', 150, 150, true);
+		// Add post thumbnail support
+		add_theme_support( 'post-thumbnails' );
 
-        // Add HTML5 support
-        add_theme_support('html5', [
-            'search-form',
-            'comment-form',
-            'comment-list',
-            'gallery',
-            'caption',
-        ]);
+		// Add custom image sizes for entity thumbnails
+		add_image_size( 'saga-entity-card', 400, 300, true );
+		add_image_size( 'saga-entity-thumbnail', 150, 150, true );
 
-        // Add title tag support
-        add_theme_support('title-tag');
+		// Add HTML5 support
+		add_theme_support(
+			'html5',
+			array(
+				'search-form',
+				'comment-form',
+				'comment-list',
+				'gallery',
+				'caption',
+			)
+		);
 
-        // Add custom background support
-        add_theme_support('custom-background', [
-            'default-color' => 'ffffff',
-        ]);
-    }
+		// Add title tag support
+		add_theme_support( 'title-tag' );
 
-    /**
-     * Add keyboard shortcuts help overlay to footer
-     *
-     * @return void
-     */
-    public function addShortcutsHelp(): void
-    {
-        get_template_part('template-parts/shortcuts-help');
-    }
+		// Add custom background support
+		add_theme_support(
+			'custom-background',
+			array(
+				'default-color' => 'ffffff',
+			)
+		);
+	}
 
-    /**
-     * Show admin notice when Saga Manager plugin is not active
-     *
-     * @return void
-     */
-    public function showPluginDependencyNotice(): void
-    {
-        ?>
-        <div class="notice notice-error">
-            <p>
-                <strong><?php esc_html_e('Saga Manager Theme:', 'saga-manager-theme'); ?></strong>
-                <?php esc_html_e('This theme requires the Saga Manager plugin to be installed and activated.', 'saga-manager-theme'); ?>
-            </p>
-        </div>
-        <?php
-    }
+	/**
+	 * Add keyboard shortcuts help overlay to footer
+	 *
+	 * @return void
+	 */
+	public function addShortcutsHelp(): void {
+		get_template_part( 'template-parts/shortcuts-help' );
+	}
 
-    /**
-     * Get cache instance (for external access if needed)
-     *
-     * @return SagaCache Cache instance
-     */
-    public function getCache(): SagaCache
-    {
-        return $this->cache;
-    }
+	/**
+	 * Show admin notice when Saga Manager plugin is not active
+	 *
+	 * @return void
+	 */
+	public function showPluginDependencyNotice(): void {
+		?>
+		<div class="notice notice-error">
+			<p>
+				<strong><?php esc_html_e( 'Saga Manager Theme:', 'saga-manager-theme' ); ?></strong>
+				<?php esc_html_e( 'This theme requires the Saga Manager plugin to be installed and activated.', 'saga-manager-theme' ); ?>
+			</p>
+		</div>
+		<?php
+	}
 
-    /**
-     * Get helpers instance (for external access if needed)
-     *
-     * @return SagaHelpers Helpers instance
-     */
-    public function getHelpers(): SagaHelpers
-    {
-        return $this->helpers;
-    }
+	/**
+	 * Get cache instance (for external access if needed)
+	 *
+	 * @return SagaCache Cache instance
+	 */
+	public function getCache(): SagaCache {
+		return $this->cache;
+	}
 
-    /**
-     * Get queries instance (for external access if needed)
-     *
-     * @return SagaQueries Queries instance
-     */
-    public function getQueries(): SagaQueries
-    {
-        return $this->queries;
-    }
+	/**
+	 * Get helpers instance (for external access if needed)
+	 *
+	 * @return SagaHelpers Helpers instance
+	 */
+	public function getHelpers(): SagaHelpers {
+		return $this->helpers;
+	}
+
+	/**
+	 * Get queries instance (for external access if needed)
+	 *
+	 * @return SagaQueries Queries instance
+	 */
+	public function getQueries(): SagaQueries {
+		return $this->queries;
+	}
 }

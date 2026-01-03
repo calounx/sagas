@@ -18,39 +18,37 @@ declare(strict_types=1);
 
 namespace SagaManager\AI\SummaryGenerator;
 
-class SummaryGeneratorMigrator
-{
-    /**
-     * Run all migrations
-     *
-     * @return bool Success status
-     */
-    public static function migrate(): bool
-    {
-        $results = [
-            self::createSummaryRequestsTable(),
-            self::createGeneratedSummariesTable(),
-            self::createSummaryTemplatesTable(),
-            self::createSummaryFeedbackTable(),
-        ];
+class SummaryGeneratorMigrator {
 
-        return !in_array(false, $results, true);
-    }
+	/**
+	 * Run all migrations
+	 *
+	 * @return bool Success status
+	 */
+	public static function migrate(): bool {
+		$results = array(
+			self::createSummaryRequestsTable(),
+			self::createGeneratedSummariesTable(),
+			self::createSummaryTemplatesTable(),
+			self::createSummaryFeedbackTable(),
+		);
 
-    /**
-     * Create summary_requests table
-     *
-     * Tracks summary generation requests with metadata and status.
-     *
-     * @return bool Success status
-     */
-    private static function createSummaryRequestsTable(): bool
-    {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'saga_summary_requests';
-        $charset_collate = $wpdb->get_charset_collate();
+		return ! in_array( false, $results, true );
+	}
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
+	/**
+	 * Create summary_requests table
+	 *
+	 * Tracks summary generation requests with metadata and status.
+	 *
+	 * @return bool Success status
+	 */
+	private static function createSummaryRequestsTable(): bool {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'saga_summary_requests';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             saga_id INT UNSIGNED NOT NULL,
             user_id BIGINT UNSIGNED NOT NULL,
@@ -84,26 +82,25 @@ class SummaryGeneratorMigrator
             CONSTRAINT chk_retry_count CHECK (retry_count <= 5)
         ) ENGINE=InnoDB {$charset_collate}";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql );
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Create generated_summaries table
-     *
-     * Stores generated summary content with versioning and caching.
-     *
-     * @return bool Success status
-     */
-    private static function createGeneratedSummariesTable(): bool
-    {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'saga_generated_summaries';
-        $charset_collate = $wpdb->get_charset_collate();
+	/**
+	 * Create generated_summaries table
+	 *
+	 * Stores generated summary content with versioning and caching.
+	 *
+	 * @return bool Success status
+	 */
+	private static function createGeneratedSummariesTable(): bool {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'saga_generated_summaries';
+		$charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
+		$sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             request_id BIGINT UNSIGNED NOT NULL,
             saga_id INT UNSIGNED NOT NULL,
@@ -138,26 +135,25 @@ class SummaryGeneratorMigrator
             CONSTRAINT chk_quality_range CHECK (quality_score >= 0 AND quality_score <= 100)
         ) ENGINE=InnoDB {$charset_collate}";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql );
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Create summary_templates table
-     *
-     * Stores reusable templates and prompts for different summary types.
-     *
-     * @return bool Success status
-     */
-    private static function createSummaryTemplatesTable(): bool
-    {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'saga_summary_templates';
-        $charset_collate = $wpdb->get_charset_collate();
+	/**
+	 * Create summary_templates table
+	 *
+	 * Stores reusable templates and prompts for different summary types.
+	 *
+	 * @return bool Success status
+	 */
+	private static function createSummaryTemplatesTable(): bool {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'saga_summary_templates';
+		$charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
+		$sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
             id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             template_name VARCHAR(100) NOT NULL,
             summary_type VARCHAR(50) NOT NULL,
@@ -184,29 +180,28 @@ class SummaryGeneratorMigrator
             CONSTRAINT chk_temperature_range CHECK (temperature >= 0.0 AND temperature <= 1.0)
         ) ENGINE=InnoDB {$charset_collate}";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql );
 
-        // Insert default templates
-        self::insertDefaultTemplates();
+		// Insert default templates
+		self::insertDefaultTemplates();
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Create summary_feedback table
-     *
-     * Tracks user feedback on generated summaries for quality improvement.
-     *
-     * @return bool Success status
-     */
-    private static function createSummaryFeedbackTable(): bool
-    {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'saga_summary_feedback';
-        $charset_collate = $wpdb->get_charset_collate();
+	/**
+	 * Create summary_feedback table
+	 *
+	 * Tracks user feedback on generated summaries for quality improvement.
+	 *
+	 * @return bool Success status
+	 */
+	private static function createSummaryFeedbackTable(): bool {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'saga_summary_feedback';
+		$charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
+		$sql = "CREATE TABLE IF NOT EXISTS {$table_name} (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             summary_id BIGINT UNSIGNED NOT NULL,
             user_id BIGINT UNSIGNED NOT NULL,
@@ -231,133 +226,133 @@ class SummaryGeneratorMigrator
             CONSTRAINT chk_readability_range CHECK (readability_score >= 1 AND readability_score <= 5)
         ) ENGINE=InnoDB {$charset_collate}";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql );
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Insert default summary templates
-     *
-     * @return void
-     */
-    private static function insertDefaultTemplates(): void
-    {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'saga_summary_templates';
+	/**
+	 * Insert default summary templates
+	 *
+	 * @return void
+	 */
+	private static function insertDefaultTemplates(): void {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'saga_summary_templates';
 
-        $templates = [
-            [
-                'template_name' => 'character_arc_default',
-                'summary_type' => 'character_arc',
-                'description' => 'Comprehensive character arc summary',
-                'system_prompt' => 'You are an expert literary analyst specializing in character development and narrative arcs. Analyze the provided character information and create a compelling summary of their journey.',
-                'user_prompt_template' => 'Create a comprehensive summary of {{character_name}}\'s character arc in {{saga_name}}. Include:\n\n1. Introduction and initial state\n2. Key events and turning points\n3. Character development and growth\n4. Relationships and interactions\n5. Current state and future implications\n\nCharacter Data:\n{{character_data}}\n\nRelated Events:\n{{timeline_events}}\n\nRelationships:\n{{relationships}}',
-                'output_format' => 'markdown',
-                'max_length' => 800,
-                'style' => 'professional',
-                'include_quotes' => true,
-                'include_analysis' => true,
-                'temperature' => 0.7,
-                'is_default' => true,
-                'is_active' => true,
-            ],
-            [
-                'template_name' => 'timeline_summary_default',
-                'summary_type' => 'timeline',
-                'description' => 'Chronological timeline summary',
-                'system_prompt' => 'You are a skilled historian and timeline analyst. Create clear, chronological summaries of complex sequences of events.',
-                'user_prompt_template' => 'Create a chronological summary of events in {{saga_name}} {{scope_description}}. Organize events logically and highlight cause-and-effect relationships.\n\nEvents:\n{{timeline_events}}\n\nParticipating Entities:\n{{entities}}\n\nProvide:\n1. Chronological overview\n2. Major plot points\n3. Key consequences\n4. Character involvement',
-                'output_format' => 'markdown',
-                'max_length' => 1000,
-                'style' => 'professional',
-                'include_quotes' => false,
-                'include_analysis' => true,
-                'temperature' => 0.6,
-                'is_default' => true,
-                'is_active' => true,
-            ],
-            [
-                'template_name' => 'relationship_overview_default',
-                'summary_type' => 'relationship',
-                'description' => 'Relationship network summary',
-                'system_prompt' => 'You are an expert in social dynamics and interpersonal relationships. Analyze relationship networks and create insightful summaries.',
-                'user_prompt_template' => 'Summarize the relationship network {{scope_description}} in {{saga_name}}.\n\nRelationships:\n{{relationships}}\n\nEntities Involved:\n{{entities}}\n\nKey Events:\n{{relevant_events}}\n\nProvide:\n1. Relationship overview\n2. Key alliances and conflicts\n3. Relationship evolution\n4. Network dynamics',
-                'output_format' => 'markdown',
-                'max_length' => 700,
-                'style' => 'professional',
-                'include_quotes' => true,
-                'include_analysis' => true,
-                'temperature' => 0.7,
-                'is_default' => true,
-                'is_active' => true,
-            ],
-            [
-                'template_name' => 'faction_summary_default',
-                'summary_type' => 'faction',
-                'description' => 'Faction analysis summary',
-                'system_prompt' => 'You are a political analyst and organizational expert. Analyze factions, their goals, and their impact on the narrative.',
-                'user_prompt_template' => 'Analyze the faction {{faction_name}} in {{saga_name}}.\n\nFaction Data:\n{{faction_data}}\n\nMembers:\n{{members}}\n\nActivities:\n{{events}}\n\nProvide:\n1. Faction overview and purpose\n2. Key members and hierarchy\n3. Major actions and goals\n4. Influence and relationships',
-                'output_format' => 'markdown',
-                'max_length' => 600,
-                'style' => 'professional',
-                'include_quotes' => false,
-                'include_analysis' => true,
-                'temperature' => 0.6,
-                'is_default' => true,
-                'is_active' => true,
-            ],
-            [
-                'template_name' => 'location_summary_default',
-                'summary_type' => 'location',
-                'description' => 'Location and setting summary',
-                'system_prompt' => 'You are a world-building expert and setting analyst. Create vivid, informative summaries of locations and their significance.',
-                'user_prompt_template' => 'Summarize the location {{location_name}} in {{saga_name}}.\n\nLocation Data:\n{{location_data}}\n\nEvents at Location:\n{{events}}\n\nEntities Associated:\n{{entities}}\n\nProvide:\n1. Physical description\n2. Historical significance\n3. Key events that occurred here\n4. Cultural/strategic importance',
-                'output_format' => 'markdown',
-                'max_length' => 500,
-                'style' => 'professional',
-                'include_quotes' => false,
-                'include_analysis' => true,
-                'temperature' => 0.7,
-                'is_default' => true,
-                'is_active' => true,
-            ],
-        ];
+		$templates = array(
+			array(
+				'template_name'        => 'character_arc_default',
+				'summary_type'         => 'character_arc',
+				'description'          => 'Comprehensive character arc summary',
+				'system_prompt'        => 'You are an expert literary analyst specializing in character development and narrative arcs. Analyze the provided character information and create a compelling summary of their journey.',
+				'user_prompt_template' => 'Create a comprehensive summary of {{character_name}}\'s character arc in {{saga_name}}. Include:\n\n1. Introduction and initial state\n2. Key events and turning points\n3. Character development and growth\n4. Relationships and interactions\n5. Current state and future implications\n\nCharacter Data:\n{{character_data}}\n\nRelated Events:\n{{timeline_events}}\n\nRelationships:\n{{relationships}}',
+				'output_format'        => 'markdown',
+				'max_length'           => 800,
+				'style'                => 'professional',
+				'include_quotes'       => true,
+				'include_analysis'     => true,
+				'temperature'          => 0.7,
+				'is_default'           => true,
+				'is_active'            => true,
+			),
+			array(
+				'template_name'        => 'timeline_summary_default',
+				'summary_type'         => 'timeline',
+				'description'          => 'Chronological timeline summary',
+				'system_prompt'        => 'You are a skilled historian and timeline analyst. Create clear, chronological summaries of complex sequences of events.',
+				'user_prompt_template' => 'Create a chronological summary of events in {{saga_name}} {{scope_description}}. Organize events logically and highlight cause-and-effect relationships.\n\nEvents:\n{{timeline_events}}\n\nParticipating Entities:\n{{entities}}\n\nProvide:\n1. Chronological overview\n2. Major plot points\n3. Key consequences\n4. Character involvement',
+				'output_format'        => 'markdown',
+				'max_length'           => 1000,
+				'style'                => 'professional',
+				'include_quotes'       => false,
+				'include_analysis'     => true,
+				'temperature'          => 0.6,
+				'is_default'           => true,
+				'is_active'            => true,
+			),
+			array(
+				'template_name'        => 'relationship_overview_default',
+				'summary_type'         => 'relationship',
+				'description'          => 'Relationship network summary',
+				'system_prompt'        => 'You are an expert in social dynamics and interpersonal relationships. Analyze relationship networks and create insightful summaries.',
+				'user_prompt_template' => 'Summarize the relationship network {{scope_description}} in {{saga_name}}.\n\nRelationships:\n{{relationships}}\n\nEntities Involved:\n{{entities}}\n\nKey Events:\n{{relevant_events}}\n\nProvide:\n1. Relationship overview\n2. Key alliances and conflicts\n3. Relationship evolution\n4. Network dynamics',
+				'output_format'        => 'markdown',
+				'max_length'           => 700,
+				'style'                => 'professional',
+				'include_quotes'       => true,
+				'include_analysis'     => true,
+				'temperature'          => 0.7,
+				'is_default'           => true,
+				'is_active'            => true,
+			),
+			array(
+				'template_name'        => 'faction_summary_default',
+				'summary_type'         => 'faction',
+				'description'          => 'Faction analysis summary',
+				'system_prompt'        => 'You are a political analyst and organizational expert. Analyze factions, their goals, and their impact on the narrative.',
+				'user_prompt_template' => 'Analyze the faction {{faction_name}} in {{saga_name}}.\n\nFaction Data:\n{{faction_data}}\n\nMembers:\n{{members}}\n\nActivities:\n{{events}}\n\nProvide:\n1. Faction overview and purpose\n2. Key members and hierarchy\n3. Major actions and goals\n4. Influence and relationships',
+				'output_format'        => 'markdown',
+				'max_length'           => 600,
+				'style'                => 'professional',
+				'include_quotes'       => false,
+				'include_analysis'     => true,
+				'temperature'          => 0.6,
+				'is_default'           => true,
+				'is_active'            => true,
+			),
+			array(
+				'template_name'        => 'location_summary_default',
+				'summary_type'         => 'location',
+				'description'          => 'Location and setting summary',
+				'system_prompt'        => 'You are a world-building expert and setting analyst. Create vivid, informative summaries of locations and their significance.',
+				'user_prompt_template' => 'Summarize the location {{location_name}} in {{saga_name}}.\n\nLocation Data:\n{{location_data}}\n\nEvents at Location:\n{{events}}\n\nEntities Associated:\n{{entities}}\n\nProvide:\n1. Physical description\n2. Historical significance\n3. Key events that occurred here\n4. Cultural/strategic importance',
+				'output_format'        => 'markdown',
+				'max_length'           => 500,
+				'style'                => 'professional',
+				'include_quotes'       => false,
+				'include_analysis'     => true,
+				'temperature'          => 0.7,
+				'is_default'           => true,
+				'is_active'            => true,
+			),
+		);
 
-        foreach ($templates as $template) {
-            // Check if template exists
-            $exists = $wpdb->get_var($wpdb->prepare(
-                "SELECT id FROM {$table_name} WHERE template_name = %s",
-                $template['template_name']
-            ));
+		foreach ( $templates as $template ) {
+			// Check if template exists
+			$exists = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT id FROM {$table_name} WHERE template_name = %s",
+					$template['template_name']
+				)
+			);
 
-            if (!$exists) {
-                $wpdb->insert($table_name, $template);
-            }
-        }
-    }
+			if ( ! $exists ) {
+				$wpdb->insert( $table_name, $template );
+			}
+		}
+	}
 
-    /**
-     * Rollback all migrations
-     *
-     * @return bool Success status
-     */
-    public static function rollback(): bool
-    {
-        global $wpdb;
+	/**
+	 * Rollback all migrations
+	 *
+	 * @return bool Success status
+	 */
+	public static function rollback(): bool {
+		global $wpdb;
 
-        $tables = [
-            $wpdb->prefix . 'saga_summary_feedback',
-            $wpdb->prefix . 'saga_generated_summaries',
-            $wpdb->prefix . 'saga_summary_templates',
-            $wpdb->prefix . 'saga_summary_requests',
-        ];
+		$tables = array(
+			$wpdb->prefix . 'saga_summary_feedback',
+			$wpdb->prefix . 'saga_generated_summaries',
+			$wpdb->prefix . 'saga_summary_templates',
+			$wpdb->prefix . 'saga_summary_requests',
+		);
 
-        foreach ($tables as $table) {
-            $wpdb->query("DROP TABLE IF EXISTS {$table}");
-        }
+		foreach ( $tables as $table ) {
+			$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

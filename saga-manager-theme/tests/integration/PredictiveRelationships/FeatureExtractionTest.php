@@ -105,28 +105,43 @@ class FeatureExtractionTest extends TestCase
         $entity1 = $this->createEntity($sagaId, ['entity_type' => 'character']);
         $entity2 = $this->createEntity($sagaId, ['entity_type' => 'character']);
 
-        // Add attribute definitions
-        $attrId = $wpdb->insert_id;
-        $wpdb->insert($wpdb->prefix . 'saga_attribute_definitions', [
-            'entity_type' => 'character',
-            'attribute_key' => 'affiliation',
-            'display_name' => 'Affiliation',
-            'data_type' => 'string'
-        ]);
-        $attrId = $wpdb->insert_id;
+        // Add attribute definition (use INSERT IGNORE to prevent duplicates)
+        $wpdb->query($wpdb->prepare(
+            "INSERT IGNORE INTO {$wpdb->prefix}saga_attribute_definitions
+             (entity_type, attribute_key, display_name, data_type)
+             VALUES (%s, %s, %s, %s)",
+            'character',
+            'affiliation',
+            'Affiliation',
+            'string'
+        ));
 
-        // Set same affiliation
-        $wpdb->insert($wpdb->prefix . 'saga_attribute_values', [
-            'entity_id' => $entity1,
-            'attribute_id' => $attrId,
-            'value_string' => 'Rebel Alliance'
-        ]);
+        // Get the attribute ID (whether just inserted or already existed)
+        $attrId = $wpdb->get_var($wpdb->prepare(
+            "SELECT id FROM {$wpdb->prefix}saga_attribute_definitions
+             WHERE entity_type = %s AND attribute_key = %s",
+            'character',
+            'affiliation'
+        ));
 
-        $wpdb->insert($wpdb->prefix . 'saga_attribute_values', [
-            'entity_id' => $entity2,
-            'attribute_id' => $attrId,
-            'value_string' => 'Rebel Alliance'
-        ]);
+        // Use INSERT IGNORE to prevent duplicate primary key errors
+        $wpdb->query($wpdb->prepare(
+            "INSERT IGNORE INTO {$wpdb->prefix}saga_attribute_values
+             (entity_id, attribute_id, value_string)
+             VALUES (%d, %d, %s)",
+            $entity1,
+            $attrId,
+            'Rebel Alliance'
+        ));
+
+        $wpdb->query($wpdb->prepare(
+            "INSERT IGNORE INTO {$wpdb->prefix}saga_attribute_values
+             (entity_id, attribute_id, value_string)
+             VALUES (%d, %d, %s)",
+            $entity2,
+            $attrId,
+            'Rebel Alliance'
+        ));
 
         // Calculate similarity
         $similarity = $wpdb->get_var($wpdb->prepare(

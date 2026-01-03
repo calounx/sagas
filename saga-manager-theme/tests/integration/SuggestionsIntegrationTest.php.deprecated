@@ -9,21 +9,22 @@ declare(strict_types=1);
 
 namespace SagaManager\Tests\Integration;
 
-use SagaManager\AI\ValueObjects\RelationshipSuggestion;
-use SagaManager\AI\ValueObjects\SuggestionFeature;
-use SagaManager\AI\ValueObjects\SuggestionFeedback;
-use SagaManager\AI\Services\FeatureExtractionService;
-use SagaManager\AI\Services\RelationshipPredictionService;
-use SagaManager\AI\Services\LearningService;
-use SagaManager\AI\Services\SuggestionRepository;
-use SagaManager\AI\SuggestionBackgroundProcessor;
+use SagaManager\Tests\TestCase;
+use SagaManager\AI\PredictiveRelationships\ValueObjects\RelationshipSuggestion;
+use SagaManager\AI\PredictiveRelationships\ValueObjects\SuggestionFeature;
+use SagaManager\AI\PredictiveRelationships\ValueObjects\SuggestionFeedback;
+use SagaManager\AI\PredictiveRelationships\FeatureExtractionService;
+use SagaManager\AI\PredictiveRelationships\RelationshipPredictionService;
+use SagaManager\AI\PredictiveRelationships\LearningService;
+use SagaManager\AI\PredictiveRelationships\SuggestionRepository;
+use SagaManager\AI\PredictiveRelationships\SuggestionBackgroundProcessor;
 
 /**
  * Integration test class
  *
  * Run with: vendor/bin/phpunit tests/integration/SuggestionsIntegrationTest.php
  */
-class SuggestionsIntegrationTest extends \WP_UnitTestCase
+class SuggestionsIntegrationTest extends TestCase
 {
     private SuggestionRepository $repository;
     private FeatureExtractionService $featureService;
@@ -119,16 +120,6 @@ class SuggestionsIntegrationTest extends \WP_UnitTestCase
         );
     }
 
-    public function tearDown(): void
-    {
-        global $wpdb;
-
-        // Clean up test data
-        $wpdb->delete($wpdb->prefix . 'saga_sagas', ['id' => $this->sagaId]);
-        $wpdb->delete($wpdb->prefix . 'saga_entities', ['saga_id' => $this->sagaId]);
-
-        parent::tearDown();
-    }
 
     /**
      * Test feature extraction

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Test Documentation</title>
+        <style>
+            body {
+                text-rendering: optimizeLegibility;
+                font-family: Source SansSerif Pro, Arial, sans-serif;
+                font-variant-ligatures: common-ligatures;
+                font-kerning: normal;
+                margin-left: 2rem;
+                background-color: #fff;
+                color: #000;
+            }
+
+            body > ul > li {
+                font-size: larger;
+            }
+
+            h2 {
+                font-size: larger;
+                text-decoration-line: underline;
+                text-decoration-thickness: 2px;
+                margin: 0;
+                padding: 0.5rem 0;
+            }
+
+            ul {
+                list-style: none;
+                margin: 0 0 2rem;
+                padding: 0 0 0 1rem;
+                text-indent: -1rem;
+            }
+
+            .success:before {
+                color: #4e9a06;
+                content: '✓';
+                padding-right: 0.5rem;
+            }
+
+            .defect {
+                color: #a40000;
+            }
+
+            .defect:before {
+                color: #a40000;
+                content: '✗';
+                padding-right: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Consistency Issue (SagaManager\Tests\Unit\ConsistencyGuardian\ConsistencyIssue)</h2>
+        <ul>
+            <li class="success">Can create consistency issue</li>
+            <li class="success">Validates issue type</li>
+            <li class="success">Accepts valid issue types</li>
+            <li class="success">Validates severity range</li>
+            <li class="success">Accepts valid severity levels</li>
+            <li class="success">Validates status</li>
+            <li class="success">Accepts valid statuses</li>
+            <li class="success">Validates ai confidence range</li>
+            <li class="success">Validates ai confidence negative</li>
+            <li class="success">Rounds ai confidence</li>
+            <li class="success">Accepts null ai confidence</li>
+            <li class="success">Converts to array</li>
+            <li class="success">Creates from database row</li>
+            <li class="success">Creates from database object</li>
+            <li class="success">Resolve creates resolved copy</li>
+            <li class="success">Dismiss creates dismissed copy</li>
+            <li class="success">Dismiss as false positive</li>
+            <li class="success">Is open</li>
+            <li class="success">Is resolved</li>
+            <li class="success">Get severity label</li>
+            <li class="success">Get issue type label</li>
+            <li class="success">Handles empty context</li>
+            <li class="success">Handles complex context</li>
+        </ul>
+        <h2>Consistency Repository (SagaManager\Tests\Integration\ConsistencyGuardian\ConsistencyRepository)</h2>
+        <ul>
+            <li class="success">Consistency issues table exists</li>
+            <li class="success">Can create consistency issue</li>
+            <li class="success">Can retrieve issues by saga</li>
+            <li class="success">Can filter by status</li>
+            <li class="success">Can filter by severity</li>
+            <li class="success">Can update issue status</li>
+            <li class="success">Cascade delete when saga deleted</li>
+            <li class="success">Can count issues by type</li>
+            <li class="success">Wordpress object cache</li>
+            <li class="success">Calculates statistics</li>
+            <li class="success">Orders by priority</li>
+            <li class="success">Searches json context</li>
+        </ul>
+        <h2>Extracted Entity (SagaManager\Tests\Unit\EntityExtractor\ExtractedEntity)</h2>
+        <ul>
+            <li class="success">Can create extracted entity</li>
+            <li class="success">Validates empty canonical name</li>
+            <li class="success">Validates confidence score range</li>
+            <li class="success">Validates duplicate similarity range</li>
+            <li class="success">Validates chunk index not negative</li>
+            <li class="success">Get confidence level</li>
+            <li class="success">Approve changes status</li>
+            <li class="success">Reject changes status</li>
+            <li class="success">Mark duplicate</li>
+            <li class="success">Mark created</li>
+            <li class="success">Get quality score</li>
+            <li class="success">Get all names</li>
+            <li class="success">Has attribute</li>
+            <li class="success">Get attribute</li>
+            <li class="success">Needs review</li>
+            <li class="success">Converts to array</li>
+            <li class="success">Creates from array</li>
+        </ul>
+        <h2>Extraction Job (SagaManager\Tests\Unit\EntityExtractor\ExtractionJob)</h2>
+        <ul>
+            <li class="success">Can create extraction job</li>
+            <li class="success">Validates chunk size minimum</li>
+            <li class="success">Validates chunk size maximum</li>
+            <li class="success">Validates total chunks minimum</li>
+            <li class="success">Validates processed chunks not exceeding total</li>
+            <li class="success">Validates accuracy score minimum</li>
+            <li class="success">Validates accuracy score maximum</li>
+            <li class="success">Validates api cost not negative</li>
+            <li class="success">Creates from array</li>
+            <li class="success">Converts to array</li>
+            <li class="success">Calculates progress percentage</li>
+            <li class="success">Calculates 100 percent progress</li>
+            <li class="success">Calculates acceptance rate</li>
+            <li class="success">Calculates zero acceptance rate with no entities</li>
+            <li class="success">Gets text length</li>
+            <li class="success">Calculates cost per entity</li>
+            <li class="success">Cost per entity returns null when no cost</li>
+            <li class="success">Is complete</li>
+            <li class="success">Is successful</li>
+            <li class="success">With status creates new instance</li>
+            <li class="success">With progress creates new instance</li>
+            <li class="success">Gets processing duration</li>
+            <li class="success">Processing duration null when not started</li>
+            <li class="success">Job status enum methods</li>
+        </ul>
+        <h2>Extraction Workflow (SagaManager\Tests\Integration\EntityExtractor\ExtractionWorkflow)</h2>
+        <ul>
+            <li class="success">Extraction jobs table exists</li>
+            <li class="success">Extracted entities table exists</li>
+            <li class="success">Complete extraction workflow</li>
+            <li class="success">Duplicate detection</li>
+            <li class="success">Batch entity creation</li>
+            <li class="success">Extraction job statistics</li>
+            <li class="success">Feedback recording</li>
+            <li class="success">Cascade delete extracted entities</li>
+        </ul>
+        <h2>Feature Extraction (SagaManager\Tests\Integration\PredictiveRelationships\FeatureExtraction)</h2>
+        <ul>
+            <li class="success">Extract co occurrence features</li>
+            <li class="success">Extract timeline proximity features</li>
+            <li class="success">Extract attribute similarity features</li>
+            <li class="success">Feature normalization</li>
+            <li class="success">Combined weighted features</li>
+            <li class="success">Stores features for suggestion</li>
+        </ul>
+        <h2>Generated Summary (SagaManager\Tests\Unit\SummaryGenerator\GeneratedSummary)</h2>
+        <ul>
+            <li class="success">Can create generated summary</li>
+            <li class="success">Validates title not empty</li>
+            <li class="success">Validates summary text not empty</li>
+            <li class="success">Validates quality score range</li>
+            <li class="success">Validates version minimum</li>
+            <li class="success">Calculates word count</li>
+            <li class="success">Calculates readability score</li>
+            <li class="success">Generates cache key</li>
+            <li class="success">Creates new version</li>
+            <li class="success">Marks as old version</li>
+            <li class="success">Updates cache expiration</li>
+            <li class="success">Checks cache expiration</li>
+            <li class="success">Gets quality label</li>
+            <li class="success">Detects source references</li>
+            <li class="success">Extracts key points</li>
+            <li class="success">Converts to array</li>
+        </ul>
+        <h2>Prediction Workflow (SagaManager\Tests\Integration\PredictiveRelationships\PredictionWorkflow)</h2>
+        <ul>
+            <li class="success">Relationship suggestions table exists</li>
+            <li class="success">Suggestion features table exists</li>
+            <li class="success">Complete prediction workflow</li>
+            <li class="success">Learning from feedback</li>
+            <li class="success">Accuracy metrics calculation</li>
+        </ul>
+        <h2>Relationship Suggestion (SagaManager\Tests\Unit\PredictiveRelationships\RelationshipSuggestion)</h2>
+        <ul>
+            <li class="success">Can create relationship suggestion</li>
+            <li class="success">Validates confidence score range</li>
+            <li class="success">Validates strength range</li>
+            <li class="success">Validates no self relationship</li>
+            <li class="success">Get confidence level</li>
+            <li class="success">Accept changes status</li>
+            <li class="success">Reject changes status</li>
+            <li class="success">Modify changes status</li>
+            <li class="success">Calculate priority score</li>
+            <li class="success">Should auto accept</li>
+            <li class="success">Is pending</li>
+            <li class="success">Converts to array</li>
+            <li class="success">Creates from array</li>
+        </ul>
+        <h2>Suggestion Feature (SagaManager\Tests\Unit\PredictiveRelationships\SuggestionFeature)</h2>
+        <ul>
+            <li class="success">Can create suggestion feature</li>
+            <li class="success">Validates feature value range minimum</li>
+            <li class="success">Validates feature value range maximum</li>
+            <li class="success">Validates weight range</li>
+            <li class="success">Get weighted value</li>
+            <li class="success">Get strength label</li>
+            <li class="success">With weight creates new instance</li>
+            <li class="success">With weight validates range</li>
+            <li class="success">Get contribution</li>
+            <li class="success">Get contribution with zero total</li>
+            <li class="success">Is high value</li>
+            <li class="success">Create normalized</li>
+            <li class="success">Create normalized with custom weight</li>
+            <li class="success">Create normalized clamps to range</li>
+            <li class="success">Converts to array</li>
+            <li class="success">Creates from array</li>
+            <li class="success">Feature type descriptions</li>
+            <li class="success">Feature type default weights</li>
+        </ul>
+        <h2>Summary Request (SagaManager\Tests\Unit\SummaryGenerator\SummaryRequest)</h2>
+        <ul>
+            <li class="success">Can create summary request</li>
+            <li class="success">Validates priority range</li>
+            <li class="success">Validates retry count</li>
+            <li class="success">Validates entity requirement for character arc</li>
+            <li class="success">Can transition to generating status</li>
+            <li class="success">Can transition to completed status</li>
+            <li class="success">Cannot change from final status</li>
+            <li class="success">Can mark as failed with error</li>
+            <li class="success">Can increment retry count</li>
+            <li class="success">Cannot retry beyond maximum</li>
+            <li class="success">Can track token usage</li>
+            <li class="success">Can estimate tokens</li>
+            <li class="success">Can check retry eligibility</li>
+            <li class="success">Calculates progress percentage</li>
+            <li class="success">Converts to array</li>
+            <li class="success">Creates from database row</li>
+        </ul>
+        <h2>Summary Workflow (SagaManager\Tests\Integration\SummaryGenerator\SummaryWorkflow)</h2>
+        <ul>
+            <li class="success">Complete summary workflow</li>
+            <li class="success">Summary storage and retrieval</li>
+            <li class="success">Finds summaries by saga</li>
+            <li class="success">Finds summary by cache key</li>
+            <li class="success">Calculates summary statistics</li>
+            <li class="success">Manages summary versions</li>
+            <li class="success">Cascades delete on saga deletion</li>
+            <li class="success">Searches summaries</li>
+        </ul>
+    </body>
+</html>

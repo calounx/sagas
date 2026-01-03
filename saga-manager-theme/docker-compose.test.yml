@@ -4,7 +4,7 @@ services:
   # MariaDB database for testing
   db:
     image: mariadb:11.4
-    container_name: saga_test_db
+    container_name: sagas_test_db
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: wordpress_test
@@ -13,7 +13,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3308:3306"
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
-    container_name: saga_test_wordpress
+    container_name: sagas_test_wordpress
     depends_on:
       db:
         condition: service_healthy
@@ -46,7 +46,7 @@ services:
       # Mount composer cache
       - composer_cache:/root/.composer
     ports:
-      - "8080:80"
+      - "8081:80"
     working_dir: /var/www/html/wp-content/themes/saga-manager-theme
     command: apache2-foreground
 
@@ -55,7 +55,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
-    container_name: saga_phpunit
+    container_name: sagas_phpunit
     depends_on:
       db:
         condition: service_healthy
@@ -79,4 +79,4 @@ volumes:
 
 networks:
   default:
-    name: saga_test_network
+    name: sagas_test_network

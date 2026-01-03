@@ -16,7 +16,7 @@ use SagaManager\AI\Entities\SummaryType;
 use SagaManager\AI\Entities\SummaryScope;
 use SagaManager\AI\Entities\RequestStatus;
 use SagaManager\AI\Entities\AIProvider;
-use SagaManager\AI\SummaryRepository;
+use SagaManager\AI\SummaryGenerator\SummaryRepository;
 
 class SummaryWorkflowTest extends TestCase
 {
@@ -40,7 +40,7 @@ class SummaryWorkflowTest extends TestCase
     public function test_complete_summary_workflow(): void
     {
         // 1. Create saga and entities
-        $saga_id = $this->createSaga(['name' => 'Star Wars Test']);
+        $saga_id = $this->createSaga(['name' => 'Star Wars Test ' . uniqid()]);
         $entity_id = $this->createEntity($saga_id, [
             'entity_type' => 'character',
             'canonical_name' => 'Luke Skywalker'
@@ -58,7 +58,8 @@ class SummaryWorkflowTest extends TestCase
             status: RequestStatus::PENDING,
             priority: 5,
             ai_provider: AIProvider::OPENAI,
-            ai_model: 'gpt-4'
+            ai_model: 'gpt-4',
+            created_at: time()
         );
 
         $request_id = $this->repository->createRequest($request);
@@ -98,7 +99,7 @@ class SummaryWorkflowTest extends TestCase
     {
         global $wpdb;
 
-        $saga_id = $this->createSaga();
+        $saga_id = $this->createSaga(['name' => 'Test Saga ' . uniqid()]);
         $entity_id = $this->createEntity($saga_id);
 
         $request = new SummaryRequest(
@@ -112,7 +113,8 @@ class SummaryWorkflowTest extends TestCase
             status: RequestStatus::PENDING,
             priority: 5,
             ai_provider: AIProvider::OPENAI,
-            ai_model: 'gpt-4'
+            ai_model: 'gpt-4',
+            created_at: time()
         );
 
         $request_id = $this->repository->createRequest($request);
@@ -160,10 +162,12 @@ class SummaryWorkflowTest extends TestCase
      */
     public function test_finds_summaries_by_saga(): void
     {
-        $saga_id = $this->createSaga();
+        global $wpdb;
+
+        $saga_id = $this->createSaga(['name' => 'Test Saga ' . uniqid()]);
         $user_id = $this->createTestUser();
 
-        // Create multiple summary requests
+        // Create multiple summary requests with actual summaries
         for ($i = 0; $i < 3; $i++) {
             $request = new SummaryRequest(
                 id: null,
@@ -176,13 +180,35 @@ class SummaryWorkflowTest extends TestCase
                 status: RequestStatus::COMPLETED,
                 priority: 5,
                 ai_provider: AIProvider::OPENAI,
-                ai_model: 'gpt-4'
+                ai_model: 'gpt-4',
+                created_at: time()
             );
 
-            $this->repository->createRequest($request);
+            $request_id = $this->repository->createRequest($request);
+
+            // Create actual summary record
+            $wpdb->insert(
+                $wpdb->prefix . 'saga_generated_summaries',
+                [
+                    'request_id' => $request_id,
+                    'saga_id' => $saga_id,
+                    'summary_type' => 'timeline',
+                    'version' => 1,
+                    'title' => 'Test Timeline ' . $i,
+                    'summary_text' => 'Test summary content',
+                    'word_count' => 3,
+                    'key_points' => json_encode([]),
+                    'metadata' => json_encode([]),
+                    'is_current' => 1,
+                    'cache_key' => md5('test_' . $i . '_' . time()),
+                    'ai_model' => 'gpt-4',
+                    'token_count' => 1000,
+                    'generation_cost' => 0.05,
+                ]
+            );
         }
 
-        // Find all requests for saga
+        // Find all summaries for saga
         $summaries = $this->repository->findBySaga($saga_id, []);
         $this->assertGreaterThanOrEqual(3, count($summaries));
     }
@@ -194,7 +220,7 @@ class SummaryWorkflowTest extends TestCase
     {
         global $wpdb;
 
-        $saga_id = $this->createSaga();
+        $saga_id = $this->createSaga(['name' => 'Test Saga ' . uniqid()]);
         $request_id = $this->repository->createRequest(
             new SummaryRequest(
                 id: null,
@@ -248,7 +274,7 @@ class SummaryWorkflowTest extends TestCase
     {
         global $wpdb;
 
-        $saga_id = $this->createSaga();
+        $saga_id = $this->createSaga(['name' => 'Test Saga ' . uniqid()]);
         $user_id = $this->createTestUser();
 
         // Create multiple summaries with different quality scores
@@ -309,7 +335,7 @@ class SummaryWorkflowTest extends TestCase
     {
         global $wpdb;
 
-        $saga_id = $this->createSaga();
+        $saga_id = $this->createSaga(['name' => 'Test Saga ' . uniqid()]);
         $entity_id = $this->createEntity($saga_id);
 
         $request_id = $this->repository->createRequest(
@@ -399,7 +425,7 @@ class SummaryWorkflowTest extends TestCase
     {
         global $wpdb;
 
-        $saga_id = $this->createSaga();
+        $saga_id = $this->createSaga(['name' => 'Test Saga ' . uniqid()]);
         $user_id = $this->createTestUser();
 
         // Create summary request
@@ -447,7 +473,7 @@ class SummaryWorkflowTest extends TestCase
     {
         global $wpdb;
 
-        $saga_id = $this->createSaga();
+        $saga_id = $this->createSaga(['name' => 'Test Saga ' . uniqid()]);
         $request_id = $this->repository->createRequest(
             new SummaryRequest(
                 id: null,

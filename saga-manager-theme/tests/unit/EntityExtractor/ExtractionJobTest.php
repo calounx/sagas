@@ -650,15 +650,19 @@ class ExtractionJobTest extends TestCase
      */
     public function test_is_complete(): void
     {
-        $statuses = [
-            JobStatus::PENDING => false,
-            JobStatus::PROCESSING => false,
-            JobStatus::COMPLETED => true,
-            JobStatus::FAILED => true,
-            JobStatus::CANCELLED => true,
+        // Use array with explicit keys to avoid enum object as array key
+        $test_cases = [
+            ['status' => JobStatus::PENDING, 'expected' => false],
+            ['status' => JobStatus::PROCESSING, 'expected' => false],
+            ['status' => JobStatus::COMPLETED, 'expected' => true],
+            ['status' => JobStatus::FAILED, 'expected' => true],
+            ['status' => JobStatus::CANCELLED, 'expected' => true],
         ];
 
-        foreach ($statuses as $status => $expected) {
+        foreach ($test_cases as $test_case) {
+            $status = $test_case['status'];
+            $expected = $test_case['expected'];
+
             $job = new ExtractionJob(
                 id: null,
                 saga_id: 1,

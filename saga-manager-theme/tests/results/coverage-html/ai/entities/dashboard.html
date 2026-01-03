@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /app/inc/ai/entities</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../../_css/bootstrap.min.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="../../_css/nv.d3.min.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="../../_css/style.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="../../_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="../../index.html">/app/inc</a></li>
+         <li class="breadcrumb-item"><a href="../index.html">ai</a></li>
+         <li class="breadcrumb-item"><a href="index.html">entities</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="DuplicateMatch.php.html#71">SagaManager\AI\EntityExtractor\Entities\DuplicateMatch</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#67">SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#24">SagaManager\AI\EntityExtractor\Entities\MatchType</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#49">SagaManager\AI\EntityExtractor\Entities\DuplicateAction</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ExtractedEntity.php.html#54">SagaManager\AI\EntityExtractor\Entities\EntityType</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#21">SagaManager\AI\Entities\OutputFormat</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#25">SagaManager\AI\PredictiveRelationships\Entities\SuggestionStatus</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#24">SagaManager\AI\PredictiveRelationships\Entities\FeedbackAction</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ExtractedEntity.php.html#24">SagaManager\AI\EntityExtractor\Entities\ExtractedEntityStatus</a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="SummaryRequest.php.html#18">SagaManager\AI\Entities\RequestStatus</a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="SummaryRequest.php.html#105">SagaManager\AI\Entities\AIProvider</a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#84">SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion</a></td><td class="text-right">74%</td></tr>
+       <tr><td><a href="SuggestionFeature.php.html#81">SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeature</a></td><td class="text-right">79%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="SuggestionFeedback.php.html#67">SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback</a></td><td class="text-right">1806</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#71">SagaManager\AI\EntityExtractor\Entities\DuplicateMatch</a></td><td class="text-right">1190</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#84">SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion</a></td><td class="text-right">68</td></tr>
+       <tr><td><a href="SuggestionFeature.php.html#81">SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeature</a></td><td class="text-right">30</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="DuplicateMatch.php.html#88"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#121"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::fromArray">fromArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#144"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#165"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::getSimilarityLevel">getSimilarityLevel</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#182"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::isHighConfidence">isHighConfidence</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#191"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::needsReview">needsReview</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#200"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::getRecommendation">getRecommendation</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#226"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::confirmDuplicate">confirmDuplicate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#239"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::confirmUnique">confirmUnique</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#252"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::markMerged">markMerged</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#267"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::getMatchQuality">getMatchQuality</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#284"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::getPriorityScore">getPriorityScore</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#305"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::getExplanation">getExplanation</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ExtractedEntity.php.html#222"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractedEntity::isPossibleDuplicate">isPossibleDuplicate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ExtractedEntity.php.html#262"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractedEntity::getTruncatedContext">getTruncatedContext</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#229"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::isActioned">isActioned</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#349"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::getTimeToDecision">getTimeToDecision</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#378"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::getExplanation">getExplanation</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeature.php.html#230"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeature::getExplanation">getExplanation</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#85"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#119"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::fromArray">fromArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#143"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#167"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::wasPositive">wasPositive</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#176"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::wasNegative">wasNegative</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#185"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::wasModified">wasModified</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#194"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::getDecisionSpeed">getDecisionSpeed</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#213"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::wasConfidenceAppropriate">wasConfidenceAppropriate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#239"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::getQualityScore">getQualityScore</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#280"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::getLearningValue">getLearningValue</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#320"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::fromSuggestion">fromSuggestion</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#36"><abbr title="SagaManager\AI\EntityExtractor\Entities\MatchType::getPriority">getPriority</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#61"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateAction::isFinal">isFinal</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ExtractedEntity.php.html#46"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractedEntityStatus::isFinal">isFinal</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ExtractedEntity.php.html#68"><abbr title="SagaManager\AI\EntityExtractor\Entities\EntityType::getLabel">getLabel</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#30"><abbr title="SagaManager\AI\Entities\OutputFormat::getExtension">getExtension</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#38"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionStatus::isActioned">isActioned</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#47"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionStatus::isPositive">isPositive</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#36"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\FeedbackAction::isPositive">isPositive</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#48"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\FeedbackAction::isNegative">isNegative</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#57"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\FeedbackAction::isNeutral">isNeutral</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SummaryRequest.php.html#36"><abbr title="SagaManager\AI\Entities\RequestStatus::canProcess">canProcess</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SummaryRequest.php.html#113"><abbr title="SagaManager\AI\Entities\AIProvider::getDefaultModel">getDefaultModel</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SummaryRequest.php.html#349"><abbr title="SagaManager\AI\Entities\SummaryRequest::getEstimatedTimeRemaining">getEstimatedTimeRemaining</abbr></a></td><td class="text-right">28%</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#280"><abbr title="SagaManager\AI\Entities\GeneratedSummary::getReadabilityLabel">getReadabilityLabel</abbr></a></td><td class="text-right">55%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#315"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::calculatePriorityScore">calculatePriorityScore</abbr></a></td><td class="text-right">64%</td></tr>
+       <tr><td><a href="ExtractionJob.php.html#214"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractionJob::getProgressPercentage">getProgressPercentage</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#248"><abbr title="SagaManager\AI\Entities\GeneratedSummary::isCacheExpired">isCacheExpired</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#337"><abbr title="SagaManager\AI\Entities\GeneratedSummary::extractKeyPoints">extractKeyPoints</abbr></a></td><td class="text-right">72%</td></tr>
+       <tr><td><a href="SuggestionFeature.php.html#42"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\FeatureType::getDescription">getDescription</abbr></a></td><td class="text-right">81%</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#131"><abbr title="SagaManager\AI\Entities\GeneratedSummary::calculateReadabilityScore">calculateReadabilityScore</abbr></a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="ExtractionJob.php.html#296"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractionJob::withStatus">withStatus</abbr></a></td><td class="text-right">85%</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#261"><abbr title="SagaManager\AI\Entities\GeneratedSummary::getQualityLabel">getQualityLabel</abbr></a></td><td class="text-right">85%</td></tr>
+       <tr><td><a href="SummaryRequest.php.html#55"><abbr title="SagaManager\AI\Entities\SummaryType::getLabel">getLabel</abbr></a></td><td class="text-right">85%</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#312"><abbr title="SagaManager\AI\Entities\GeneratedSummary::getSourceReferenceCount">getSourceReferenceCount</abbr></a></td><td class="text-right">87%</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#111"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::__construct">__construct</abbr></a></td><td class="text-right">87%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="SuggestionFeedback.php.html#280"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::getLearningValue">getLearningValue</abbr></a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#85"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::__construct">__construct</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#213"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::wasConfidenceAppropriate">wasConfidenceAppropriate</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#88"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::__construct">__construct</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#239"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::getQualityScore">getQualityScore</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#200"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::getRecommendation">getRecommendation</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#121"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::fromArray">fromArray</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#165"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::getSimilarityLevel">getSimilarityLevel</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#119"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::fromArray">fromArray</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#194"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::getDecisionSpeed">getDecisionSpeed</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#144"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::toArray">toArray</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#284"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::getPriorityScore">getPriorityScore</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="ExtractedEntity.php.html#262"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractedEntity::getTruncatedContext">getTruncatedContext</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#349"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::getTimeToDecision">getTimeToDecision</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="SummaryRequest.php.html#349"><abbr title="SagaManager\AI\Entities\SummaryRequest::getEstimatedTimeRemaining">getEstimatedTimeRemaining</abbr></a></td><td class="text-right">9</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#111"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::__construct">__construct</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#182"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::isHighConfidence">isHighConfidence</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="DuplicateMatch.php.html#226"><abbr title="SagaManager\AI\EntityExtractor\Entities\DuplicateMatch::confirmDuplicate">confirmDuplicate</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="ExtractedEntity.php.html#222"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractedEntity::isPossibleDuplicate">isPossibleDuplicate</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#378"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::getExplanation">getExplanation</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="SuggestionFeedback.php.html#143"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\SuggestionFeedback::toArray">toArray</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="ExtractionJob.php.html#296"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractionJob::withStatus">withStatus</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="RelationshipSuggestion.php.html#315"><abbr title="SagaManager\AI\PredictiveRelationships\Entities\RelationshipSuggestion::calculatePriorityScore">calculatePriorityScore</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#337"><abbr title="SagaManager\AI\Entities\GeneratedSummary::extractKeyPoints">extractKeyPoints</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#312"><abbr title="SagaManager\AI\Entities\GeneratedSummary::getSourceReferenceCount">getSourceReferenceCount</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#131"><abbr title="SagaManager\AI\Entities\GeneratedSummary::calculateReadabilityScore">calculateReadabilityScore</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#280"><abbr title="SagaManager\AI\Entities\GeneratedSummary::getReadabilityLabel">getReadabilityLabel</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="ExtractionJob.php.html#214"><abbr title="SagaManager\AI\EntityExtractor\Entities\ExtractionJob::getProgressPercentage">getProgressPercentage</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#248"><abbr title="SagaManager\AI\Entities\GeneratedSummary::isCacheExpired">isCacheExpired</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="GeneratedSummary.php.html#261"><abbr title="SagaManager\AI\Entities\GeneratedSummary::getQualityLabel">getQualityLabel</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 10.1.16</a> using <a href="https://www.php.net/" target="_top">PHP 8.2.30</a> and <a href="https://phpunit.de/">PHPUnit 10.5.60</a> at Sat Jan 3 13:46:41 UTC 2026.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../../_js/jquery.min.js?v=10.1.16" type="text/javascript"></script>
+  <script src="../../_js/d3.min.js?v=10.1.16" type="text/javascript"></script>
+  <script src="../../_js/nv.d3.min.js?v=10.1.16" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([8,0,0,0,0,0,2,1,2,0,6,3], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([42,0,0,1,0,0,1,3,1,7,2,81], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[100,28,"<a href=\"ConsistencyIssue.php.html#26\">SagaManager\\AI\\Entities\\ConsistencyIssue<\/a>"],[0,34,"<a href=\"DuplicateMatch.php.html#71\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch<\/a>"],[94,41,"<a href=\"ExtractedEntity.php.html#78\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity<\/a>"],[97.70114942528735,40,"<a href=\"ExtractionJob.php.html#66\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob<\/a>"],[91.0344827586207,41,"<a href=\"GeneratedSummary.php.html#42\">SagaManager\\AI\\Entities\\GeneratedSummary<\/a>"],[74.6268656716418,41,"<a href=\"RelationshipSuggestion.php.html#84\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion<\/a>"],[79.45205479452055,25,"<a href=\"SuggestionFeature.php.html#81\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature<\/a>"],[0,42,"<a href=\"SuggestionFeedback.php.html#67\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback<\/a>"],[95.57522123893806,35,"<a href=\"SummaryRequest.php.html#144\">SagaManager\\AI\\Entities\\SummaryRequest<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#24\">SagaManager\\AI\\EntityExtractor\\Entities\\MatchType<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#49\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateAction<\/a>"],[50,2,"<a href=\"ExtractedEntity.php.html#24\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntityStatus<\/a>"],[0,1,"<a href=\"ExtractedEntity.php.html#54\">SagaManager\\AI\\EntityExtractor\\Entities\\EntityType<\/a>"],[100,2,"<a href=\"ExtractionJob.php.html#24\">SagaManager\\AI\\EntityExtractor\\Entities\\JobStatus<\/a>"],[0,1,"<a href=\"GeneratedSummary.php.html#21\">SagaManager\\AI\\Entities\\OutputFormat<\/a>"],[0,2,"<a href=\"RelationshipSuggestion.php.html#25\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionStatus<\/a>"],[90.9090909090909,2,"<a href=\"SuggestionFeature.php.html#25\">SagaManager\\AI\\PredictiveRelationships\\Entities\\FeatureType<\/a>"],[0,3,"<a href=\"SuggestionFeedback.php.html#24\">SagaManager\\AI\\PredictiveRelationships\\Entities\\FeedbackAction<\/a>"],[50,2,"<a href=\"SummaryRequest.php.html#18\">SagaManager\\AI\\Entities\\RequestStatus<\/a>"],[93.75,2,"<a href=\"SummaryRequest.php.html#44\">SagaManager\\AI\\Entities\\SummaryType<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#84\">SagaManager\\AI\\Entities\\SummaryScope<\/a>"],[66.66666666666666,3,"<a href=\"SummaryRequest.php.html#105\">SagaManager\\AI\\Entities\\AIProvider<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[100,2,"<a href=\"ConsistencyIssue.php.html#116\">SagaManager\\AI\\Entities\\ConsistencyIssue::__construct<\/a>"],[100,2,"<a href=\"ConsistencyIssue.php.html#155\">SagaManager\\AI\\Entities\\ConsistencyIssue::validateIssueType<\/a>"],[100,2,"<a href=\"ConsistencyIssue.php.html#174\">SagaManager\\AI\\Entities\\ConsistencyIssue::validateSeverity<\/a>"],[100,2,"<a href=\"ConsistencyIssue.php.html#193\">SagaManager\\AI\\Entities\\ConsistencyIssue::validateStatus<\/a>"],[100,4,"<a href=\"ConsistencyIssue.php.html#212\">SagaManager\\AI\\Entities\\ConsistencyIssue::validateConfidence<\/a>"],[100,1,"<a href=\"ConsistencyIssue.php.html#231\">SagaManager\\AI\\Entities\\ConsistencyIssue::toArray<\/a>"],[100,8,"<a href=\"ConsistencyIssue.php.html#256\">SagaManager\\AI\\Entities\\ConsistencyIssue::fromDatabase<\/a>"],[100,1,"<a href=\"ConsistencyIssue.php.html#283\">SagaManager\\AI\\Entities\\ConsistencyIssue::resolve<\/a>"],[100,2,"<a href=\"ConsistencyIssue.php.html#309\">SagaManager\\AI\\Entities\\ConsistencyIssue::dismiss<\/a>"],[100,1,"<a href=\"ConsistencyIssue.php.html#333\">SagaManager\\AI\\Entities\\ConsistencyIssue::isOpen<\/a>"],[100,1,"<a href=\"ConsistencyIssue.php.html#342\">SagaManager\\AI\\Entities\\ConsistencyIssue::isResolved<\/a>"],[100,1,"<a href=\"ConsistencyIssue.php.html#351\">SagaManager\\AI\\Entities\\ConsistencyIssue::getSeverityLabel<\/a>"],[100,1,"<a href=\"ConsistencyIssue.php.html#367\">SagaManager\\AI\\Entities\\ConsistencyIssue::getIssueTypeLabel<\/a>"],[0,6,"<a href=\"DuplicateMatch.php.html#88\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::__construct<\/a>"],[0,4,"<a href=\"DuplicateMatch.php.html#121\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::fromArray<\/a>"],[0,3,"<a href=\"DuplicateMatch.php.html#144\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::toArray<\/a>"],[0,4,"<a href=\"DuplicateMatch.php.html#165\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::getSimilarityLevel<\/a>"],[0,2,"<a href=\"DuplicateMatch.php.html#182\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::isHighConfidence<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#191\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::needsReview<\/a>"],[0,5,"<a href=\"DuplicateMatch.php.html#200\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::getRecommendation<\/a>"],[0,2,"<a href=\"DuplicateMatch.php.html#226\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::confirmDuplicate<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#239\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::confirmUnique<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#252\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::markMerged<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#267\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::getMatchQuality<\/a>"],[0,3,"<a href=\"DuplicateMatch.php.html#284\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::getPriorityScore<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#305\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateMatch::getExplanation<\/a>"],[100,8,"<a href=\"ExtractedEntity.php.html#102\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::__construct<\/a>"],[100,10,"<a href=\"ExtractedEntity.php.html#147\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::fromArray<\/a>"],[100,2,"<a href=\"ExtractedEntity.php.html#179\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::toArray<\/a>"],[100,3,"<a href=\"ExtractedEntity.php.html#207\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::getConfidenceLevel<\/a>"],[0,2,"<a href=\"ExtractedEntity.php.html#222\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::isPossibleDuplicate<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#231\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::getAllNames<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#241\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::hasAttribute<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#252\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::getAttribute<\/a>"],[0,3,"<a href=\"ExtractedEntity.php.html#262\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::getTruncatedContext<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#280\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::approve<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#294\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::reject<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#308\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::markCreated<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#322\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::markDuplicate<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#335\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::needsReview<\/a>"],[100,5,"<a href=\"ExtractedEntity.php.html#344\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntity::getQualityScore<\/a>"],[100,10,"<a href=\"ExtractionJob.php.html#95\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::__construct<\/a>"],[100,8,"<a href=\"ExtractionJob.php.html#148\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::fromArray<\/a>"],[100,4,"<a href=\"ExtractionJob.php.html#181\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::toArray<\/a>"],[66.66666666666666,2,"<a href=\"ExtractionJob.php.html#214\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::getProgressPercentage<\/a>"],[100,2,"<a href=\"ExtractionJob.php.html#227\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::getAcceptanceRate<\/a>"],[100,1,"<a href=\"ExtractionJob.php.html#241\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::getTextLength<\/a>"],[100,3,"<a href=\"ExtractionJob.php.html#250\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::getCostPerEntity<\/a>"],[100,1,"<a href=\"ExtractionJob.php.html#263\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::isComplete<\/a>"],[100,1,"<a href=\"ExtractionJob.php.html#272\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::isSuccessful<\/a>"],[100,2,"<a href=\"ExtractionJob.php.html#281\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::getProcessingDuration<\/a>"],[85.71428571428571,5,"<a href=\"ExtractionJob.php.html#296\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::withStatus<\/a>"],[100,1,"<a href=\"ExtractionJob.php.html#317\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractionJob::withProgress<\/a>"],[90,8,"<a href=\"GeneratedSummary.php.html#70\">SagaManager\\AI\\Entities\\GeneratedSummary::__construct<\/a>"],[100,1,"<a href=\"GeneratedSummary.php.html#121\">SagaManager\\AI\\Entities\\GeneratedSummary::calculateWordCount<\/a>"],[83.33333333333334,3,"<a href=\"GeneratedSummary.php.html#131\">SagaManager\\AI\\Entities\\GeneratedSummary::calculateReadabilityScore<\/a>"],[100,2,"<a href=\"GeneratedSummary.php.html#163\">SagaManager\\AI\\Entities\\GeneratedSummary::countSyllables<\/a>"],[100,1,"<a href=\"GeneratedSummary.php.html#183\">SagaManager\\AI\\Entities\\GeneratedSummary::generateCacheKey<\/a>"],[100,1,"<a href=\"GeneratedSummary.php.html#205\">SagaManager\\AI\\Entities\\GeneratedSummary::withNewVersion<\/a>"],[100,1,"<a href=\"GeneratedSummary.php.html#222\">SagaManager\\AI\\Entities\\GeneratedSummary::markAsOldVersion<\/a>"],[100,1,"<a href=\"GeneratedSummary.php.html#236\">SagaManager\\AI\\Entities\\GeneratedSummary::withCacheExpiration<\/a>"],[66.66666666666666,2,"<a href=\"GeneratedSummary.php.html#248\">SagaManager\\AI\\Entities\\GeneratedSummary::isCacheExpired<\/a>"],[85.71428571428571,2,"<a href=\"GeneratedSummary.php.html#261\">SagaManager\\AI\\Entities\\GeneratedSummary::getQualityLabel<\/a>"],[55.55555555555556,2,"<a href=\"GeneratedSummary.php.html#280\">SagaManager\\AI\\Entities\\GeneratedSummary::getReadabilityLabel<\/a>"],[100,3,"<a href=\"GeneratedSummary.php.html#301\">SagaManager\\AI\\Entities\\GeneratedSummary::hasSourceReferences<\/a>"],[87.5,4,"<a href=\"GeneratedSummary.php.html#312\">SagaManager\\AI\\Entities\\GeneratedSummary::getSourceReferenceCount<\/a>"],[72.72727272727273,4,"<a href=\"GeneratedSummary.php.html#337\">SagaManager\\AI\\Entities\\GeneratedSummary::extractKeyPoints<\/a>"],[100,1,"<a href=\"GeneratedSummary.php.html#368\">SagaManager\\AI\\Entities\\GeneratedSummary::toArray<\/a>"],[100,5,"<a href=\"GeneratedSummary.php.html#407\">SagaManager\\AI\\Entities\\GeneratedSummary::fromDatabase<\/a>"],[87.5,8,"<a href=\"RelationshipSuggestion.php.html#111\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::__construct<\/a>"],[100,9,"<a href=\"RelationshipSuggestion.php.html#158\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::fromArray<\/a>"],[100,4,"<a href=\"RelationshipSuggestion.php.html#189\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::toArray<\/a>"],[100,1,"<a href=\"RelationshipSuggestion.php.html#220\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::isPending<\/a>"],[0,1,"<a href=\"RelationshipSuggestion.php.html#229\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::isActioned<\/a>"],[100,4,"<a href=\"RelationshipSuggestion.php.html#238\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::getConfidenceLevel<\/a>"],[100,1,"<a href=\"RelationshipSuggestion.php.html#257\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::accept<\/a>"],[100,1,"<a href=\"RelationshipSuggestion.php.html#275\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::reject<\/a>"],[100,1,"<a href=\"RelationshipSuggestion.php.html#295\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::modify<\/a>"],[64.70588235294117,4,"<a href=\"RelationshipSuggestion.php.html#315\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::calculatePriorityScore<\/a>"],[0,3,"<a href=\"RelationshipSuggestion.php.html#349\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::getTimeToDecision<\/a>"],[100,2,"<a href=\"RelationshipSuggestion.php.html#368\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::shouldAutoAccept<\/a>"],[0,2,"<a href=\"RelationshipSuggestion.php.html#378\">SagaManager\\AI\\PredictiveRelationships\\Entities\\RelationshipSuggestion::getExplanation<\/a>"],[100,5,"<a href=\"SuggestionFeature.php.html#95\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::__construct<\/a>"],[100,3,"<a href=\"SuggestionFeature.php.html#125\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::fromArray<\/a>"],[100,2,"<a href=\"SuggestionFeature.php.html#143\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::toArray<\/a>"],[100,1,"<a href=\"SuggestionFeature.php.html#163\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::getWeightedValue<\/a>"],[100,4,"<a href=\"SuggestionFeature.php.html#172\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::getStrengthLabel<\/a>"],[100,3,"<a href=\"SuggestionFeature.php.html#190\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::withWeight<\/a>"],[100,2,"<a href=\"SuggestionFeature.php.html#208\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::getContribution<\/a>"],[100,2,"<a href=\"SuggestionFeature.php.html#221\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::isHighValue<\/a>"],[0,1,"<a href=\"SuggestionFeature.php.html#230\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::getExplanation<\/a>"],[92.85714285714286,2,"<a href=\"SuggestionFeature.php.html#262\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeature::createNormalized<\/a>"],[0,7,"<a href=\"SuggestionFeedback.php.html#85\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::__construct<\/a>"],[0,4,"<a href=\"SuggestionFeedback.php.html#119\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::fromArray<\/a>"],[0,2,"<a href=\"SuggestionFeedback.php.html#143\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::toArray<\/a>"],[0,1,"<a href=\"SuggestionFeedback.php.html#167\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::wasPositive<\/a>"],[0,1,"<a href=\"SuggestionFeedback.php.html#176\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::wasNegative<\/a>"],[0,1,"<a href=\"SuggestionFeedback.php.html#185\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::wasModified<\/a>"],[0,4,"<a href=\"SuggestionFeedback.php.html#194\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::getDecisionSpeed<\/a>"],[0,7,"<a href=\"SuggestionFeedback.php.html#213\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::wasConfidenceAppropriate<\/a>"],[0,6,"<a href=\"SuggestionFeedback.php.html#239\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::getQualityScore<\/a>"],[0,8,"<a href=\"SuggestionFeedback.php.html#280\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::getLearningValue<\/a>"],[0,1,"<a href=\"SuggestionFeedback.php.html#320\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionFeedback::fromSuggestion<\/a>"],[100,6,"<a href=\"SummaryRequest.php.html#171\">SagaManager\\AI\\Entities\\SummaryRequest::__construct<\/a>"],[100,6,"<a href=\"SummaryRequest.php.html#215\">SagaManager\\AI\\Entities\\SummaryRequest::withStatus<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#243\">SagaManager\\AI\\Entities\\SummaryRequest::withError<\/a>"],[100,2,"<a href=\"SummaryRequest.php.html#258\">SagaManager\\AI\\Entities\\SummaryRequest::withRetry<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#278\">SagaManager\\AI\\Entities\\SummaryRequest::withTokenUsage<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#296\">SagaManager\\AI\\Entities\\SummaryRequest::calculateCost<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#309\">SagaManager\\AI\\Entities\\SummaryRequest::withEstimatedTokens<\/a>"],[100,2,"<a href=\"SummaryRequest.php.html#326\">SagaManager\\AI\\Entities\\SummaryRequest::canRetry<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#335\">SagaManager\\AI\\Entities\\SummaryRequest::getProgressPercentage<\/a>"],[28.57142857142857,4,"<a href=\"SummaryRequest.php.html#349\">SagaManager\\AI\\Entities\\SummaryRequest::getEstimatedTimeRemaining<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#372\">SagaManager\\AI\\Entities\\SummaryRequest::toArray<\/a>"],[100,9,"<a href=\"SummaryRequest.php.html#409\">SagaManager\\AI\\Entities\\SummaryRequest::fromDatabase<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#36\">SagaManager\\AI\\EntityExtractor\\Entities\\MatchType::getPriority<\/a>"],[0,1,"<a href=\"DuplicateMatch.php.html#61\">SagaManager\\AI\\EntityExtractor\\Entities\\DuplicateAction::isFinal<\/a>"],[100,1,"<a href=\"ExtractedEntity.php.html#37\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntityStatus::isActionable<\/a>"],[0,1,"<a href=\"ExtractedEntity.php.html#46\">SagaManager\\AI\\EntityExtractor\\Entities\\ExtractedEntityStatus::isFinal<\/a>"],[0,1,"<a href=\"ExtractedEntity.php.html#68\">SagaManager\\AI\\EntityExtractor\\Entities\\EntityType::getLabel<\/a>"],[100,1,"<a href=\"ExtractionJob.php.html#37\">SagaManager\\AI\\EntityExtractor\\Entities\\JobStatus::isFinal<\/a>"],[100,1,"<a href=\"ExtractionJob.php.html#46\">SagaManager\\AI\\EntityExtractor\\Entities\\JobStatus::canProcess<\/a>"],[0,1,"<a href=\"GeneratedSummary.php.html#30\">SagaManager\\AI\\Entities\\OutputFormat::getExtension<\/a>"],[0,1,"<a href=\"RelationshipSuggestion.php.html#38\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionStatus::isActioned<\/a>"],[0,1,"<a href=\"RelationshipSuggestion.php.html#47\">SagaManager\\AI\\PredictiveRelationships\\Entities\\SuggestionStatus::isPositive<\/a>"],[81.81818181818183,1,"<a href=\"SuggestionFeature.php.html#42\">SagaManager\\AI\\PredictiveRelationships\\Entities\\FeatureType::getDescription<\/a>"],[100,1,"<a href=\"SuggestionFeature.php.html#61\">SagaManager\\AI\\PredictiveRelationships\\Entities\\FeatureType::getDefaultWeight<\/a>"],[0,1,"<a href=\"SuggestionFeedback.php.html#36\">SagaManager\\AI\\PredictiveRelationships\\Entities\\FeedbackAction::isPositive<\/a>"],[0,1,"<a href=\"SuggestionFeedback.php.html#48\">SagaManager\\AI\\PredictiveRelationships\\Entities\\FeedbackAction::isNegative<\/a>"],[0,1,"<a href=\"SuggestionFeedback.php.html#57\">SagaManager\\AI\\PredictiveRelationships\\Entities\\FeedbackAction::isNeutral<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#29\">SagaManager\\AI\\Entities\\RequestStatus::isFinal<\/a>"],[0,1,"<a href=\"SummaryRequest.php.html#36\">SagaManager\\AI\\Entities\\RequestStatus::canProcess<\/a>"],[85.71428571428571,1,"<a href=\"SummaryRequest.php.html#55\">SagaManager\\AI\\Entities\\SummaryType::getLabel<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#68\">SagaManager\\AI\\Entities\\SummaryType::requiresEntity<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#93\">SagaManager\\AI\\Entities\\SummaryScope::getLabel<\/a>"],[0,1,"<a href=\"SummaryRequest.php.html#113\">SagaManager\\AI\\Entities\\AIProvider::getDefaultModel<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#123\">SagaManager\\AI\\Entities\\AIProvider::getInputCostPer1K<\/a>"],[100,1,"<a href=\"SummaryRequest.php.html#133\">SagaManager\\AI\\Entities\\AIProvider::getOutputCostPer1K<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>
