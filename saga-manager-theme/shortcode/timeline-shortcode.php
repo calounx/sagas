@@ -137,6 +137,7 @@ function saga_timeline_shortcode_handler($atts, $content = null) {
  * Ensures timeline assets are loaded when shortcode is used.
  * Called by shortcode handler.
  */
+if (!function_exists('saga_enqueue_timeline_assets')) {
 function saga_enqueue_timeline_assets() {
     // Only enqueue once per page
     static $enqueued = false;
@@ -197,6 +198,7 @@ function saga_enqueue_timeline_assets() {
     ]);
 
     $enqueued = true;
+}
 }
 
 /**
